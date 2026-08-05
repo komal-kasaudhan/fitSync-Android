@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:tools="http://schemas.android.com/tools"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:fillViewport="true"
+tools:context=".screens.fragments.Onboarding.LifestyleFragment"
+android:background="@color/dark_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+        <TextView
+            android:id="@+id/titlemain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/brand_cyan"
+            android:textSize="35sp"
+            android:text="Lifestyle"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/titlesub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_gray_blue"
+            android:text="Caliberate your AI health assistant by defining your daily movement patterns."
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            >
+
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cyan"
+            android:textSize="14sp"
+            android:text="ACTIVITY LEVEL"
+            android:textStyle="bold"
+            android:layout_marginTop="22dp">
+
+        </TextView>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/sedentive"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_signup"
+            app:cardBackgroundColor="#101827"
+            app:cardCornerRadius="12dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#203040">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="20dp">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="20dp"
+                    app:cardBackgroundColor="#101827"
+                    app:cardCornerRadius="12dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#203040"
+                    android:background="@drawable/small_box">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_mail"
+                        app:tint="@color/brand_cyan">
+
+                    </ImageView>
+                </com.google.android.material.card.MaterialCardView>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:text="Sedentive"
+                            android:textStyle="normal"
+                            android:textSize="18sp">
+
+                        </TextView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/text_gray_blue"
+                            android:text="Minimal Movement, office lifestyle"
+                            android:textStyle="normal"
+                            android:textSize="13sp">
+
+                        </TextView>
+
+                    </LinearLayout>
+
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/light"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_signup"
+            app:cardBackgroundColor="#101827"
+            app:cardCornerRadius="12dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#203040">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="20dp">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="20dp"
+                    app:cardBackgroundColor="#101827"
+                    app:cardCornerRadius="12dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#203040"
+                    android:background="@drawable/small_box">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_mail"
+                        app:tint="@color/brand_cyan">
+
+                    </ImageView>
+                </com.google.android.material.card.MaterialCardView>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Lightly Active"
+                        android:textStyle="normal"
+                        android:textSize="18sp">
+
+                    </TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_gray_blue"
+                        android:text="Active 1-3 times per week"
+                        android:textStyle="normal"
+                        android:textSize="13sp">
+
+                    </TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/moderate"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_signup"
+            app:cardBackgroundColor="#101827"
+            app:cardCornerRadius="12dp"
+
+
+            app:strokeWidth="1dp"
+            app:strokeColor="#203040">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="20dp">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="20dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#203040"
+                    app:cardBackgroundColor="#101827"
+                    app:cardCornerRadius="12dp"
+                    android:background="@drawable/small_box">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_mail"
+                        app:tint="@color/brand_cyan">
+
+                    </ImageView>
+                </com.google.android.material.card.MaterialCardView>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Moderately Active"
+                        android:textStyle="normal"
+                        android:textSize="18sp">
+
+                    </TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_gray_blue"
+                        android:text="Active 3-5 times per week"
+                        android:textStyle="normal"
+                        android:textSize="13sp">
+
+                    </TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/veryActive"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_signup"
+            app:cardBackgroundColor="#101827"
+            app:cardCornerRadius="12dp"
+
+            app:strokeWidth="1dp"
+            app:strokeColor="#203040">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="20dp">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="20dp"
+                    app:cardBackgroundColor="#101827"
+                    app:cardCornerRadius="12dp"
+
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#203040"
+                    android:background="@drawable/small_box">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_mail"
+                        app:tint="@color/brand_cyan">
+
+                    </ImageView>
+                </com.google.android.material.card.MaterialCardView>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Very Active"
+                        android:textStyle="normal"
+                        android:textSize="18sp">
+
+                    </TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_gray_blue"
+                        android:text="Intense training 6+ times per week"
+                        android:textStyle="normal"
+                        android:textSize="13sp">
+
+                    </TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TRAINING PREFERENCE"
+            android:textColor="@color/cyan"
+            android:textSize="14sp"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold">
+
+        </TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/Home"
+                android:layout_width="0dp"
+                android:layout_height="130dp"
+                android:layout_weight="1"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                app:cardBackgroundColor="#101827"
+                app:cardCornerRadius="12dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#203040"
+                android:background="@drawable/bg_signup">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_mail"
+                        app:tint="@color/cyan"
+                        android:layout_gravity="center">
+                    </ImageView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Home"
+                        android:layout_gravity="center"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="18sp">
+
+                    </TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Minimal Gear"
+                        android:layout_gravity="center"
+                        android:textColor="@color/text_gray_blue"
+                        android:textStyle="normal"
+                        android:textSize="12sp">
+
+                    </TextView>
+
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/Gym"
+                android:layout_width="0dp"
+                android:layout_height="130dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="#101827"
+                app:cardCornerRadius="12dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_signup"
+
+                app:strokeWidth="1dp"
+                app:strokeColor="#203040">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_mail"
+                        android:layout_gravity="center"
+                        app:tint="@color/cyan">
+
+                    </ImageView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gym"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp">
+                    </TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Full Gear"
+                        android:textStyle="normal"
+                        android:layout_gravity="center"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_gray_blue"
+                        android:layout_marginTop="5dp"></TextView>
+"
+                </LinearLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

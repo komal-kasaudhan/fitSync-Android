@@ -1,0 +1,13 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+<item>
+    <shape>
+        <solid android:color="#020817"/>
+    </shape>
+</item>
+
+<item android:drawable="@drawable/bg_welcome"/>
+
+<item android:drawable="@drawable/bg_welcome2"/>
+
+</layer-list>

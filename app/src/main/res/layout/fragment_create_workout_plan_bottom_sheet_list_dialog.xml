@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#071018"
+    android:fillViewport="true"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="#0C202B"
+            app:cardCornerRadius="20dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#00D4FF">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✓ PROFILE COMPLETE"
+                android:textColor="#00D4FF"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="6dp"
+                android:letterSpacing="0.05"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create AI Plan"
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Answer these final questions for your program."
+            android:textColor="#9CA3AF"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="24dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#111827"
+            app:cardCornerRadius="20dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#1F2E3D">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Days per week?"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="14dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+                    <TextView
+                        android:id="@+id/tvDays3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="3"
+                        android:textColor="#9CA3AF"
+                        android:gravity="center"
+                        android:background="#1C2638"
+                        android:layout_marginEnd="4dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tvDays4"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="4"
+                        android:textColor="#9CA3AF"
+                        android:gravity="center"
+                        android:background="#1C2638"
+                        android:layout_marginHorizontal="2dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tvDays5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="5"
+                        android:textColor="#9CA3AF"
+                        android:gravity="center"
+                        android:background="#1C2638"
+                        android:layout_marginHorizontal="2dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tvDays6"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="6"
+                        android:textColor="#9CA3AF"
+                        android:gravity="center"
+                        android:background="#1C2638"
+                        android:layout_marginStart="4dp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#111827"
+            app:cardCornerRadius="20dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#1F2E3D">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:gravity="center_horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Which days?"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="14dp"
+                    android:gravity="start"/>
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/cgSpecificDays"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chipSpacingHorizontal="6dp"
+                    app:chipSpacingVertical="6dp">
+
+                    <com.google.android.material.chip.Chip style="@style/Widget.MaterialComponents.Chip.Choice" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mon" android:checkable="true" android:clickable="true" app:chipBackgroundColor="@color/chip_background_selector" android:textColor="@color/chip_text_selector" app:checkedIconVisible="false" app:strokeWidth="0dp"/>
+                    <com.google.android.material.chip.Chip style="@style/Widget.MaterialComponents.Chip.Choice" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tue" android:checkable="true" android:clickable="true" app:chipBackgroundColor="@color/chip_background_selector" android:textColor="@color/chip_text_selector" app:checkedIconVisible="false" app:strokeWidth="0dp"/>
+                    <com.google.android.material.chip.Chip style="@style/Widget.MaterialComponents.Chip.Choice" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Wed" android:checkable="true" android:clickable="true" app:chipBackgroundColor="@color/chip_background_selector" android:textColor="@color/chip_text_selector" app:checkedIconVisible="false" app:strokeWidth="0dp"/>
+                    <com.google.android.material.chip.Chip style="@style/Widget.MaterialComponents.Chip.Choice" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Thu" android:checkable="true" android:clickable="true" app:chipBackgroundColor="@color/chip_background_selector" android:textColor="@color/chip_text_selector" app:checkedIconVisible="false" app:strokeWidth="0dp"/>
+                    <com.google.android.material.chip.Chip style="@style/Widget.MaterialComponents.Chip.Choice" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fri" android:checkable="true" android:clickable="true" app:chipBackgroundColor="@color/chip_background_selector" android:textColor="@color/chip_text_selector" app:checkedIconVisible="false" app:strokeWidth="0dp"/>
+                    <com.google.android.material.chip.Chip style="@style/Widget.MaterialComponents.Chip.Choice" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sat" android:checkable="true" android:clickable="true" app:chipBackgroundColor="@color/chip_background_selector" android:textColor="@color/chip_text_selector" app:checkedIconVisible="false" app:strokeWidth="0dp"/>
+                    <com.google.android.material.chip.Chip style="@style/Widget.MaterialComponents.Chip.Choice" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sun" android:checkable="true" android:clickable="true" app:chipBackgroundColor="@color/chip_background_selector" android:textColor="@color/chip_text_selector" app:checkedIconVisible="false" app:strokeWidth="0dp"/>
+
+                </com.google.android.material.chip.ChipGroup>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#111827"
+            app:cardCornerRadius="20dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#1F2E3D">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Duration per workout?" android:textColor="@color/white" android:textStyle="bold" android:textSize="15sp" android:layout_marginBottom="14dp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:orientation="horizontal" android:weightSum="4">
+                    <TextView android:id="@+id/tvDuration20" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="20M" android:textColor="#9CA3AF" android:gravity="center" android:background="#1C2638" android:layout_marginEnd="4dp"/>
+                    <TextView android:id="@+id/tvDuration30"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="30M"
+                        android:textColor="#9CA3AF"
+                        android:gravity="center"
+                        android:background="#1C2638"
+                        android:layout_marginHorizontal="2dp"/>
+
+                    <TextView
+                        android:id="@+id/tvDuration45"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#1C2638"
+                        android:gravity="center"
+                        android:text="45M"
+                        android:layout_marginHorizontal="2dp"
+                        android:textColor="#9CA3AF" />
+                    <TextView android:id="@+id/tvDuration60" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="60M" android:textColor="#9CA3AF" android:gravity="center" android:background="#1C2638" android:layout_marginStart="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#111827"
+            app:cardCornerRadius="20dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#1F2E3D">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Equipment Available"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="14dp"/>
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/cgEquipment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chipSpacingVertical="6dp"
+                    app:chipSpacingHorizontal="6dp"/>
+
+                <!-- ✅ DYNAMIC ACTION ACTION ZONE: Is pure layout ko click target banayenge -->
+                <LinearLayout
+                    android:id="@+id/btnManageEquipmentClickZone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:background="@drawable/bg_action_clickable_pill"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="➕"
+                        android:textColor="#19F5B0"
+                        android:textSize="12sp"
+                        android:layout_marginEnd="6dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add / Manage Equipment"
+                        android:textColor="#00D4FF"
+                        android:textStyle="bold"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="#0C1620"
+            app:cardCornerRadius="20dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#0A3545">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="16dp">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_mail" app:tint="#00D4FF" android:layout_marginEnd="10dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="AI Data Sync" android:textColor="@color/white" android:textStyle="bold" android:textSize="15sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:weightSum="3" android:layout_marginBottom="12dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="✓" android:textColor="#19F5B0" android:textStyle="bold" android:layout_marginEnd="6dp" android:textSize="14sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Age" android:textColor="@color/white" android:textSize="13sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="✓" android:textColor="#19F5B0" android:textStyle="bold" android:layout_marginEnd="6dp" android:textSize="14sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Height" android:textColor="@color/white" android:textSize="13sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="✓" android:textColor="#19F5B0" android:textStyle="bold" android:layout_marginEnd="6dp" android:textSize="14sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Weight" android:textColor="@color/white" android:textSize="13sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:weightSum="3">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="✓" android:textColor="#19F5B0" android:textStyle="bold" android:layout_marginEnd="6dp" android:textSize="14sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Goal" android:textColor="@color/white" android:textSize="13sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="✓" android:textColor="#19F5B0" android:textStyle="bold" android:layout_marginEnd="6dp" android:textSize="14sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Equipment" android:textColor="@color/white" android:textSize="13sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="✓" android:textColor="#19F5B0" android:textStyle="bold" android:layout_marginEnd="6dp" android:textSize="14sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Workout Days" android:textColor="@color/white" android:textSize="12sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGenerateAIPlan"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Generate AI Plan ⚡"
+            android:textColor="#071018"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:backgroundTint="#00D4FF"
+            app:cornerRadius="16dp"
+            android:elevation="6dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ready in ~5 seconds."
+            android:textColor="#6B7280"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="24dp"/>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

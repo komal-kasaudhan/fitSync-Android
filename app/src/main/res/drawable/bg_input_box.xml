@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Input box ka andar ka dark background color -->
+    <solid android:color="#102235" />
+
+    <!-- Rounded corners jaise design me hain -->
+    <corners android:radius="14dp" />
+
+    <!-- 🏢 WHITE/LIGHT BORDER: 1dp patli outline jaise right side image me hai -->
+    <stroke
+        android:width="1dp"
+        android:color="#4A5D73" /> <!-- Is color code se bahut pyari thin outline aayegi -->
+</shape>

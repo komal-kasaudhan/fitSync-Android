@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#071018"
+    android:fitsSystemWindows="true"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:id="@+id/llTopHeaderZone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_mail"
+            app:tint="#00D4FF"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FitSync"
+            android:textColor="#00D4FF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Creating Your Personalized Workout"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AI is analyzing your profile to build your plan."
+            android:textColor="#9CA3AF"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlSpinnerZone"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_below="@id/llTopHeaderZone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
+
+        <ProgressBar
+            android:id="@+id/pbCentralLoadingCircle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminate="true"
+            android:indeterminateTint="#00D4FF"
+            style="?android:attr/progressBarStyleLarge"/>
+    </RelativeLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvStatusMonitorCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rlSpinnerZone"
+        android:layout_above="@+id/llBottomTrackerZone"
+        app:cardBackgroundColor="#111B2F"
+        app:cardCornerRadius="18dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="#1F2E3D"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="14dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Creating personalized plan for Esha 💙"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:chipSpacingHorizontal="4dp">
+                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Goal: Muscle Gain" android:textColor="#00D4FF" app:chipBackgroundColor="#0C202B" app:strokeColor="#0A3F4E" />
+                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="45 min" android:textColor="#9CA3AF" app:chipBackgroundColor="#1C2638" />
+                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="4 Days/Week" android:textColor="#19F5B0" app:chipBackgroundColor="#0C241B" app:strokeColor="#0A442E" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#1F2E3D" android:layout_marginBottom="12dp"/>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="10dp">
+                <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_mail" app:tint="#00D4FF" android:layout_marginEnd="10dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Reading your profile" android:textColor="@color/white" android:textSize="13sp" android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="10dp">
+                <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_mail" app:tint="#00D4FF" android:layout_marginEnd="10dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Matching exercises" android:textColor="@color/white" android:textSize="13sp" android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="10dp">
+                <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_mail" app:tint="#00D4FF" android:layout_marginEnd="10dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Building weekly split" android:textColor="@color/white" android:textSize="13sp" android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="10dp">
+                <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_mail" app:tint="#4B5563" android:layout_marginEnd="10dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Personalizing intensity" android:textColor="#4B5563" android:textSize="13sp"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_mail" app:tint="#4B5563" android:layout_marginEnd="10dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Finalizing workout plan" android:textColor="#4B5563" android:textSize="13sp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:id="@+id/llBottomTrackerZone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp">
+
+        <ProgressBar
+            android:id="@+id/pbHorizontalMetricsTrack"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progress="72"
+            android:max="100"
+            android:progressTint="#00D4FF"
+            android:progressBackgroundTint="#1F2E3D"
+            android:layout_marginBottom="6dp"/>
+
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" android:paddingHorizontal="2dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Estimated time: 5–10 seconds" android:textColor="#9CA3AF" android:textSize="11sp"/>
+            <TextView
+                android:id="@+id/tvProgressPercentageBottom"
+                android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="72%" android:textColor="#00D4FF" android:textStyle="bold" android:textSize="11sp"/>
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="&quot;Small improvements every day lead to big results.&quot;"
+            android:textColor="#E5E7EB"
+            android:textSize="13sp"
+            android:textStyle="italic"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="POWERED BY FITSYNC AI"
+            android:textColor="#3A4D5F"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            android:gravity="center"/>
+    </LinearLayout>
+
+</RelativeLayout>

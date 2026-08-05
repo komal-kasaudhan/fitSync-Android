@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- ⚪ LAYER 1: The Dark Secondary Background Ring Underlay -->
+    <item>
+        <shape android:shape="ring" android:thickness="6dp" android:useLevel="false">
+            <solid android:color="#142630" />
+        </shape>
+    </item>
+
+    <!-- 🟢 LAYER 2: Glowing Neon Cyan Progress Active Track -->
+    <item>
+        <rotate
+            android:fromDegrees="270"
+            android:toDegrees="270">
+            <shape android:shape="ring" android:thickness="6dp" android:useLevel="true">
+                <!-- 🔥 FIXED FIXED COMPLIANT CYAN GLOW COLOR -->
+                <solid android:color="@color/cyan" />
+            </shape>
+        </rotate>
+    </item>
+
+</layer-list>

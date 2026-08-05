@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#071018"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/llExerciseControlBar"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:background="#0C1420"
+        android:layout_alignParentBottom="true"
+        android:elevation="12dp">
+
+        <ImageButton
+            android:id="@+id/btnPrevExercise"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_mail"
+            app:tint="#6B7280"
+            android:background="#111827"
+            android:contentDescription="Previous Exercise Button"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnStartActiveExercise"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="12dp"
+            android:text="▶ Start Exercise"
+            android:textColor="#071018"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:backgroundTint="#00D4FF"
+            app:cornerRadius="14dp"/>
+
+        <ImageButton
+            android:id="@+id/btnNextExercise"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_mail"
+            app:tint="#6B7280"
+            android:background="#111827"
+            android:contentDescription="Next Exercise Button"/>
+    </LinearLayout>
+
+    <!-- 📜 UNIFIED HIGH-PERFORMANCE GLOBAL SCROLL SYSTEM -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/llExerciseControlBar"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                app:cardCornerRadius="20dp"
+                app:strokeColor="#1F2E3D"
+                app:strokeWidth="1dp"
+                android:layout_marginBottom="12dp">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_mail"
+                        android:scaleType="centerCrop"
+                        android:background="#09131C"
+                        android:padding="50dp"
+                        app:tint="#111827"/>
+                    <View android:layout_width="match_parent" android:layout_height="match_parent" android:background="#66000000"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Image"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:layout_centerInParent="true"
+                        android:textSize="14sp"/>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="20dp" android:paddingHorizontal="4dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="← Swipe →" android:textColor="#36A8FF" android:textSize="12sp" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Image 1 / 3" android:textColor="#9CA3AF" android:textSize="12sp" android:textStyle="bold"/>
+            </RelativeLayout>
+
+            <!-- 📋 UPGRADE 2: TODAY'S WORKOUT STATE WITH PROGRESS CODES -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#111827"
+                app:cardCornerRadius="20dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#1F2E3D">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="14dp">
+                        <TextView android:id="@+id/tvWorkoutTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📋 Today's Workout" android:textColor="@color/white" android:textStyle="bold" android:textSize="16sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Exercise 4 of 12" android:textColor="#00D4FF" android:textStyle="bold" android:textSize="12sp"/>
+                    </RelativeLayout>
+                    <TextView android:id="@+id/tvExerciseRoutineSpecs" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Target: 3 Sets × 12 Reps\nWeight: 2kg  •  60s Rest" android:textColor="#9CA3AF" android:textSize="14sp" android:lineSpacingMultiplier="1.2"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ⚙️ UPGRADE 3: ADAPTIVE MULTI-EQUIPMENT SCALABLE CARD -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#111827"
+                app:cardCornerRadius="16dp"
+                app:strokeColor="#1F2E3D"
+                app:strokeWidth="1dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Equipment Required" android:textColor="@color/white" android:textStyle="bold" android:textSize="15sp" android:layout_marginBottom="12dp"/>
+                    <com.google.android.material.chip.ChipGroup android:layout_width="match_parent" android:layout_height="wrap_content" app:chipSpacing="6dp">
+                        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="✓ 2kg Dumbbells" android:textColor="@color/white" app:chipBackgroundColor="#0C1A24" app:strokeColor="#0A3644"/>
+                        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="✓ Flat Bench" android:textColor="@color/white" app:chipBackgroundColor="#0C1A24" app:strokeColor="#0A3644"/>
+                        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="✓ Resistance Band" android:textColor="@color/white" app:chipBackgroundColor="#0C1A24" app:strokeColor="#0A3644"/>
+                    </com.google.android.material.chip.ChipGroup>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#111827"
+                app:cardCornerRadius="20dp"
+                app:strokeColor="#1F2E3D"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🛡️ AI Coach Tips"
+                        android:textColor="#19F5B0"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="14dp"/>
+
+                    <LinearLayout
+                        android:id="@+id/llTipsContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#111827"
+                app:cardCornerRadius="20dp"
+                app:strokeColor="#1F2E3D"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="How To Perform"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- 🌐 Dynamic Steps Injection Point -->
+                    <LinearLayout
+                        android:id="@+id/llHowToPerformContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#1A1810"
+                app:cardCornerRadius="14dp"
+                app:strokeColor="#A88B13"
+                app:strokeWidth="1dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="14dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🔥 Pro Tip" android:textColor="#FFE600" android:textStyle="bold" android:textSize="14sp" android:layout_marginBottom="4dp"/>
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Don't increase weight until you can complete all targeted reps with absolutely perfect form." android:textColor="#E5E7EB" android:textSize="13sp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#111827"
+                app:cardCornerRadius="20dp"
+                app:strokeColor="#1F2E3D"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🛑 Common Mistakes"
+                        android:textColor="#FF4B4B"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- 🌐 Dynamic Mistakes Injection Point -->
+                    <LinearLayout
+                        android:id="@+id/llCommonMistakesContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#111827"
+                app:cardCornerRadius="20dp"
+                app:strokeColor="#1F2E3D"
+                app:strokeWidth="1dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="18dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Target Muscles" android:textColor="@color/white" android:textStyle="bold" android:textSize="16sp" android:layout_marginBottom="14dp"/>
+
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="180dp" android:background="#0C1420" android:layout_marginBottom="12dp">
+                        <ImageView android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/ic_mail" android:scaleType="center" app:tint="#1F2E3D"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Highlighting: Biceps Brachii" android:textColor="#9CA3AF" android:textSize="11sp" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layout_marginBottom="10dp" android:textStyle="italic"/>
+                    </RelativeLayout>
+
+                    <com.google.android.material.chip.ChipGroup android:id="@+id/cgExerciseTargetChips" android:layout_width="match_parent" android:layout_height="wrap_content" app:chipSpacing="6dp">
+                        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="• Biceps (Primary)" android:textColor="#00D4FF" app:chipBackgroundColor="#1A00D4FF" app:strokeWidth="0dp"/>
+                        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="• Forearms (Secondary)" android:textColor="#36A8FF" app:chipBackgroundColor="#1A36A8FF" app:strokeWidth="0dp"/>
+                    </com.google.android.material.chip.ChipGroup>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 🚀 UPGRADE 7: FUTURE FEATURE VISION CARD -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="#0A1420"
+                app:cardCornerRadius="16dp"
+                app:strokeColor="#16354A"
+                app:strokeWidth="1dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="4dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="✨ AI Posture Analysis"
+                            android:textColor="#00D4FF"
+                            android:textStyle="bold"
+                            android:textSize="14sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="COMING SOON" android:textColor="#36A8FF" android:textSize="10sp" android:textStyle="bold"/>
+                    </RelativeLayout>
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Upload a short workout clip and receive instant AI-powered feedback on your form." android:textColor="#9CA3AF" android:textSize="12sp" android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>

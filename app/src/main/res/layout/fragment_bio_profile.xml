@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    tools:context=".screens.fragments.Onboarding.BioProfileFragment"
+    android:background="@drawable/bg_wlc">
+
+<LinearLayout
+    android:id="@+id/genderLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Personal Profile"
+        android:textColor="@android:color/white"
+        android:textSize="28sp"
+        android:textStyle="bold"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Let's tailor your AI health assistant to your unique biology."
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="normal">
+        
+    </TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GENDER IDENTITY"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/hologram_line">
+        
+    </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_marginTop="20dp"
+            >
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardMale"
+                android:layout_width="0dp"
+                app:cardBackgroundColor="#101827"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                app:cardCornerRadius="14dp"
+                app:strokeColor="#203040"
+                android:background="@drawable/bg_signup"
+                app:strokeWidth="1dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Male"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardFemale"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="6dp"
+                app:cardCornerRadius="14dp"
+                app:strokeWidth="1.5dp"
+                app:cardBackgroundColor="#101827"
+                android:background="@drawable/bg_signup"
+                app:strokeColor="#203040">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Female"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardOther"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                app:cardCornerRadius="14dp"
+                app:strokeWidth="1dp"
+                app:cardBackgroundColor="#101827"
+                android:background="@drawable/bg_signup"
+                app:strokeColor="#203040">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Other"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"/>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       android:layout_marginTop="35dp">
+       <TextView
+           android:id="@+id/currentWt"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textColor="@color/hologram_line"
+           android:text="CURRENT WEIGHT"
+           android:layout_weight="1">
+
+       </TextView>
+       <TextView
+           android:id="@+id/tvWeightCounter"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginEnd="10dp"
+           android:text="72"
+           android:textColor="@color/hologram_line"
+           android:textSize="25sp">
+
+       </TextView>
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginEnd="10dp"
+           android:text="kg"
+           android:textColor="@color/hologram_line"
+           android:textSize="15sp">
+
+       </TextView>
+
+   </LinearLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/weightSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_signup"
+        app:cardBackgroundColor="#101827"
+        app:cardCornerRadius="12dp"
+        app:strokeColor="#1F2E3D"
+        app:strokeWidth="1dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvWeight"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:paddingHorizontal="24dp"/>
+
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="35dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/hologram_line"
+            android:text="HEIGHT"
+            android:layout_weight="1">
+
+        </TextView>
+        <TextView
+            android:id="@+id/tvHeightCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/hologram_line"
+            android:text="180 "
+            android:textSize="25sp">
+
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/hologram_line"
+            android:text="cm"
+            android:textSize="15sp">
+
+        </TextView>
+
+    </LinearLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/heightSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_signup"
+        android:layout_marginTop="20dp"
+        app:strokeColor="#1F2E3D"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="#101827"
+        app:strokeWidth="1dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvHeight"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:paddingHorizontal="24dp"/>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="35dp"
+    android:gravity="bottom"
+    android:orientation="horizontal">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="AGE"
+        android:textColor="@color/hologram_line"
+        />
+    <TextView
+        android:id="@+id/tvAgeCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="18  "
+        android:textColor="@color/hologram_line"
+        android:textSize="25sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/hologram_line"
+            android:text="Yrs"
+            android:textSize="15sp">
+
+        </TextView>
+</LinearLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="168dp" android:layout_marginTop="15dp"
+        app:cardBackgroundColor="#101827"
+        app:cardCornerRadius="14dp"
+        app:strokeColor="#1F2E3D"
+        app:strokeWidth="1dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="60dp"
+                android:background="#1F2E3D" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvAge"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="60dp"    android:paddingBottom="60dp"
+                android:overScrollMode="never" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="60dp"
+                android:background="#1F2E3D" />
+        </FrameLayout>
+    </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        app:strokeColor="#1F2E3D"
+        app:cardBackgroundColor="#101827"
+        app:strokeWidth="1dp"
+        android:background="@drawable/bg_signup">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_mail"
+                app:tint="@color/brand_cyan"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center">
+
+            </ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your data is encrypted using end-to-end medical grade security."
+                android:textColor="@color/brand_cyan">
+
+            </TextView>
+        </LinearLayout>
+
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
+
+
+</ScrollView>

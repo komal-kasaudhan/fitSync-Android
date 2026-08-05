@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#071018"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/llSummaryActionDeck"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:background="#0C1420"
+        android:layout_alignParentBottom="true"
+        android:elevation="12dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSkipSummary"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="Skip Today"
+            android:textColor="#6B7280"
+            android:backgroundTint="#111827"
+            app:cornerRadius="14dp"
+            style="@style/Widget.Material3.Button.TextButton"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSaveSummaryFeedback"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="2"
+            android:layout_marginStart="12dp"
+            android:text="SAVE FEEDBACK ➔"
+            android:textColor="#071018"
+            android:textStyle="bold"
+            android:backgroundTint="#00D4FF"
+            app:cornerRadius="14dp"
+            android:elevation="4dp"/>
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/llSummaryActionDeck"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Workout Completed 🎉"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Excellent work! Let's personalize tomorrow's workout."
+                android:textColor="#9CA3AF"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginBottom="12dp">
+
+                <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="6dp" app:cardBackgroundColor="#111B2F" app:cardCornerRadius="18dp" app:strokeWidth="1dp" app:strokeColor="#1F2E3D"><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp"><ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_mail" app:tint="#00D4FF"/><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="48min" android:textColor="#00D4FF" android:textSize="18sp" android:textStyle="bold" android:layout_marginTop="10dp"/><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DURATION" android:textColor="#6B7280" android:textSize="10sp" android:textStyle="bold" android:layout_marginTop="2dp"/></LinearLayout></com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="6dp" app:cardBackgroundColor="#111B2F" app:cardCornerRadius="18dp" app:strokeWidth="1dp" app:strokeColor="#1F2E3D"><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp"><ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_mail" app:tint="#19F5B0"/><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="430 kcal" android:textColor="@color/white" android:textSize="18sp" android:textStyle="bold" android:layout_marginTop="10dp"/><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="BURNED" android:textColor="#6B7280" android:textSize="10sp" android:textStyle="bold" android:layout_marginTop="2dp"/></LinearLayout></com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#111B2F"
+                app:cardCornerRadius="18dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#1F2E3D">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp">
+                    <TextView android:id="@+id/tvSummaryCompletionPerc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="100%" android:textColor="#19F5B0" android:textSize="20sp" android:textStyle="bold" android:layout_centerVertical="true"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toEndOf="@id/tvSummaryCompletionPerc" android:layout_marginStart="14dp" android:text="12/12 Exercises Completed\nBack + Biceps Session" android:textColor="@color/white" android:textSize="13sp" android:layout_centerVertical="true"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="7 Day\nSTREAK" android:gravity="end" android:textColor="#00D4FF" android:textStyle="bold" android:textSize="12sp" android:layout_centerVertical="true"/>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="#0D1A26"
+                app:cardCornerRadius="16dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#172F47">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:padding="16dp" android:gravity="center_vertical">
+                    <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_mail" app:tint="#00D4FF" android:layout_marginEnd="12dp"/>
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="&quot;Great consistency today! Your feedback helps FitSync generate a smarter workout for tomorrow.&quot;" android:textColor="#9CA3AF" android:textSize="13sp" android:textStyle="italic"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="⚡ HOW WAS THE INTENSITY?" android:textColor="#6B7280" android:textSize="11sp" android:textStyle="bold" android:layout_marginBottom="12dp" android:letterSpacing="0.05"/>
+            <com.google.android.material.chip.ChipGroup android:layout_width="match_parent" android:layout_height="wrap_content" app:chipSpacing="6dp" android:layout_marginBottom="20dp">
+                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="😅 Too Easy" android:textColor="@color/white" app:chipBackgroundColor="#111B2F" app:strokeWidth="0dp"/>
+                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="😊 Perfect" android:textColor="#071018" app:chipBackgroundColor="#00D4FF" app:strokeWidth="0dp" android:textStyle="bold"/>
+                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🥵 Challenging" android:textColor="@color/white" app:chipBackgroundColor="#111B2F" app:strokeWidth="0dp"/>
+                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="😫 Too Difficult" android:textColor="@color/white" app:chipBackgroundColor="#111B2F" app:strokeWidth="0dp"/>
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="⚡ CURRENT ENERGY LEVEL?" android:textColor="#6B7280" android:textSize="11sp" android:textStyle="bold" android:layout_marginBottom="12dp" android:letterSpacing="0.05"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="64dp" android:orientation="horizontal" android:weightSum="2" android:layout_marginBottom="8dp">
+                <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginEnd="4dp" app:cardBackgroundColor="#111B2F" app:cardCornerRadius="12dp" app:strokeColor="#1F2E3D" app:strokeWidth="1dp"><TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="⚡ Full of Energy" android:textColor="@color/white" android:textStyle="bold" android:textSize="13sp" android:gravity="center"/></com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="4dp" app:cardBackgroundColor="#111B2F" app:cardCornerRadius="12dp" app:strokeColor="#1F2E3D" app:strokeWidth="1dp"><TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="😊 Good" android:textColor="@color/white" android:textSize="13sp" android:gravity="center"/></com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="64dp" android:orientation="horizontal" android:weightSum="2" android:layout_marginBottom="20dp">
+                <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginEnd="4dp" app:cardBackgroundColor="#111B2F" app:cardCornerRadius="12dp" app:strokeColor="#1F2E3D" app:strokeWidth="1dp"><TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="😐 Average" android:textColor="@color/white" android:textSize="13sp" android:gravity="center"/></com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="4dp" app:cardBackgroundColor="#111B2F" app:cardCornerRadius="12dp" app:strokeColor="#1F2E3D" app:strokeWidth="1dp"><TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="😴 Exhausted" android:textColor="@color/white" android:textSize="13sp" android:gravity="center"/></com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="🏋️ ANY TARGETED SORENESS?" android:textColor="#6B7280" android:textSize="11sp" android:textStyle="bold" android:layout_marginBottom="12dp" android:letterSpacing="0.05"/>
+            <com.google.android.material.chip.ChipGroup android:layout_width="match_parent" android:layout_height="wrap_content" app:chipSpacing="6dp" android:layout_marginBottom="20dp">
+                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Back" android:textColor="#19F5B0" app:chipBackgroundColor="#0C241B" app:strokeColor="#0A442E" app:strokeWidth="1dp"/>
+                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Chest" android:textColor="@color/white" app:chipBackgroundColor="#111B2F" app:strokeWidth="0dp"/>
+                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Arms" android:textColor="#19F5B0" app:chipBackgroundColor="#0C241B" app:strokeColor="#0A442E" app:strokeWidth="1dp"/>
+                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Legs" android:textColor="@color/white" app:chipBackgroundColor="#111B2F" app:strokeWidth="0dp"/>
+                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Shoulders" android:textColor="@color/white" app:chipBackgroundColor="#111B2F" app:strokeWidth="0dp"/>
+                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Core" android:textColor="@color/white" app:chipBackgroundColor="#111B2F" app:strokeWidth="0dp"/>
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="⚖️ WAS THE LOAD APPROPRIATE?" android:textColor="#6B7280" android:textSize="11sp" android:textStyle="bold" android:layout_marginBottom="12dp" android:letterSpacing="0.05"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="50dp" android:orientation="horizontal" android:weightSum="3" android:layout_marginBottom="24dp">
+                <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="↓ Too Light" android:textColor="#9CA3AF" android:gravity="center" android:background="#111B2F" android:layout_marginEnd="4dp"/>
+                <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginHorizontal="2dp" app:cardBackgroundColor="#0C241B" app:cardCornerRadius="8dp" app:strokeColor="#19F5B0" app:strokeWidth="1.5dp"><TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="✓ Perfect" android:textColor="#19F5B0" android:textStyle="bold" android:gravity="center"/></com.google.android.material.card.MaterialCardView>
+                <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="↑ Too Heavy" android:textColor="#9CA3AF" android:gravity="center" android:background="#111B2F" android:layout_marginStart="4dp"/>
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="#111B2F"
+                app:cardCornerRadius="20dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#1F2E3D">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="18dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="● AI Analysis Complete" android:textColor="#19F5B0" android:textStyle="bold" android:textSize="13sp" android:layout_marginBottom="14dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Based on today's recovery, tomorrow's workout will:" android:textColor="#9CA3AF" android:textSize="13sp" android:layout_marginBottom="14dp"/>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:weightSum="2" android:layout_marginBottom="10dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="✓ Maintain\n   duration" android:textColor="@color/white" android:textSize="13sp" android:lineSpacingMultiplier="1.2"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="✓ Increase reps\n   by 2" android:textColor="@color/white" android:textSize="13sp" android:lineSpacingMultiplier="1.2"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:weightSum="2">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="✓ Keep same\n   weight" android:textColor="@color/white" android:textSize="13sp" android:lineSpacingMultiplier="1.2"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="✓ Increase\n   recovery" android:textColor="@color/white" android:textSize="13sp" android:lineSpacingMultiplier="1.2"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="#0C1420"
+                app:cardCornerRadius="16dp"
+                app:strokeColor="#172435"
+                app:strokeWidth="1dp">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp">
+                    <TextView android:id="@+id/tvNextUpTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="NEXT UP:\nTOMORROW" android:textColor="#9CA3AF" android:textStyle="bold" android:textSize="11sp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="✨ AI UPDATED" android:textColor="#36A8FF" android:textStyle="bold" android:textSize="10sp" android:background="#1A36A8FF" android:padding="5dp"/>
+                    <TextView android:id="@+id/tvNextRoutineDetails" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/tvNextUpTitle" android:layout_marginTop="12dp" android:text="Chest + Triceps\n⏱ 45 min  •  📈 Intermediate" android:textColor="@color/white" android:textSize="14sp" android:textStyle="bold" android:lineSpacingMultiplier="1.2"/>
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_mail" app:tint="#00D4FF" android:layout_alignParentEnd="true" android:layout_alignBottom="@id/tvNextRoutineDetails"/>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="&quot;Recovery is where progress begins.&quot;"
+                android:textColor="#3A4D5F"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                android:gravity="center"
+                android:layout_marginBottom="24dp"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>

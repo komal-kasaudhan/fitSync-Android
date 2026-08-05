@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <style name="Theme.FitSync" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <item name="colorPrimary">#00E5FF</item> <item name="colorPrimaryVariant">#00B0FF</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+
+        <item name="android:windowBackground">#0B0E14</item>
+        <item name="android:statusBarColor">#0B0E14</item>
+
+        <item name="materialButtonStyle">@style/Widget.FitSync.Button</item>
+    </style>
+
+    <style name="Widget.FitSync.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@null</item>
+    </style>
+
+    <style name="CircleImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="ShapeAppearance.Material3.Corner.Full" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="ShapeAppearance.Material3.Corner.Medium" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerSize">12dp</item>
+    </style>
+
+</resources>

@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#071018">
+
+    <!-- 🏷️ TOP APP BAR LAYER WITH HIGH DISTINCT ELEVATION -->
+    <LinearLayout
+        android:id="@+id/llHeaderBar"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="#0B1520"
+        android:elevation="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_launcher_foreground"
+            app:tint="#00D4FF" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:text="FitSync"
+            android:textColor="#00D4FF"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btnNotification"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="12dp"
+            android:background="#1C2638"
+            android:padding="10dp"
+            android:src="@android:drawable/ic_popup_reminder"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+            app:tint="#FFFFFF" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="#1C2638"
+            android:scaleType="centerCrop"
+            android:src="@android:drawable/sym_def_app_icon"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/headerDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/llHeaderBar"
+        android:background="#1A2E44" />
+
+    <!-- 📜 SCROLLABLE MASTER ENCLOSURE CONTAINER -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/headerDivider"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <!-- 🛡️ SAFE BOTTOM PADDING APPLIED FOR MAXIMUM BAR IMMUNITY -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:paddingBottom="96dp">
+
+            <TextView
+                android:id="@+id/tvWelcomeUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Good Morning, Esha 👋"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <!-- 📊 MODULE 1: RECOVERY STATISTICS METRICS CARD -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="#0D1926"
+                app:cardCornerRadius="24dp"
+                app:strokeWidth="0dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/tvRecoveryPercent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="84%"
+                        android:textColor="#00D4FF"
+                        android:textSize="48sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/tvRecoveryPercent"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_toEndOf="@id/tvRecoveryPercent"
+                        android:text="RECOVERY\nSCORE"
+                        android:textColor="#10B981"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:lineSpacingExtra="2dp" />
+
+                    <GridLayout
+                        android:id="@+id/glMetrics"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvRecoveryPercent"
+                        android:layout_marginTop="16dp"
+                        android:columnCount="2"
+                        android:rowCount="2">
+
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="#162536" android:orientation="vertical" android:padding="12dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="💤 SLEEP" android:textColor="#9CA3AF" android:textSize="10sp" android:textStyle="bold"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="7h 42m" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
+                        </LinearLayout>
+
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="#162536" android:orientation="vertical" android:padding="12dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🎯 FOCUS" android:textColor="#9CA3AF" android:textSize="10sp" android:textStyle="bold"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Upper Body" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
+                        </LinearLayout>
+
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="#162536" android:orientation="vertical" android:padding="12dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚡ READINESS" android:textColor="#9CA3AF" android:textSize="10sp" android:textStyle="bold"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="High" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
+                        </LinearLayout>
+
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="#162536" android:orientation="vertical" android:padding="12dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🛡️ AI CONFIDENCE" android:textColor="#9CA3AF" android:textSize="10sp" android:textStyle="bold"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="98%" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
+                        </LinearLayout>
+                    </GridLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/glMetrics"
+                        android:layout_marginTop="16dp"
+                        android:text="&quot;Recovery looks excellent today. You are ready for a productive workout.&quot;"
+                        android:textColor="#9CA3AF"
+                        android:textSize="13sp"
+                        android:textStyle="italic" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="#0D1926"
+                app:cardCornerRadius="20dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/ivWorkoutImg2"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:scaleType="centerCrop"
+                            android:src="@android:drawable/ic_menu_gallery"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/ivWorkoutImg2"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TODAY'S WORKOUT" android:textColor="#00D4FF" android:textSize="11sp" android:textStyle="bold"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Upper Body Power" android:textColor="#FFFFFF" android:textSize="18sp" android:textStyle="bold"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="45m • 420 kcal • Intermediate" android:textColor="#9CA3AF" android:textSize="12sp"/>
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Progress" android:textColor="#9CA3AF" android:textSize="12sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="2/8 exercises" android:textColor="#FFFFFF" android:textSize="12sp"/>
+                    </RelativeLayout>
+
+                    <ProgressBar
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp"
+                        android:layout_marginTop="6dp"
+                        android:progress="25"
+                        android:progressTint="#00D4FF" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="12dp"
+                        android:text="▶ Continue Workout"
+                        android:textColor="#071018"
+                        android:textStyle="bold"
+                        app:backgroundTint="#22F3D1"
+                        app:cornerRadius="26dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 🥗 MODULE 4: NUTRITION METER INTERACTIVE CARD -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="#0D1926"
+                app:cardCornerRadius="20dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Nutrition" android:textColor="#FFFFFF" android:textSize="18sp" android:textStyle="bold"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="1,420 / 2,200 kcal" android:textColor="#9CA3AF" android:textSize="14sp"/>
+                    </RelativeLayout>
+
+                    <!-- Circular Progress Indicators overlay arrays -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                            <RelativeLayout android:layout_width="54dp" android:layout_height="54dp">
+                                <ProgressBar android:id="@+id/pbHomeProtein" android:layout_width="match_parent" android:layout_height="match_parent" android:progress="70" android:indeterminate="false" android:progressDrawable="@android:drawable/progress_horizontal"/>
+                                <TextView android:id="@+id/tvHomeProteinPercent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:text="70%" android:textColor="#FFFFFF" android:textSize="11sp" android:textStyle="bold"/>
+                            </RelativeLayout>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="PROTEIN" android:textColor="#9CA3AF" android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                            <RelativeLayout android:layout_width="54dp" android:layout_height="54dp">
+                                <ProgressBar android:id="@+id/pbHomeCarbs" android:layout_width="match_parent" android:layout_height="match_parent" android:progress="50" android:indeterminate="false" android:progressDrawable="@android:drawable/progress_horizontal"/>
+                                <TextView android:id="@+id/tvHomeCarbsPercent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:text="50%" android:textColor="#FFFFFF" android:textSize="11sp" android:textStyle="bold"/>
+                            </RelativeLayout>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="CARBS" android:textColor="#9CA3AF" android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                            <RelativeLayout android:layout_width="54dp" android:layout_height="54dp">
+                                <ProgressBar android:id="@+id/pbHomeWater" android:layout_width="match_parent" android:layout_height="match_parent" android:progress="80" android:indeterminate="false" android:progressDrawable="@android:drawable/progress_horizontal"/>
+                                <TextView android:id="@+id/tvHomeWaterPercent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:text="80%" android:textColor="#FFFFFF" android:textSize="11sp" android:textStyle="bold"/>
+                            </RelativeLayout>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="WATER" android:textColor="#9CA3AF" android:textSize="10sp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Dynamic checkbox icons strips -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginEnd="12dp">
+                            <ImageView android:id="@+id/ivCheckBreakfast" android:layout_width="14dp" android:layout_height="14dp" android:src="@android:drawable/checkbox_off_background" app:tint="#9CA3AF"/>
+                            <TextView android:id="@+id/tvLabelBreakfast" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="4dp" android:text="Breakfast" android:textColor="#FFFFFF" android:textSize="13sp"/>
+                        </LinearLayout>
+
+                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginEnd="12dp">
+                            <ImageView android:id="@+id/ivCheckLunch" android:layout_width="14dp" android:layout_height="14dp" android:src="@android:drawable/checkbox_off_background" app:tint="#9CA3AF"/>
+                            <TextView android:id="@+id/tvLabelLunch" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="4dp" android:text="Lunch" android:textColor="#FFFFFF" android:textSize="13sp"/>
+                        </LinearLayout>
+
+                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                            <ImageView android:id="@+id/ivCheckDinner" android:layout_width="14dp" android:layout_height="14dp" android:src="@android:drawable/checkbox_off_background" app:tint="#9CA3AF"/>
+                            <TextView android:id="@+id/tvLabelDinner" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="4dp" android:text="Dinner" android:textColor="#FFFFFF" android:textSize="13sp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnManageNutrition"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Manage Nutrition →"
+                        android:textColor="#00D4FF"
+                        app:cornerRadius="12dp"
+                        app:strokeColor="#00D4FF" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="4dp"
+                            android:text="+ Add Meal"
+                            android:textColor="#FFFFFF"
+                            app:backgroundTint="#1C2638"
+                            app:cornerRadius="8dp"/>
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="📷 Scan Food"
+                            android:textColor="#FFFFFF"
+                            app:backgroundTint="#1C2638"
+                            app:cornerRadius="8dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 🏆 MODULE 5: WALKING STEPS METER -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="#0D1926"
+                app:cardCornerRadius="16dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@android:drawable/ic_menu_compass"
+                        app:tint="#FFC107"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Walk 5000 Steps..." android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="14sp"/>
+                        <ProgressBar style="@android:style/Widget.ProgressBar.Horizontal" android:layout_width="match_parent" android:layout_height="4dp" android:layout_marginTop="4dp" android:progress="62" android:progressTint="#FFC107"/>
+                    </LinearLayout>
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="62%" android:textColor="#FFFFFF" android:textStyle="bold"/>
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" android:text="CONTINUE →" android:textColor="#9CA3AF" android:textSize="11sp" android:textStyle="bold"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 🧭 MODULE 6: DYNAMIC RECYCLER VIEW SYSTEM FOR RECOMMENDED SECTION -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Recommended for You"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="Explore →"
+                    android:textColor="#00D4FF"
+                    android:textStyle="bold"
+                    android:textSize="13sp" />
+            </RelativeLayout>
+
+            <!-- ✅ RECYCLERVIEW IMPLEMENTED FOR TRUE HORIZONTAL SCROLL OPTIMIZATION -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRecommendedProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:scrollbars="none" />
+
+            <!-- 🔥 MODULE 7: THE CORE INFRASTRUCTURE PERFORMANCE STREAKS CARD -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:cardBackgroundColor="#0D1926"
+                app:cardCornerRadius="24dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:paddingVertical="20dp"
+                    android:paddingHorizontal="10dp">
+
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                        <com.google.android.material.imageview.ShapeableImageView android:layout_width="44dp" android:layout_height="44dp" android:background="#162536" android:padding="10dp" android:src="@android:drawable/ic_menu_compass" app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" app:strokeColor="#1A10B981" app:strokeWidth="2dp" app:tint="#10B981" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="9 Days" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" android:gravity="center"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="STREAK" android:textColor="#9CA3AF" android:textSize="9sp" android:layout_marginTop="1dp" android:gravity="center"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                        <com.google.android.material.imageview.ShapeableImageView android:layout_width="44dp" android:layout_height="44dp" android:background="#162536" android:padding="10dp" android:src="@android:drawable/ic_menu_manage" app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" app:strokeColor="#1A00D4FF" app:strokeWidth="2dp" app:tint="#00D4FF" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Lvl 8" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" android:gravity="center"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="LEVEL" android:textColor="#9CA3AF" android:textSize="9sp" android:layout_marginTop="1dp" android:gravity="center"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                        <com.google.android.material.imageview.ShapeableImageView android:layout_width="44dp" android:layout_height="44dp" android:background="#162536" android:padding="10dp" android:src="@android:drawable/btn_star_big_on" app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" app:strokeColor="#1AFFC107" app:strokeWidth="2dp" app:tint="#FFC107" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="2 New" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" android:gravity="center"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PRS" android:textColor="#9CA3AF" android:textSize="9sp" android:layout_marginTop="1dp" android:gravity="center"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                        <com.google.android.material.imageview.ShapeableImageView android:layout_width="44dp" android:layout_height="44dp" android:background="#162536" android:padding="10dp" android:src="@android:drawable/ic_menu_preferences" app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" app:strokeColor="#1AA78BFA" app:strokeWidth="2dp" app:tint="#A78BFA" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="85%" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" android:gravity="center"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CONSIST." android:textColor="#9CA3AF" android:textSize="9sp" android:layout_marginTop="1dp" android:gravity="center"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>

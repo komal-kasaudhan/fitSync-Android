@@ -74,27 +74,29 @@ class LoginActivity : AppCompatActivity() {
                         call: Call<AuthResponse>,
                         response: Response<AuthResponse>
                     ) {
-
                         if (response.isSuccessful && response.body() != null) {
-
                             val authResponse = response.body()!!
 
                             if (authResponse.success) {
-
                                 Toast.makeText(
                                     this@LoginActivity,
-                                    authResponse.message,
+                                    authResponse.message.ifEmpty { "Login Successful!" },
                                     Toast.LENGTH_SHORT
                                 ).show()
-
 
                                 val sharedPref =
                                     getSharedPreferences("FitSync", MODE_PRIVATE)
 
-                                sharedPref.edit()
-                                    .putString("TOKEN", authResponse.token)
-                                    .apply()
+                                val editor = sharedPref.edit()
+                                editor.putString("TOKEN", authResponse.token)
 
+                                // Set fallback username from email if not already present
+                                val currentUserName = sharedPref.getString("USER_NAME", null)
+                                if (currentUserName.isNullOrEmpty()) {
+                                    val fallbackName = email.substringBefore('@').replaceFirstChar { it.uppercase() }
+                                    editor.putString("USER_NAME", fallbackName)
+                                }
+                                editor.apply()
 
                                 startActivity(
                                     Intent(
@@ -102,27 +104,32 @@ class LoginActivity : AppCompatActivity() {
                                         WelcomeActivity::class.java
                                     )
                                 )
-
                                 finish()
-
                             } else {
-
                                 Toast.makeText(
                                     this@LoginActivity,
-                                    authResponse.message,
+                                    authResponse.message.ifEmpty { "Invalid credentials" },
                                     Toast.LENGTH_SHORT
                                 ).show()
-
                             }
-
                         } else {
+                            val errorMsg = try {
+                                val errorStr = response.errorBody()?.string()
+                                if (!errorStr.isNullOrEmpty()) {
+                                    val json = org.json.JSONObject(errorStr)
+                                    json.optString("message", json.optString("error", "Login failed (${response.code()})"))
+                                } else {
+                                    "Login failed (${response.code()})"
+                                }
+                            } catch (e: Exception) {
+                                "Login failed (${response.code()})"
+                            }
 
                             Toast.makeText(
                                 this@LoginActivity,
-                                "Login Failed",
-                                Toast.LENGTH_SHORT
+                                errorMsg,
+                                Toast.LENGTH_LONG
                             ).show()
-
                         }
                     }
 
@@ -130,15 +137,12 @@ class LoginActivity : AppCompatActivity() {
                         call: Call<AuthResponse>,
                         t: Throwable
                     ) {
-
                         Toast.makeText(
                             this@LoginActivity,
-                            "Error : ${t.localizedMessage}",
+                            "Network Error: ${t.localizedMessage ?: "Unable to reach server"}",
                             Toast.LENGTH_LONG
                         ).show()
-
                     }
-
                 })
 
         }

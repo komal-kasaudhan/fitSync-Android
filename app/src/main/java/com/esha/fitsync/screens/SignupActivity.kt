@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.esha.fitsync.R
@@ -26,6 +27,12 @@ class SignupActivity : AppCompatActivity() {
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val etConfirmPassword = findViewById<EditText>(R.id.etconfirmPassword)
         val btnSignup = findViewById<Button>(R.id.btnCreateAccount)
+        val tvLoginLink = findViewById<TextView>(R.id.tvLoginLink)
+
+        tvLoginLink?.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
 
         btnSignup.setOnClickListener {
 
@@ -36,26 +43,31 @@ class SignupActivity : AppCompatActivity() {
 
             if (name.isEmpty()) {
                 etName.error = "Enter your name"
+                etName.requestFocus()
                 return@setOnClickListener
             }
 
             if (email.isEmpty()) {
                 etEmail.error = "Enter email"
+                etEmail.requestFocus()
                 return@setOnClickListener
             }
 
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 etEmail.error = "Invalid email"
+                etEmail.requestFocus()
                 return@setOnClickListener
             }
 
             if (password.length < 6) {
                 etPassword.error = "Password must be at least 6 characters"
+                etPassword.requestFocus()
                 return@setOnClickListener
             }
 
             if (password != confirmPassword) {
                 etConfirmPassword.error = "Passwords do not match"
+                etConfirmPassword.requestFocus()
                 return@setOnClickListener
             }
 
@@ -72,16 +84,13 @@ class SignupActivity : AppCompatActivity() {
                         call: Call<AuthResponse>,
                         response: Response<AuthResponse>
                     ) {
-
                         if (response.isSuccessful && response.body() != null) {
-
                             val authResponse = response.body()!!
 
                             if (authResponse.success) {
-
                                 Toast.makeText(
                                     this@SignupActivity,
-                                    authResponse.message,
+                                    authResponse.message.ifEmpty { "Account created successfully!" },
                                     Toast.LENGTH_SHORT
                                 ).show()
 
@@ -90,6 +99,7 @@ class SignupActivity : AppCompatActivity() {
 
                                 sharedPref.edit()
                                     .putString("TOKEN", authResponse.token)
+                                    .putString("USER_NAME", name)
                                     .apply()
 
                                 startActivity(
@@ -98,43 +108,45 @@ class SignupActivity : AppCompatActivity() {
                                         WelcomeActivity::class.java
                                     )
                                 )
-
                                 finish()
-
                             } else {
-
                                 Toast.makeText(
                                     this@SignupActivity,
-                                    authResponse.message,
+                                    authResponse.message.ifEmpty { "Signup failed" },
                                     Toast.LENGTH_SHORT
                                 ).show()
-
                             }
-
                         } else {
+                            val errorMsg = try {
+                                val errorStr = response.errorBody()?.string()
+                                if (!errorStr.isNullOrEmpty()) {
+                                    val json = org.json.JSONObject(errorStr)
+                                    json.optString("message", json.optString("error", "Signup failed (${response.code()})"))
+                                } else {
+                                    "Signup failed (${response.code()})"
+                                }
+                            } catch (e: Exception) {
+                                "Signup failed (${response.code()})"
+                            }
 
                             Toast.makeText(
                                 this@SignupActivity,
-                                "Signup Failed",
-                                Toast.LENGTH_SHORT
+                                errorMsg,
+                                Toast.LENGTH_LONG
                             ).show()
-
                         }
                     }
 
                     override fun onFailure(
                         call: Call<AuthResponse>,
-                    t: Throwable
+                        t: Throwable
                     ) {
-
                         Toast.makeText(
                             this@SignupActivity,
-                            t.localizedMessage ?: "Network Error",
+                            "Network Error: ${t.localizedMessage ?: "Unable to reach server"}",
                             Toast.LENGTH_LONG
                         ).show()
-
                     }
-
                 })
 
         }

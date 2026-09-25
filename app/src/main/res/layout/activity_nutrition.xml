@@ -368,11 +368,13 @@
                             android:textSize="16sp"
                             android:textStyle="bold" />
                         <ProgressBar
+                            android:id="@+id/pbProtein"
                             style="?android:attr/progressBarStyleHorizontal"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:layout_alignParentEnd="true"
                             android:layout_below="@id/iconP"
+                            android:max="100"
                             android:progress="60" />
                     </RelativeLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -424,11 +426,13 @@
                             android:textSize="16sp"
                             android:textStyle="bold" />
                         <ProgressBar
+                            android:id="@+id/pbCarbs"
                             style="?android:attr/progressBarStyleHorizontal"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:layout_alignParentEnd="true"
                             android:layout_below="@id/iconC"
+                            android:max="100"
                             android:progress="70" />
                     </RelativeLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -479,11 +483,13 @@
                             android:textSize="16sp"
                             android:textStyle="bold" />
                         <ProgressBar
+                            android:id="@+id/pbFat"
                             style="?android:attr/progressBarStyleHorizontal"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:layout_alignParentEnd="true"
                             android:layout_below="@id/iconF"
+                            android:max="100"
                             android:progress="64" />
                     </RelativeLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -534,11 +540,13 @@
                             android:textSize="16sp"
                             android:textStyle="bold" />
                         <ProgressBar
+                            android:id="@+id/pbWater"
                             style="?android:attr/progressBarStyleHorizontal"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:layout_alignParentEnd="true"
                             android:layout_below="@id/iconW"
+                            android:max="100"
                             android:progress="70" />
                     </RelativeLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -613,10 +621,11 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
                 <TextView
+                    android:id="@+id/tvTimelineDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:text="Wed, 24 Oct"
+                    android:text="Today"
                     android:textColor="#9CA3AF"
                     android:textSize="13sp" />
             </RelativeLayout>
@@ -635,7 +644,7 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- Breakfast (Completed) -->
+                    <!-- Breakfast -->
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -653,6 +662,7 @@
                             android:layout_toEndOf="@id/checkB"
                             android:orientation="vertical">
                             <TextView
+                                android:id="@+id/tvBreakfastTitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Breakfast"
@@ -660,21 +670,35 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                             <TextView
+                                android:id="@+id/tvBreakfastSubtitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="08:30 AM  •  18g Protein"
+                                android:text="Not logged yet"
                                 android:textColor="#9CA3AF"
                                 android:textSize="11sp" />
                         </LinearLayout>
                         <TextView
+                            android:id="@+id/tvBreakfastKcal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:text="420 kcal"
+                            android:text="0 kcal"
                             android:textColor="#10B981"
                             android:textSize="14sp"
                             android:textStyle="bold" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAddBreakfast"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="34dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:text="Add Meal"
+                            android:textColor="#00D4FF"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
                     </RelativeLayout>
 
                     <View
@@ -683,7 +707,7 @@
                         android:layout_marginVertical="12dp"
                         android:background="#1A2E44" />
 
-                    <!-- Lunch (Active Trigger) -->
+                    <!-- Lunch -->
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -701,6 +725,7 @@
                             android:layout_toEndOf="@id/checkL"
                             android:orientation="vertical">
                             <TextView
+                                android:id="@+id/tvLunchTitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Lunch"
@@ -708,12 +733,23 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                             <TextView
+                                android:id="@+id/tvLunchSubtitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Scheduled for now"
+                                android:text="Not logged yet"
                                 android:textColor="#9CA3AF"
                                 android:textSize="11sp" />
                         </LinearLayout>
+                        <TextView
+                            android:id="@+id/tvLunchKcal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:text="0 kcal"
+                            android:textColor="#10B981"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnAddLunch"
                             style="@style/Widget.Material3.Button.TextButton"
@@ -733,7 +769,7 @@
                         android:layout_marginVertical="12dp"
                         android:background="#1A2E44" />
 
-                    <!-- Dinner (Locked State) -->
+                    <!-- Dinner -->
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -751,26 +787,106 @@
                             android:layout_toEndOf="@id/checkD"
                             android:orientation="vertical">
                             <TextView
+                                android:id="@+id/tvDinnerTitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Dinner"
-                                android:textColor="#9CA3AF"
+                                android:textColor="#FFFFFF"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                             <TextView
+                                android:id="@+id/tvDinnerSubtitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Expected 08:00 PM"
-                                android:textColor="#1A2E44"
+                                android:text="Not logged yet"
+                                android:textColor="#9CA3AF"
                                 android:textSize="11sp" />
                         </LinearLayout>
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                        <TextView
+                            android:id="@+id/tvDinnerKcal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:src="@android:drawable/ic_lock_idle_lock"
-                            app:tint="#9CA3AF" />
+                            android:text="0 kcal"
+                            android:textColor="#10B981"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAddDinner"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="34dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:text="Add Meal"
+                            android:textColor="#00D4FF"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="12dp"
+                        android:background="#1A2E44" />
+
+                    <!-- Snacks -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/checkS"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:src="@android:drawable/presence_invisible"
+                            app:tint="#1A2E44" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_toEndOf="@id/checkS"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/tvSnackTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Snack"
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/tvSnackSubtitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Not logged yet"
+                                android:textColor="#9CA3AF"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/tvSnackKcal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:text="0 kcal"
+                            android:textColor="#10B981"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAddSnack"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="34dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:text="Add Meal"
+                            android:textColor="#00D4FF"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
                     </RelativeLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

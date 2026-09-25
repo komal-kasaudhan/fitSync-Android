@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.esha.fitsync.R
-import com.esha.fitsync.api.AddMealFoodItem
 import com.esha.fitsync.api.AddMealRequest
 import com.esha.fitsync.api.FoodItem
 import com.esha.fitsync.api.RetrofitClient
@@ -104,16 +103,15 @@ class FoodSearchActivity : AppCompatActivity() {
 
                     val mappedFoods = apiFoods.map { apiItem ->
                         com.esha.fitsync.screens.Nutrition.FoodItem(
-                            id = apiItem.id ?: "",
-                            name = apiItem.name ?: "",
-                            category = "General",
-                            servingType = "g",
-                            servingWeight = 100.0,
-                            calories = apiItem.calories ?: 0,
-                            protein = apiItem.protein ?: 0.0,
-                            carbs = apiItem.carbs ?: 0.0,
-                            fat = apiItem.fat ?: 0.0
-
+                            id = if (apiItem.id.isNotEmpty()) apiItem.id else apiItem._id,
+                            name = apiItem.name.ifEmpty { "Food Item" },
+                            category = apiItem.category.ifEmpty { "General" },
+                            servingType = apiItem.servingType.ifEmpty { "g" },
+                            servingWeight = if (apiItem.servingWeight > 0) apiItem.servingWeight else 100.0,
+                            calories = apiItem.calories,
+                            protein = apiItem.protein,
+                            carbs = apiItem.carbs,
+                            fat = apiItem.fat
                         )
                     }
                     foodAdapter.submitList(mappedFoods)
@@ -121,31 +119,44 @@ class FoodSearchActivity : AppCompatActivity() {
                     foodAdapter.submitList(emptyList())
                 }
             } catch (e: Exception) {
+                android.util.Log.e("FITSYNC_NETWORK", "Error loading foods", e)
                 binding.pbSearchLoading.visibility = View.GONE
-                Toast.makeText(this@FoodSearchActivity, "Error loading foods", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@FoodSearchActivity, "Error loading foods: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun logMealToBackend(food: com.esha.fitsync.screens.Nutrition.FoodItem, quantity: Double) {
         val todayStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        val formattedMealType = when (selectedMealType.uppercase()) {
+            "BREAKFAST" -> "Breakfast"
+            "LUNCH" -> "Lunch"
+            "DINNER" -> "Dinner"
+            "SNACK", "SNACKS" -> "Snack"
+            else -> selectedMealType.replaceFirstChar { it.uppercase() }
+        }
+
         val request = AddMealRequest(
             date = todayStr,
-            mealType = selectedMealType,
-            foods = listOf(AddMealFoodItem(foodId = food.id, quantity = quantity))
+            mealType = formattedMealType,
+            foodId = food.id,
+            quantity = quantity
         )
 
         lifecycleScope.launch {
             try {
                 val response = RetrofitClient.apiService.addMeal(request)
                 if (response.isSuccessful) {
-                    Toast.makeText(this@FoodSearchActivity, "Logged to $selectedMealType! 🍲", Toast.LENGTH_SHORT).show()
-                    finish() // Close activity and auto-refresh Nutrition Dashboard
+                    Toast.makeText(this@FoodSearchActivity, "Logged to $formattedMealType! 🍲", Toast.LENGTH_SHORT).show()
+                    finish()
                 } else {
+                    val err = response.errorBody()?.string() ?: ""
+                    android.util.Log.e("FITSYNC_NETWORK", "AddMeal error: $err")
                     Toast.makeText(this@FoodSearchActivity, "Failed to log meal", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@FoodSearchActivity, "Server Error", Toast.LENGTH_SHORT).show()
+                android.util.Log.e("FITSYNC_NETWORK", "AddMeal exception", e)
+                Toast.makeText(this@FoodSearchActivity, "Server Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -44,11 +44,14 @@
             app:tint="#FFFFFF" />
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btnProfile"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:background="#1C2638"
+            android:clickable="true"
+            android:focusable="true"
             android:scaleType="centerCrop"
-            android:src="@android:drawable/sym_def_app_icon"
+            android:src="@drawable/ic_user"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
     </LinearLayout>
 
@@ -456,6 +459,25 @@
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <!-- 🚪 SIGN OUT MODULE -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSignOut"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#162536"
+                android:text="Sign Out"
+                android:textColor="#FF4D4D"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="16dp"
+                app:icon="@android:drawable/ic_lock_power_off"
+                app:iconGravity="textStart"
+                app:iconTint="#FF4D4D"
+                app:strokeColor="#33FF4D4D"
+                app:strokeWidth="1dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

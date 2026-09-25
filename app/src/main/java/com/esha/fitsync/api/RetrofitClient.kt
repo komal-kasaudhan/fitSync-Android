@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
-    private const val BASE_URL = "http://10.21.198.21:8000/"
+    private const val BASE_URL = "http://127.0.0.1:8000/"
 
     private var appContext: Context? = null
 

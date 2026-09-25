@@ -81,7 +81,7 @@ class WorkoutFragment : Fragment() {
         val btnStartWorkout = view.findViewById<MaterialButton>(R.id.btnStartWorkout)
 
 
-        val sharedPreferences = requireActivity().getSharedPreferences("FitSyncPrefs", Context.MODE_PRIVATE)
+        val sharedPreferences = requireActivity().getSharedPreferences("FitSync", Context.MODE_PRIVATE)
         val isFirstTime = sharedPreferences.getBoolean("IS_FIRST_TIME_WORKOUT", true)
 
 
@@ -117,7 +117,7 @@ class WorkoutFragment : Fragment() {
     }
 
     private fun loadWorkoutPlanContent() {
-        val sharedPreferences = requireActivity().getSharedPreferences("FitSyncPrefs", Context.MODE_PRIVATE)
+        val sharedPreferences = requireActivity().getSharedPreferences("FitSync", Context.MODE_PRIVATE)
         val userName = sharedPreferences.getString("USER_NAME", "Esha") ?: "Esha"
 
         if (::tvWelcomeUser.isInitialized) {

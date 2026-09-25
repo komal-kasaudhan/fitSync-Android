@@ -47,7 +47,7 @@ class WorkoutDetailActivity : AppCompatActivity() {
         workoutViewModel = ViewModelProvider(this, factory)[WorkoutViewModel::class.java]
 
         // 📥 2. Extracting User Credentials from SharedPreferences
-        val sharedPrefs = getSharedPreferences("FitSyncPrefs", Context.MODE_PRIVATE)
+        val sharedPrefs = getSharedPreferences("FitSync", Context.MODE_PRIVATE)
         userId = sharedPrefs.getString("USER_ID", "64b1f1c2d3e4f5a6b7c8d901") ?: "64b1f1c2d3e4f5a6b7c8d901"
         workoutId = intent.getStringExtra("WORKOUT_ID") ?: ""
 

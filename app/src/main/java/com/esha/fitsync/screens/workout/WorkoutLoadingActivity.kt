@@ -76,7 +76,7 @@ class WorkoutLoadingActivity : AppCompatActivity() {
             val targetText = targetRowLayout.getChildAt(1) as? TextView
 
             targetIcon?.let {
-                it.setImageResource(R.drawable.ic_mail)
+                it.setImageResource(R.drawable.ic_check)
                 it.imageTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#00D4FF"))
             }
 

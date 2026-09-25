@@ -13,7 +13,6 @@ import com.esha.fitsync.R
 import com.esha.fitsync.api.RetrofitClient
 import com.esha.fitsync.models.OnboardingRequest
 import com.esha.fitsync.models.OnboardingResponse
-import com.esha.fitsync.screens.fragments.WorkoutFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

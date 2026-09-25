@@ -24,10 +24,10 @@ class MealTypeBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnBreakfast.setOnClickListener { launchSearch("BREAKFAST") }
-        binding.btnLunch.setOnClickListener { launchSearch("LUNCH") }
-        binding.btnDinner.setOnClickListener { launchSearch("DINNER") }
-        binding.btnSnack.setOnClickListener { launchSearch("SNACK") }
+        binding.btnBreakfast.setOnClickListener { launchSearch("Breakfast") }
+        binding.btnLunch.setOnClickListener { launchSearch("Lunch") }
+        binding.btnDinner.setOnClickListener { launchSearch("Dinner") }
+        binding.btnSnack.setOnClickListener { launchSearch("Snack") }
     }
 
     private fun launchSearch(mealType: String) {

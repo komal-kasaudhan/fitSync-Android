@@ -22,20 +22,20 @@ data class ScanFoodResponse(
     val estimatedGram: Double
 )
 
-data class AddMealFoodItem(
+data class AddMealRequest(
+    val date: String,
+    val mealType: String,
     val foodId: String,
     val quantity: Double
 )
 
-data class AddMealRequest(
-    val date: String,
-    val mealType: String,
-    val foods: List<AddMealFoodItem>
-)
-
 data class FoodItem(
     val id: String = "",
+    val _id: String = "",
     val name: String = "",
+    val category: String = "General",
+    val servingType: String = "g",
+    val servingWeight: Double = 100.0,
     val calories: Int = 0,
     val protein: Double = 0.0,
     val carbs: Double = 0.0,
@@ -48,24 +48,50 @@ data class FoodSearchResponse(
     val count: Int = 0,
     val data: List<FoodItem> = emptyList()
 )
+
+data class MealItemNutrition(
+    val calories: Int = 0,
+    val protein: Double = 0.0,
+    val carbs: Double = 0.0,
+    val fat: Double = 0.0,
+    val fiber: Double = 0.0
+)
+
+data class LoggedFoodItem(
+    val foodId: String? = null,
+    val foodName: String? = null,
+    val quantity: Double = 0.0,
+    val unit: String? = null,
+    val calculatedNutrition: MealItemNutrition? = null
+)
+
+data class LoggedMeal(
+    val _id: String? = null,
+    val date: String? = null,
+    val mealType: String? = null,
+    val items: List<LoggedFoodItem> = emptyList(),
+    val totalMealNutrition: MealItemNutrition? = null
+)
+
 data class TodayNutritionResponse(
-    val success: Boolean,
-    val data: TodayNutritionData
+    val success: Boolean = false,
+    val data: TodayNutritionData? = null
 )
 
 data class TodayNutritionData(
-    val eatenCalories: Int,
-    val remainingCalories: Int,
+    val eatenCalories: Int = 0,
+    val remainingCalories: Int = 2000,
     val targetCalories: Int = 2000,
-    val protein: MacroDetail,
-    val carbs: MacroDetail,
-    val fat: MacroDetail,
-    val water: MacroDetail
+    val protein: MacroDetail = MacroDetail(0.0, 100.0),
+    val carbs: MacroDetail = MacroDetail(0.0, 250.0),
+    val fat: MacroDetail = MacroDetail(0.0, 65.0),
+    val water: MacroDetail = MacroDetail(0.0, 3.0),
+    val mealsLogged: List<LoggedMeal> = emptyList()
 )
 
 data class MacroDetail(
-    val current: Double,
-    val target: Double
+    val current: Double = 0.0,
+    val target: Double = 100.0
 )
 
 data class AiInsightResponse(

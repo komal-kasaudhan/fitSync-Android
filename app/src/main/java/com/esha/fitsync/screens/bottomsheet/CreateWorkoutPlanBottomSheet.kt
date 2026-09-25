@@ -78,7 +78,7 @@ class CreateWorkoutPlanBottomSheet(
         }
 
         btnGenerateAIPlan.setOnClickListener {
-            val sharedPreferences = requireActivity().getSharedPreferences("FitSyncPrefs", Context.MODE_PRIVATE)
+            val sharedPreferences = requireActivity().getSharedPreferences("FitSync", Context.MODE_PRIVATE)
             val activeUserId = sharedPreferences.getString("USER_ID", "64b1f1c2d3e4f5a6b7c8d901") ?: "64b1f1c2d3e4f5a6b7c8d901"
 
             val selectedDaysList = getSelectedChipsText(cgSpecificDays)
@@ -273,7 +273,7 @@ class CreateWorkoutPlanBottomSheet(
 
                         }
                         is WorkoutSetupState.LaunchingAILoader -> {
-                            val sharedPreferences = requireActivity().getSharedPreferences("FitSyncPrefs", Context.MODE_PRIVATE)
+                            val sharedPreferences = requireActivity().getSharedPreferences("FitSync", Context.MODE_PRIVATE)
                             sharedPreferences.edit().putBoolean("IS_FIRST_TIME_WORKOUT", false).apply()
 
                             val loaderIntent = Intent(requireContext(), WorkoutLoadingActivity::class.java)

@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/srlWorkoutRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#071018"
-    android:fillViewport="true"
-    android:scrollbars="none"
-    android:clipToPadding="false"
-    android:paddingBottom="100dp">
+    android:background="#071018">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:clipToPadding="false"
+        android:paddingBottom="100dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,9 +32,10 @@
             android:layout_marginBottom="6dp"/>
 
         <TextView
+            android:id="@+id/tvWelcomeUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome back, Esha."
+            android:text="Welcome back, Athlete."
             android:textColor="@color/white"
             android:textSize="26sp"
             android:textStyle="bold"/>
@@ -127,6 +133,7 @@
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardWorkoutAiInsight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
@@ -139,14 +146,45 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_mail" app:tint="#19F5B0" android:layout_marginEnd="8dp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="AI INSIGHT" android:textColor="#19F5B0" android:textSize="11sp" android:textStyle="bold" android:letterSpacing="0.05"/>
-                </LinearLayout>
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Yesterday you rated Leg Day as Hard. Today's intensity has been adjusted -10% for recovery."
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_mail"
+                        app:tint="#19F5B0"
+                        android:layout_marginEnd="8dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AI INSIGHT"
+                        android:textColor="#19F5B0"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05"/>
+                </LinearLayout>
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmerWorkoutInsight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:shimmer_auto_start="false">
+                    <View
+                        android:id="@+id/vShimmerWorkoutPlaceholder"
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp"
+                        android:background="#162536"
+                        android:visibility="gone"/>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+                <TextView
+                    android:id="@+id/tvWorkoutAiInsight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:textColor="#E5E7EB"
                     android:textSize="13sp"
                     android:lineSpacingMultiplier="1.2"/>
@@ -165,11 +203,11 @@
                 android:layout_height="match_parent">
 
                 <ImageView
+                    android:id="@+id/ivHeroWorkoutImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/girl_dumbell"
-                    android:scaleType="centerCrop"
-                 />
+                    android:scaleType="centerCrop" />
 
                 <View android:layout_width="match_parent" android:layout_height="match_parent" />
 
@@ -238,6 +276,7 @@
                         app:cornerRadius="16dp"/>
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnPreviewRoutine"
                         android:layout_width="match_parent"
                         android:layout_height="54dp"
                         android:layout_marginTop="8dp"
@@ -260,16 +299,39 @@
             android:orientation="horizontal"
             android:weightSum="2"
             android:layout_marginBottom="10dp">
-            <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="5dp" app:cardBackgroundColor="#111827" app:cardCornerRadius="16dp" app:strokeWidth="1dp" app:strokeColor="#1F2E3D">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardLogWeight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                app:cardBackgroundColor="#111827"
+                app:cardCornerRadius="16dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#1F2E3D"
+                android:clickable="true"
+                android:focusable="true">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="WEIGHT" android:textColor="#6B7280" android:textSize="10sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="72 KG" android:textColor="@color/white" android:textSize="22sp" android:textStyle="bold" android:layout_marginTop="6dp"/>
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="WEIGHT" android:textColor="#6B7280" android:textSize="10sp" android:textStyle="bold"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="LOG ❯" android:textColor="#36A8FF" android:textSize="9sp" android:textStyle="bold"/>
+                    </RelativeLayout>
+                    <TextView android:id="@+id/tvCurrentWeightValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-- KG" android:textColor="@color/white" android:textSize="22sp" android:textStyle="bold" android:layout_marginTop="6dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-            <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="5dp" app:cardBackgroundColor="#111827" app:cardCornerRadius="16dp" app:strokeWidth="1dp" app:strokeColor="#1F2E3D">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardTargetWeight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                app:cardBackgroundColor="#111827"
+                app:cardCornerRadius="16dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#1F2E3D">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TARGET" android:textColor="#6B7280" android:textSize="10sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="75 KG" android:textColor="@color/white" android:textSize="22sp" android:textStyle="bold" android:layout_marginTop="6dp"/>
+                    <TextView android:id="@+id/tvTargetWeightValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-- KG" android:textColor="@color/white" android:textSize="22sp" android:textStyle="bold" android:layout_marginTop="6dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
@@ -284,13 +346,13 @@
             <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="5dp" app:cardBackgroundColor="#111827" app:cardCornerRadius="16dp" app:strokeWidth="1dp" app:strokeColor="#1F2E3D">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="STREAK" android:textColor="#6B7280" android:textSize="10sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="5 DAYS" android:textColor="#19F5B0" android:textSize="22sp" android:textStyle="bold" android:layout_marginTop="6dp"/>
+                    <TextView android:id="@+id/tvStreakValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-- DAYS" android:textColor="#19F5B0" android:textSize="22sp" android:textStyle="bold" android:layout_marginTop="6dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
             <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="5dp" app:cardBackgroundColor="#111827" app:cardCornerRadius="16dp" app:strokeWidth="1dp" app:strokeColor="#1F2E3D">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="COMPLETION" android:textColor="#6B7280" android:textSize="10sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="12 %" android:textColor="@color/white" android:textSize="22sp" android:textStyle="bold" android:layout_marginTop="6dp"/>
+                    <TextView android:id="@+id/tvCompletionValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-- %" android:textColor="@color/white" android:textSize="22sp" android:textStyle="bold" android:layout_marginTop="6dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
@@ -311,31 +373,63 @@
                 android:padding="16dp">
                 <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="14dp">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Weekly Plan" android:textColor="@color/white" android:textStyle="bold" android:textSize="16sp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="WEEK 1 ❯" android:textColor="#36A8FF" android:textStyle="bold" android:textSize="11sp"/>
+                    <TextView
+                        android:id="@+id/btnGenerateAiPlan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text="GENERATE AI PLAN ⚡"
+                        android:textColor="#00D4FF"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
+                        android:padding="4dp"
+                        android:clickable="true"
+                        android:focusable="true"/>
                 </RelativeLayout>
 
-                <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:scrollbars="none">
-                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
-                        <!-- Mon Block -->
-                        <LinearLayout android:layout_width="85dp" android:layout_height="100dp" android:orientation="vertical" android:gravity="center" android:background="#1C2638" android:layout_marginEnd="8dp" android:padding="8dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="MON" android:textColor="#6B7280" android:textSize="10sp"/>
-                            <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_mail" app:tint="#19F5B0" android:layout_marginVertical="6dp"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Lower Body" android:textColor="@color/white" android:textSize="11sp" android:gravity="center"/>
-                        </LinearLayout>
-                        <!-- Tue Active Block -->
-                        <LinearLayout android:layout_width="95dp" android:layout_height="100dp" android:orientation="vertical" android:gravity="center" android:background="@color/white" android:layout_marginEnd="8dp" android:padding="8dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TUE" android:textColor="#071018" android:textSize="10sp" android:textStyle="bold"/>
-                            <View android:layout_width="8dp" android:layout_height="8dp" android:background="#071018" android:layout_marginVertical="10dp"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Back + Biceps" android:textColor="#071018" android:textSize="11sp" android:textStyle="bold" android:gravity="center"/>
-                        </LinearLayout>
-                        <!-- Wed Block -->
-                        <LinearLayout android:layout_width="85dp" android:layout_height="100dp" android:orientation="vertical" android:gravity="center" android:background="#1C2638" android:padding="8dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="WED" android:textColor="#6B7280" android:textSize="10sp"/>
-                            <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_mail" app:tint="#6B7280" android:layout_marginVertical="6dp"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rest Day" android:textColor="#6B7280" android:textSize="11sp" android:gravity="center"/>
-                        </LinearLayout>
-                    </LinearLayout>
-                </HorizontalScrollView>
+                <!-- Loading State for Weekly Plan -->
+                <ProgressBar
+                    android:id="@+id/pbWeeklyPlanLoading"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:indeterminate="true"
+                    android:indeterminateTint="#00D4FF"
+                    android:visibility="gone" />
+
+                <!-- Empty State for Weekly Plan -->
+                <LinearLayout
+                    android:id="@+id/llEmptyWeeklyPlan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="20dp"
+                    android:visibility="gone">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No weekly workout plan found"
+                        android:textColor="#9CA3AF"
+                        android:textSize="13sp"/>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGeneratePlanEmpty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Generate AI Plan ⚡"
+                        android:textColor="#071018"
+                        android:textStyle="bold"
+                        android:backgroundTint="#00D4FF"
+                        app:cornerRadius="12dp"/>
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvWeeklyPlan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:clipToPadding="false" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -356,7 +450,7 @@
 
                 <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="4dp">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Available Equipment" android:textColor="@color/white" android:textStyle="bold" android:textSize="16sp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="📝 EDIT" android:textColor="#36A8FF" android:textStyle="bold" android:textSize="11sp"/>
+                    <TextView android:id="@+id/btnEditEquipment" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="📝 EDIT" android:textColor="#36A8FF" android:textStyle="bold" android:textSize="11sp" android:padding="4dp" android:clickable="true" android:focusable="true"/>
                 </RelativeLayout>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Your workouts are personalized based on your gear." android:textColor="#6B7280" android:textSize="12sp" android:layout_marginBottom="14dp"/>
 
@@ -439,6 +533,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
+            android:id="@+id/btnViewCompleteProgram"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="VIEW COMPLETE PROGRAM  ❯"
@@ -451,4 +546,5 @@
             android:background="?android:attr/selectableItemBackground"/>
 
     </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

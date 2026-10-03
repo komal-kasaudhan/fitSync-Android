@@ -90,14 +90,51 @@ class LoginActivity : AppCompatActivity() {
                                 val editor = sharedPref.edit()
                                 editor.putString("TOKEN", authResponse.token)
 
+                                // Roles list extraction
+                                val rolesList = authResponse.roles.ifEmpty {
+                                    authResponse.user?.roles ?: emptyList()
+                                }
+                                editor.putString("ROLES_STRING", rolesList.joinToString(","))
+
+                                val needsOnboarding = authResponse.needsOnboarding
+                                    ?: (authResponse.user?.needsOnboarding ?: false)
+                                editor.putBoolean("NEEDS_ONBOARDING", needsOnboarding)
+
                                 // Set fallback username from email if not already present
                                 val currentUserName = sharedPref.getString("USER_NAME", null)
                                 if (currentUserName.isNullOrEmpty()) {
-                                    val fallbackName = email.substringBefore('@').replaceFirstChar { it.uppercase() }
+                                    val fallbackName = authResponse.user?.name?.ifBlank { null }
+                                        ?: email.substringBefore('@').replaceFirstChar { it.uppercase() }
                                     editor.putString("USER_NAME", fallbackName)
                                 }
                                 editor.apply()
 
+                                // Part 3 Routing Rules:
+                                // 1. Admin goes straight to Admin Dashboard
+                                if (rolesList.contains("admin")) {
+                                    startActivity(
+                                        Intent(
+                                            this@LoginActivity,
+                                            com.esha.fitsync.screens.admin.AdminDashboardActivity::class.java
+                                        )
+                                    )
+                                    finish()
+                                    return
+                                }
+
+                                // 2. If onboarding is not needed (or partner skipping by default)
+                                if (!needsOnboarding) {
+                                    startActivity(
+                                        Intent(
+                                            this@LoginActivity,
+                                            MainActivity::class.java
+                                        )
+                                    )
+                                    finish()
+                                    return
+                                }
+
+                                // 3. Regular new user needing onboarding
                                 startActivity(
                                     Intent(
                                         this@LoginActivity,

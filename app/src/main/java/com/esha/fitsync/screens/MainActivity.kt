@@ -20,6 +20,11 @@ class MainActivity : AppCompatActivity() {
 
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
+        val fabAiCoach = findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.fabAiCoach)
+        fabAiCoach?.setOnClickListener {
+            val aiChatSheet = com.esha.fitsync.screens.bottomsheet.AiChatBottomSheet()
+            aiChatSheet.show(supportFragmentManager, "AiChatBottomSheet")
+        }
 
         if (savedInstanceState == null) {
             val targetFragment = intent.getStringExtra("TARGET_FRAGMENT")
@@ -49,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             val selectedFragment: Fragment = when (item.itemId) {
                 R.id.nav_home -> HomeFragment()
                 R.id.nav_workout -> WorkoutFragment()
-                R.id.nav_ai_coach -> AICoachFragment()
+                R.id.nav_ai_coach -> ExploreFragment()
                 R.id.nav_community -> CommunityFragment()
                 else -> HomeFragment()
             }

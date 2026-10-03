@@ -19,10 +19,14 @@ class Splash : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             val sharedPreferences = getSharedPreferences("FitSync", MODE_PRIVATE)
             val token = sharedPreferences.getString("TOKEN", null)
+            val roles = sharedPreferences.getString("ROLES_STRING", "") ?: ""
 
             if (!token.isNullOrEmpty()) {
-                // User is already logged in, route to Main Dashboard
-                startActivity(Intent(this, MainActivity::class.java))
+                if (roles.contains("admin")) {
+                    startActivity(Intent(this, com.esha.fitsync.screens.admin.AdminDashboardActivity::class.java))
+                } else {
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
             } else {
                 // Not logged in, route to Login
                 startActivity(Intent(this, LoginActivity::class.java))

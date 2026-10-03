@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-<item
-    android:id="@+id/nav_home"
-    android:icon="@drawable/ic_mail"
-    android:title="Home"/>
-<item
-    android:id="@+id/nav_workout"
-    android:icon="@drawable/ic_mail"
-    android:title="workout"/>
-<item
-    android:id="@+id/nav_ai_coach"
-    android:icon="@drawable/ic_mail"
-    android:title="Explore"/>
-<item
-    android:id="@+id/nav_community"
-    android:icon="@drawable/ic_mail"
-    android:title="Community"/>
-<item
-    android:id="@+id/nav_profile"
-    android:icon="@drawable/ic_mail"
-    android:title="Profile"/>
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/sel_nav_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_workout"
+        android:icon="@drawable/sel_nav_workout"
+        android:title="Workout" />
+    <item
+        android:id="@+id/nav_ai_coach"
+        android:icon="@drawable/sel_nav_explore"
+        android:title="Explore" />
+    <item
+        android:id="@+id/nav_community"
+        android:icon="@drawable/sel_nav_community"
+        android:title="Community" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/sel_nav_profile"
+        android:title="Profile" />
 </menu>

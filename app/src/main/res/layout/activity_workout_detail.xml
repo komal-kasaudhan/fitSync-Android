@@ -1,17 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#071018"
-    android:fitsSystemWindows="true">
+    android:background="#071018">
 
-    <!-- 🎛️ FIXED BOTTOM ACTION NAVIGATION HUB DECK -->
+    <!-- Loading State -->
+    <LinearLayout
+        android:id="@+id/llDetailLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="#071018"
+        android:elevation="20dp"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:indeterminate="true"
+            android:indeterminateTint="#00D4FF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Loading day's training program..."
+            android:textColor="#E5E7EB"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Error State -->
+    <LinearLayout
+        android:id="@+id/llDetailError"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="#071018"
+        android:padding="24dp"
+        android:elevation="20dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_dialog_alert"
+            app:tint="#EF4444" />
+
+        <TextView
+            android:id="@+id/tvDetailErrorMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Could not load today's workout"
+            android:textColor="#E5E7EB"
+            android:textSize="14sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRetryDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Retry"
+            android:textColor="#071018"
+            android:backgroundTint="#00D4FF"
+            app:cornerRadius="12dp" />
+    </LinearLayout>
+
+    <!-- Fixed Bottom Action Bar (Hidden on Rest Days) -->
     <LinearLayout
         android:id="@+id/bottomActionDeck"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="76dp"
         android:orientation="horizontal"
         android:weightSum="2"
         android:paddingHorizontal="16dp"
@@ -21,38 +86,38 @@
         android:elevation="16dp">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnBottomPreview"
+            android:id="@+id/btnSkipToday"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:layout_marginEnd="6dp"
-            android:text="👁 PREVIEW ROUTINE"
-            android:textColor="#00D4FF"
-            android:textStyle="bold"
-            android:textSize="12sp"
-            android:backgroundTint="#111827"
-            app:strokeColor="#1F2E3D"
-            app:strokeWidth="1.5dp"
-            app:cornerRadius="14dp"
-            style="@style/Widget.Material3.Button.OutlinedButton"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnBottomStart"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginStart="6dp"
-            android:text="START WORKOUT ▶"
-            android:textColor="#071018"
+            android:text="Skip Today"
+            android:textColor="#EF4444"
             android:textStyle="bold"
             android:textSize="13sp"
-            android:backgroundTint="#00D4FF"
+            android:backgroundTint="#162536"
+            app:strokeColor="#EF4444"
+            app:strokeWidth="1dp"
             app:cornerRadius="14dp"
-            android:elevation="4dp"/>
+            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnFinishWorkout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:layout_marginStart="6dp"
+            android:text="Finish Workout  ✓"
+            android:textColor="#071018"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:backgroundTint="#00D4FF"
+            app:cornerRadius="14dp" />
     </LinearLayout>
 
-    <!-- 📜 UNIFIED HIGH-PERFORMANCE GLOBAL SCROLL ENGINE -->
+    <!-- Main Scrollable Content -->
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsvWorkoutContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottomActionDeck"
@@ -64,21 +129,34 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- 🎬 1. IMMERSIVE BANNER MODULE WITH TEXT CHIP LABELS -->
+            <!-- 1. Header Hero Section -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="340dp">
+                android:layout_height="320dp">
 
                 <ImageView
+                    android:id="@+id/ivHeroWorkoutImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/girl_dumbell"
                     android:scaleType="centerCrop" />
 
+                <!-- Gradient Overlay -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@android:color/transparent"/>
+                    android:background="#99071018" />
+
+                <!-- Back Navigation Button -->
+                <ImageView
+                    android:id="@+id/btnDetailBack"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="16dp"
+                    android:background="#660C1420"
+                    android:padding="10dp"
+                    android:src="@drawable/arrow_back"
+                    app:tint="@color/white" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -88,204 +166,297 @@
                     android:padding="20dp">
 
                     <TextView
+                        android:id="@+id/tvDaySubtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="WEEK 1 • DAY 2"
-                        android:textColor="#36A8FF"
-                        android:textSize="12sp"
+                        android:text="TODAY'S TRAINING"
+                        android:textColor="#00D4FF"
+                        android:textSize="11sp"
                         android:textStyle="bold"
-                        android:letterSpacing="0.05"/>
+                        android:letterSpacing="0.08" />
 
                     <TextView
                         android:id="@+id/tvWorkoutTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Back + Biceps"
+                        android:text="Chest + Triceps"
                         android:textColor="@color/white"
-                        android:textSize="36sp"
+                        android:textSize="28sp"
                         android:textStyle="bold"
-                        android:layout_marginTop="4dp">
+                        android:layout_marginTop="4dp" />
 
-                    </TextView>
-
-                    <com.google.android.material.chip.ChipGroup
+                    <!-- Header Chips: Duration, Intensity, Calories -->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        app:chipSpacingHorizontal="6dp">
-                        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="45 Minutes" android:textColor="@color/white" app:chipBackgroundColor="#111827" app:strokeColor="#1F2E3D"/>
-                        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Intermediate" android:textColor="@color/white" app:chipBackgroundColor="#111827" app:strokeColor="#1F2E3D"/>
-                        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="420 kcal" android:textColor="#19F5B0" app:chipBackgroundColor="#0C241B"/>
-                    </com.google.android.material.chip.ChipGroup>
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDuration"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:text="⏱ 45 min"
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            app:chipBackgroundColor="#111827"
+                            app:strokeColor="#1F2E3D"
+                            app:strokeWidth="1dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipIntensity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:layout_marginStart="6dp"
+                            android:text="🔥 Medium"
+                            android:textColor="#00D4FF"
+                            android:textSize="11sp"
+                            app:chipBackgroundColor="#111827"
+                            app:strokeColor="#1F2E3D"
+                            app:strokeWidth="1dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipCalories"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:layout_marginStart="6dp"
+                            android:text="⚡ 280 kcal"
+                            android:textColor="#19F5B0"
+                            android:textSize="11sp"
+                            app:chipBackgroundColor="#111827"
+                            app:strokeColor="#1F2E3D"
+                            app:strokeWidth="1dp" />
+                    </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
 
-            <!-- 🧠 2. TODAY'S AI DECISION GRID PANEL -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                app:cardBackgroundColor="#111827"
-                app:cardCornerRadius="24dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="#1F2E3D">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🧠 Today's AI Decision" android:textColor="#19F5B0" android:textStyle="bold" android:textSize="15sp" android:layout_marginBottom="14dp"/>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:weightSum="2" android:layout_marginBottom="12dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="RECOVERY\n84%" android:textColor="@color/white" android:textStyle="bold" android:textSize="13sp"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="YESTERDAY\nLeg Day" android:textColor="@color/white" android:textSize="13sp"/>
-                    </LinearLayout>
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="&quot;Today's workout volume has been increased by 5% because recovery and nutrition are excellent. Expect higher intensity in pulling movements.&quot;" android:textColor="#9CA3AF" android:textSize="13sp" android:layout_marginTop="8dp" android:lineSpacingMultiplier="1.2"/>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- 🗺️ 3. TARGET ANATOMY SCHEMATIC VIEW -->
-            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Target Muscles 🎯" android:textColor="@color/white" android:textSize="16sp" android:textStyle="bold" android:layout_marginHorizontal="16dp" android:layout_marginTop="8dp"/>
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:layout_margin="16dp"
-                app:cardCornerRadius="20dp"
-                app:strokeColor="#1F2E3D"
-                app:strokeWidth="1dp">
-                <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
-                    <ImageView android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/ic_mail" android:scaleType="center" android:background="#0C1420" app:tint="#1F2E3D"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Biceps &amp; Lats Active" android:textColor="#00D4FF" android:textSize="12sp" android:textStyle="bold" android:layout_alignParentBottom="true" android:layout_margin="16dp" android:background="#1A00D4FF" android:padding="6dp"/>
-                </RelativeLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- 🛠️ 4. REQUIRED EQUIPMENT COMPACT PANEL -->
-            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Required Equipment ⚙️" android:textColor="@color/white" android:textSize="16sp" android:textStyle="bold" android:layout_marginHorizontal="16dp" android:layout_marginTop="8dp"/>
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                app:chipSpacing="8dp">
-                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yoga Mat" app:chipIcon="@drawable/ic_mail" android:textColor="@color/white" app:chipBackgroundColor="#111827"/>
-                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2kg Dumbbells" app:chipIcon="@drawable/ic_mail" android:textColor="@color/white" app:chipBackgroundColor="#111827"/>
-                <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Resistance Band" app:chipIcon="@drawable/ic_mail" android:textColor="@color/white" app:chipBackgroundColor="#111827"/>
-            </com.google.android.material.chip.ChipGroup>
-
-            <!-- 🏃 5. WARM-UP MATRIX TRACK SYSTEM -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="#111827"
-                app:cardCornerRadius="16dp"
-                app:strokeColor="#1F2E3D"
-                app:strokeWidth="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
-                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🌀 Warm-up" android:textColor="@color/white" android:textStyle="bold" android:textSize="15sp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="5 Mins" android:textColor="#36A8FF" android:textStyle="bold" android:textSize="13sp"/>
-                    </RelativeLayout>
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Shoulder Circles, Arm Swings, Band Pull Apart" android:textColor="#9CA3AF" android:textSize="13sp"/>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- 🏋️‍♂️ 🚀 6. THE CENTRAL DYNAMIC RECYCLERVIEW EXERCISE LINEUP STACK 🚀 🏋️‍♂️ -->
+            <!-- 2. Required Equipment Row for the whole workout -->
             <LinearLayout
+                android:id="@+id/llRequiredEquipmentSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                android:paddingTop="16dp">
 
-                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp">
-                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Today's Workout"
-                            android:textColor="@color/white"
-                            android:textSize="18sp"
-                            android:textStyle="bold"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="12 Exercises • Optimized for Hypertrophy"
-                            android:textColor="#6B7280"
-                            android:textSize="12sp"
-                            android:layout_marginTop="2dp"/>
-                    </LinearLayout>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:text="12 Total"
-                        android:textColor="#00D4FF"
-                        android:textSize="13sp"
-                        android:textStyle="bold"/>
-                </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="REQUIRED EQUIPMENT ⚙️"
+                    android:textColor="#6B7280"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.05" />
 
-                <!-- 🔥 EXERCISE LIST ENGINE REPLACING THE SINGLE CARD COMPLEX FLUIDLY -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvActivityRoutineList"
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/cgRequiredEquipment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    tools:listitem="@layout/item_routine_exercise"
-                    tools:itemCount="3"/>
+                    android:layout_marginTop="6dp"
+                    app:chipSpacing="8dp" />
             </LinearLayout>
 
-            <!-- ❄️ 7. COOL-DOWN BLOCK METRIC -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- Rest Day Full View (Visible ONLY when isRestDay == true) -->
+            <LinearLayout
+                android:id="@+id/llRestDayView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="16dp"
-                app:cardBackgroundColor="#111827"
-                app:cardCornerRadius="16dp"
-                app:strokeColor="#1F2E3D"
-                app:strokeWidth="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
-                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🧘 Cool Down" android:textColor="@color/white" android:textStyle="bold" android:textSize="15sp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="3 Minutes" android:textColor="#36A8FF" android:textStyle="bold" android:textSize="13sp"/>
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:visibility="gone">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="#0D1A26"
+                    app:cardCornerRadius="20dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#172F47">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="24dp">
+
+                        <ImageView
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:src="@drawable/ic_check"
+                            app:tint="#19F5B0" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Rest &amp; Muscle Recovery"
+                            android:textColor="@color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center"
+                            android:lineSpacingMultiplier="1.3"
+                            android:text="No intense resistance training scheduled today. Recovery is when your muscles rebuild, glycogen stores replenish, and connective tissues adapt."
+                            android:textColor="#9CA3AF"
+                            android:textSize="13sp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginVertical="16dp"
+                            android:background="#1F2E3D" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="RECOVERY PROTOCOL 🧘"
+                            android:textColor="#00D4FF"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:letterSpacing="0.05" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:lineSpacingMultiplier="1.3"
+                            android:text="• Drink 3.0L+ of water to assist cellular recovery\n• Maintain protein intake (0.8-1g per lb) for repair\n• Perform light 10-minute mobility or walking\n• Prioritize 7-8 hours of quality sleep tonight"
+                            android:textColor="#E5E7EB"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Training Day Container (Hidden on Rest Days) -->
+            <LinearLayout
+                android:id="@+id/llTrainingDayContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- 3. Warm-up Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🌀 Warm-up"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvWarmupCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="4 exercises • 5 mins"
+                            android:textColor="#36A8FF"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
                     </RelativeLayout>
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Child Pose, Lat Stretch, Bicep Static Holds" android:textColor="#9CA3AF" android:textSize="13sp"/>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-            <!-- 📈 8. AI FUTURISTIC FORECAST PROGRESS INSIGHTS -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="24dp"
-                app:cardBackgroundColor="#0C1620"
-                app:cardCornerRadius="20dp"
-                app:strokeColor="#0A3545"
-                app:strokeWidth="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="18dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="How AI will improve next week's workout" android:textColor="@color/white" android:textStyle="bold" android:textSize="15sp" android:layout_marginBottom="16dp"/>
-                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="4dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="VOLUME &amp; WEIGHT FORECAST" android:textColor="#6B7280" android:textSize="11sp" android:textStyle="bold"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="+12%" android:textColor="#00D4FF" android:textStyle="bold"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvWarmup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
+                </LinearLayout>
+
+                <!-- 4. Today's Workout Main Exercises Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🏋️ Today's Workout"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvExerciseCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="6 exercises"
+                            android:textColor="#00D4FF"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
                     </RelativeLayout>
-                    <ProgressBar android:layout_width="match_parent" android:layout_height="4dp" style="?android:attr/progressBarStyleHorizontal" android:progress="70" android:max="100" android:progressTint="#00D4FF" android:progressBackgroundTint="#1F2E3D"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvExercises"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="DISCIPLINE BEATS MOTIVATION"
-                android:textColor="#1F2E3D"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginVertical="32dp"
-                android:letterSpacing="0.05"/>
+                <!-- 5. Cool-down Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="24dp">
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🧘 Cool-down &amp; Stretch"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvCooldownCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="4 stretches"
+                            android:textColor="#19F5B0"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvCooldown"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

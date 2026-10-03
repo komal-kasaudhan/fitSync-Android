@@ -2,6 +2,7 @@ package com.esha.fitsync.screens
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -32,15 +33,17 @@ class OnboardingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_onboarding)
         RetrofitClient.init(this)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { view, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.setPadding(
-                systemBars.left,
-                systemBars.top,
-                systemBars.right,
-                systemBars.bottom
-            )
-            insets
+        findViewById<View>(R.id.main)?.let { rootView ->
+            ViewCompat.setOnApplyWindowInsetsListener(rootView) { view, insets ->
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                view.setPadding(
+                    systemBars.left,
+                    systemBars.top,
+                    systemBars.right,
+                    systemBars.bottom
+                )
+                insets
+            }
         }
 
         viewPager = findViewById(R.id.viewPager)
@@ -52,6 +55,21 @@ class OnboardingActivity : AppCompatActivity() {
         viewPager.isUserInputEnabled = false
 
         updateHeader(0)
+
+        findViewById<View>(R.id.btnBack)?.setOnClickListener {
+            if (viewPager.currentItem > 0) {
+                viewPager.currentItem -= 1
+            } else {
+                finish()
+            }
+        }
+
+        findViewById<View>(R.id.btnSkipOnboarding)?.setOnClickListener {
+            val sharedPreferences = getSharedPreferences("FitSync", MODE_PRIVATE)
+            sharedPreferences.edit().putBoolean("NEEDS_ONBOARDING", false).apply()
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
 
         btnNext.setOnClickListener {
             if (viewPager.currentItem < 3) {

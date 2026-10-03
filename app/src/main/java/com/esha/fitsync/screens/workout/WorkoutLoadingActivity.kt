@@ -13,13 +13,20 @@ import androidx.appcompat.app.AppCompatActivity
 import com.esha.fitsync.R
 import com.esha.fitsync.screens.MainActivity
 
+import androidx.lifecycle.lifecycleScope
+import com.esha.fitsync.api.RetrofitClient
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 class WorkoutLoadingActivity : AppCompatActivity() {
 
     private lateinit var pbHorizontalMetricsTrack: ProgressBar
     private lateinit var tvProgressPercentageBottom: TextView
     private lateinit var cvStatusMonitorCard: com.google.android.material.card.MaterialCardView
 
-    private val mainHandler = Handler(Looper.getMainLooper())
+    private var animationJob: Job? = null
+    private var isRegenerate: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,32 +36,82 @@ class WorkoutLoadingActivity : AppCompatActivity() {
         cvStatusMonitorCard = findViewById(R.id.cvStatusMonitorCard)
         tvProgressPercentageBottom = findViewById(R.id.tvProgressPercentageBottom)
 
-        triggerSequenceAutomationEngine()
+        isRegenerate = intent.getBooleanExtra("IS_REGENERATE", false)
+
+        startPlanGeneration()
     }
 
-    private fun triggerSequenceAutomationEngine() {
-        updateMetricsTelemetry(72, "72%")
+    private fun startPlanGeneration() {
+        updateMetricsTelemetry(15, "15%")
 
-        mainHandler.postDelayed({
-            if (!isFinishing && !isDestroyed) {
-                applyGreenCheckMark(6)
-                updateMetricsTelemetry(82, "82%")
+        // Start progressive animation in background
+        animationJob = lifecycleScope.launch {
+            val stages = listOf(
+                Pair(30, 2),
+                Pair(50, 3),
+                Pair(70, 4),
+                Pair(85, 5),
+                Pair(90, 6)
+            )
+            for ((pct, stepIndex) in stages) {
+                delay(1200)
+                updateMetricsTelemetry(pct, "$pct%")
+                applyGreenCheckMark(stepIndex)
             }
-        }, 2000)
+        }
 
-        mainHandler.postDelayed({
-            if (!isFinishing && !isDestroyed) {
-                applyGreenCheckMark(7)
-                updateMetricsTelemetry(92, "92%")
-            }
-        }, 4000)
+        // Call the real API
+        lifecycleScope.launch {
+            try {
+                val response = if (isRegenerate) {
+                    RetrofitClient.api.regenerateWorkoutPlan()
+                } else {
+                    RetrofitClient.api.generateWorkoutPlan()
+                }
 
-        mainHandler.postDelayed({
-            if (!isFinishing && !isDestroyed) {
-                updateMetricsTelemetry(100, "100%")
-                routeCleanlyToMainDashboard()
+                animationJob?.cancel()
+
+                if (response.isSuccessful) {
+                    updateMetricsTelemetry(100, "100%")
+                    applyGreenCheckMark(6)
+                    applyGreenCheckMark(7)
+                    delay(500)
+                    routeCleanlyToMainDashboard()
+                } else {
+                    val rawError = response.errorBody()?.string()
+                    val errorMsg = try {
+                        if (!rawError.isNullOrEmpty()) {
+                            val json = org.json.JSONObject(rawError)
+                            json.optString("message", json.optString("error", "Failed to generate plan (${response.code()})"))
+                        } else {
+                            "Error ${response.code()}: ${response.message()}"
+                        }
+                    } catch (e: Exception) {
+                        "Server error: ${response.code()}"
+                    }
+                    showErrorDialog(errorMsg)
+                }
+            } catch (e: Exception) {
+                animationJob?.cancel()
+                showErrorDialog(e.localizedMessage ?: "Network connection failed. Please verify the server is running.")
             }
-        }, 6000)
+        }
+    }
+
+    private fun showErrorDialog(message: String) {
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setTitle("AI Plan Generation Failed")
+            .setMessage(message)
+            .setPositiveButton("Retry") { dialog, _ ->
+                dialog.dismiss()
+                startPlanGeneration()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+                finish()
+            }
+            .setCancelable(false)
+            .show()
     }
 
     private fun updateMetricsTelemetry(progressValue: Int, percentageText: String) {
@@ -101,7 +158,7 @@ class WorkoutLoadingActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        mainHandler.removeCallbacksAndMessages(null)
+        animationJob?.cancel()
         super.onDestroy()
     }
 }

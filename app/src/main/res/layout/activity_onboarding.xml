@@ -43,7 +43,7 @@ android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/tvStep"
-                    android:layout_width="317dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_weight="1"
@@ -51,6 +51,16 @@ android:layout_height="match_parent">
                     android:text="Step 1 of 4"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnSkipOnboarding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Skip for now"
+                    android:textColor="@color/primary"
+                    android:textSize="13sp"
                     android:textStyle="bold" />
             </LinearLayout>
 

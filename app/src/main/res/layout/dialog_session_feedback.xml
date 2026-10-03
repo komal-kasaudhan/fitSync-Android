@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#0C1420">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Workout Feedback 💪"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
+            android:text="AI uses your biometrics to auto-adjust upcoming sets and volume."
+            android:textColor="#9CA3AF"
+            android:textSize="12sp" />
+
+        <!-- 1. Difficulty -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SESSION DIFFICULTY"
+            android:textColor="#00D4FF"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
+
+        <RadioGroup
+            android:id="@+id/rgDifficulty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/rbTooEasy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Too Easy"
+                android:textColor="@color/white"
+                android:buttonTint="#00D4FF"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/rbJustRight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Just Right"
+                android:checked="true"
+                android:textColor="@color/white"
+                android:buttonTint="#10B981"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/rbTooHard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Too Hard"
+                android:textColor="@color/white"
+                android:buttonTint="#EF4444"
+                android:textSize="12sp" />
+        </RadioGroup>
+
+        <!-- 2. Muscle Soreness -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MUSCLE SORENESS"
+            android:textColor="#00D4FF"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
+
+        <RadioGroup
+            android:id="@+id/rgSoreness"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/rbSoreNone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="None"
+                android:checked="true"
+                android:textColor="@color/white"
+                android:buttonTint="#00D4FF"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/rbSoreLow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Mild"
+                android:textColor="@color/white"
+                android:buttonTint="#00D4FF"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/rbSoreHigh"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="High"
+                android:textColor="@color/white"
+                android:buttonTint="#EF4444"
+                android:textSize="12sp" />
+        </RadioGroup>
+
+        <!-- 3. Energy Level -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ENERGY LEVEL"
+            android:textColor="#00D4FF"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
+
+        <RadioGroup
+            android:id="@+id/rgEnergy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/rbEnergyLow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Low"
+                android:textColor="@color/white"
+                android:buttonTint="#EF4444"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/rbEnergyNormal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Normal"
+                android:checked="true"
+                android:textColor="@color/white"
+                android:buttonTint="#10B981"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/rbEnergyHigh"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="High 🔥"
+                android:textColor="@color/white"
+                android:buttonTint="#00D4FF"
+                android:textSize="12sp" />
+        </RadioGroup>
+
+        <!-- 4. Pain / Discomfort Areas -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PAIN / DISCOMFORT AREAS (IF ANY)"
+            android:textColor="#00D4FF"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp">
+
+            <CheckBox
+                android:id="@+id/cbPainKnee"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Knee"
+                android:textColor="@color/white"
+                android:buttonTint="#EF4444"
+                android:textSize="12sp" />
+
+            <CheckBox
+                android:id="@+id/cbPainBack"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Lower Back"
+                android:textColor="@color/white"
+                android:buttonTint="#EF4444"
+                android:textSize="12sp" />
+
+            <CheckBox
+                android:id="@+id/cbPainShoulder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Shoulder"
+                android:textColor="@color/white"
+                android:buttonTint="#EF4444"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Optional Notes -->
+        <EditText
+            android:id="@+id/etFeedbackNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="#162536"
+            android:hint="Any coach notes or thoughts? (optional)"
+            android:textColorHint="#6B7280"
+            android:textColor="@color/white"
+            android:padding="12dp"
+            android:textSize="13sp"
+            android:minLines="2" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -46,6 +46,10 @@ class WorkoutViewModel(private val repository: WorkoutRepository) : ViewModel() 
     private val _exerciseState = MutableStateFlow<ExerciseDetailUiState>(ExerciseDetailUiState.Loading)
     val exerciseState: StateFlow<ExerciseDetailUiState> = _exerciseState
 
+    // 📋 Dynamic Workout Plan State
+    private val _activePlanState = MutableStateFlow<com.esha.fitsync.models.WorkoutPlanData?>(null)
+    val activePlanState: StateFlow<com.esha.fitsync.models.WorkoutPlanData?> = _activePlanState
+
     fun syncBottomSheetPreferences(payload: PreferencePayload) {
         viewModelScope.launch {
             _setupState.value = WorkoutSetupState.Loading
@@ -56,13 +60,38 @@ class WorkoutViewModel(private val repository: WorkoutRepository) : ViewModel() 
                     if (body.success) {
                         _setupState.value = WorkoutSetupState.LaunchingAILoader
                     } else {
-                        _setupState.value = WorkoutSetupState.Failure(body.message)
+                        _setupState.value = WorkoutSetupState.Failure(body.message.ifEmpty { "Plan generation declined by server." })
                     }
                 } else {
-                    _setupState.value = WorkoutSetupState.Failure("HTTP Connection Refused.")
+                    val rawError = networkResponse.errorBody()?.string()
+                    val parsedMsg = try {
+                        if (!rawError.isNullOrEmpty()) {
+                            val json = org.json.JSONObject(rawError)
+                            json.optString("message", json.optString("error", "Server Error: ${networkResponse.code()}"))
+                        } else {
+                            "HTTP Error: ${networkResponse.code()} ${networkResponse.message()}"
+                        }
+                    } catch (ex: Exception) {
+                        "HTTP Error: ${networkResponse.code()} ${networkResponse.message()}"
+                    }
+                    _setupState.value = WorkoutSetupState.Failure(parsedMsg)
                 }
             } catch (e: Exception) {
-                _setupState.value = WorkoutSetupState.Failure(e.localizedMessage ?: "Pipeline Error.")
+                _setupState.value = WorkoutSetupState.Failure(e.localizedMessage ?: "Network Connection Failure.")
+            }
+        }
+    }
+
+    fun fetchActiveWorkoutPlan() {
+        viewModelScope.launch {
+            try {
+                val response = repository.getUserWorkoutPlan()
+                if (response.isSuccessful && response.body()?.success == true) {
+                    val plan = response.body()?.data
+                    _activePlanState.value = plan
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("FITSYNC_NETWORK", "Failed to fetch active plan", e)
             }
         }
     }

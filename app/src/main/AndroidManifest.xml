@@ -4,7 +4,10 @@
 
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -20,7 +23,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FitSync"
-        android:usesCleartextTraffic="true">
+        android:networkSecurityConfig="@xml/network_security_config">
+
+        <activity
+            android:name=".screens.gym.GymDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.gym.GymBookingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.gym.MyGymBookingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.gym.RegisterGymActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.gym.GymOwnerDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.gym.LocationPickerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.admin.AdminDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.admin.AdminReviewActivity"
+            android:exported="false" />
 
         <activity
             android:name=".screens.Nutrition.AiCoachActivity"

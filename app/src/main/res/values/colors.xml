@@ -1,26 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="dark_bg">#020B1E</color>
-    <color name="cyan">#00D4FF</color>
+    <!-- Part 5 Design System: Exactly 3 Brand Colors + Neutrals + Semantic -->
+    <!-- 1. Primary: Confident Sky Blue -->
+    <color name="primary">#0284C7</color>
+    <color name="primary_variant">#0369A1</color>
+    <color name="primary_light">#38BDF8</color>
+
+    <!-- 2. Secondary: Fresh Athletic Teal -->
+    <color name="secondary">#0D9488</color>
+    <color name="secondary_variant">#0F766E</color>
+    <color name="secondary_light">#2DD4BF</color>
+
+    <!-- 3. Tertiary Accent: Warm Amber -->
+    <color name="tertiary">#D97706</color>
+    <color name="tertiary_variant">#B45309</color>
+    <color name="tertiary_light">#FBBF24</color>
+
+    <!-- Neutrals (Slate Palette) -->
+    <color name="bg_dark">#0F172A</color>
+    <color name="dark_bg">#0F172A</color>
+    <color name="surface">#1E293B</color>
+    <color name="surface_variant">#334155</color>
+    <color name="border">#334155</color>
+    <color name="text_primary">#F8FAFC</color>
+    <color name="text_secondary">#94A3B8</color>
+    <color name="text_muted">#64748B</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 
+    <!-- Semantic / Status -->
+    <color name="error">#EF4444</color>
+    <color name="status_rejected">#EF4444</color>
+    <color name="status_error">#EF4444</color>
+    <color name="status_pending">#D97706</color>
+    <color name="success">#10B981</color>
+    <color name="status_approved">#10B981</color>
 
-    <color name="bg_top_dark">#021017</color>
-    <color name="bg_bottom_dark">#010609</color>
-    <color name="bg_glow_center">#05232d</color>
-    <color name="brand_cyan">#70C3D0</color>
-    <color name="text_white_crisp">#E1F3F5</color>
-    <color name="text_gray_blue">#778B94</color>
-    <color name="hologram_line">#39A9B4</color>
-    <color name="card_dark_bg">#071922</color>
-    <color name="progress_bar">#46D4CD</color>
-    <color name="btn_bg_dark">#03141D</color>
-    <color name="btn_glow_border">#0A3945</color>
-    <color name="text_muted">#8A99AD</color>
+    <!-- Compatibility aliases mapped to design system -->
+    <color name="purple_200">#0284C7</color>
+    <color name="purple_500">#0284C7</color>
+    <color name="purple_700">#0369A1</color>
+    <color name="teal_200">#0D9488</color>
+    <color name="teal_700">#0F766E</color>
+    <color name="cyan">#0284C7</color>
+    <color name="brand_cyan">#0284C7</color>
+    <color name="text_white_crisp">#F8FAFC</color>
+    <color name="text_gray_blue">#94A3B8</color>
+    <color name="hologram_line">#0284C7</color>
+    <color name="card_dark_bg">#1E293B</color>
+    <color name="progress_bar">#0D9488</color>
+    <color name="btn_bg_dark">#1E293B</color>
+    <color name="btn_glow_border">#334155</color>
+    <color name="bg_top_dark">#0F172A</color>
+    <color name="bg_bottom_dark">#0F172A</color>
+    <color name="bg_glow_center">#1E293B</color>
+
+    <!-- Gym Feature Aliases mapped to 3 colors -->
+    <color name="gym_accent">#0284C7</color>
+    <color name="gym_accent_dark">#0369A1</color>
+    <color name="gym_gold">#D97706</color>
+    <color name="gym_green">#10B981</color>
+    <color name="gym_red">#EF4444</color>
+    <color name="gym_card_surface">#1E293B</color>
+    <color name="gym_card_border">#334155</color>
+    <color name="gym_chip_bg">#1E293B</color>
+    <color name="gym_chip_selected">#0284C7</color>
+    <color name="shimmer_base">#1E293B</color>
+    <color name="shimmer_highlight">#334155</color>
 </resources>

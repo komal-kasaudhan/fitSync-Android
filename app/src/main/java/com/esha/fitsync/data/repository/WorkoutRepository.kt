@@ -11,8 +11,13 @@ class WorkoutRepository(private val apiService: ApiService) {
 
     suspend fun submitUserWorkoutPreferences(payload: PreferencePayload): Response<PreferenceResponse> {
         return withContext(Dispatchers.IO) {
-
             apiService.saveWorkoutPreferences(payload)
+        }
+    }
+
+    suspend fun getUserWorkoutPlan(): Response<com.esha.fitsync.models.WorkoutPlanResponse> {
+        return withContext(Dispatchers.IO) {
+            apiService.getWorkoutPlan()
         }
     }
 }

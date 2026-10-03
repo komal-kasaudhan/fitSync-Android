@@ -34,7 +34,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_mail"
+        android:src="@drawable/ic_ai_chat"
         app:tint="#08111A"
         android:backgroundTint="#00D4FF"
         app:fabSize="normal"

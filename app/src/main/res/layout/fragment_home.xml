@@ -62,108 +62,145 @@
         android:layout_below="@id/llHeaderBar"
         android:background="#1A2E44" />
 
-    <!-- 📜 SCROLLABLE MASTER ENCLOSURE CONTAINER -->
-    <androidx.core.widget.NestedScrollView
+    <!-- 📜 SWIPE TO REFRESH & SCROLLABLE MASTER CONTAINER -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srlHomeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/headerDivider"
-        android:fillViewport="true"
-        android:scrollbars="none">
+        android:layout_below="@id/headerDivider">
 
-        <!-- 🛡️ SAFE BOTTOM PADDING APPLIED FOR MAXIMUM BAR IMMUNITY -->
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp"
-            android:paddingBottom="96dp">
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
 
-            <TextView
-                android:id="@+id/tvWelcomeUser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Good Morning, Esha 👋"
-                android:textColor="#FFFFFF"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <!-- 📊 MODULE 1: RECOVERY STATISTICS METRICS CARD -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- 🛡️ SAFE BOTTOM PADDING APPLIED FOR MAXIMUM BAR IMMUNITY -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:cardBackgroundColor="#0D1926"
-                app:cardCornerRadius="24dp"
-                app:strokeWidth="0dp">
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:paddingBottom="96dp">
 
-                <RelativeLayout
+                <!-- ⚠️ OFFLINE / RETRY BANNER -->
+                <LinearLayout
+                    android:id="@+id/llHomeErrorBanner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="20dp">
-
+                    android:background="#26FF4D4D"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:layout_marginBottom="12dp"
+                    android:visibility="gone"
+                    android:gravity="center_vertical">
                     <TextView
-                        android:id="@+id/tvRecoveryPercent"
+                        android:id="@+id/tvHomeErrorMessage"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Cannot reach server. Check USB cable / adb reverse"
+                        android:textColor="#FF8080"
+                        android:textSize="12sp"/>
+                    <TextView
+                        android:id="@+id/btnRetryHome"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="84%"
+                        android:text="RETRY"
                         android:textColor="#00D4FF"
-                        android:textSize="48sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignTop="@id/tvRecoveryPercent"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_toEndOf="@id/tvRecoveryPercent"
-                        android:text="RECOVERY\nSCORE"
-                        android:textColor="#10B981"
-                        android:textSize="12sp"
                         android:textStyle="bold"
-                        android:lineSpacingExtra="2dp" />
+                        android:textSize="12sp"
+                        android:padding="4dp"/>
+                </LinearLayout>
 
-                    <GridLayout
-                        android:id="@+id/glMetrics"
+                <TextView
+                    android:id="@+id/tvWelcomeUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Welcome Back 👋"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <!-- 📊 MODULE 1: RECOVERY STATISTICS METRICS CARD -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:cardBackgroundColor="#0D1926"
+                    app:cardCornerRadius="24dp"
+                    app:strokeWidth="0dp">
+
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tvRecoveryPercent"
-                        android:layout_marginTop="16dp"
-                        android:columnCount="2"
-                        android:rowCount="2">
+                        android:padding="20dp">
 
-                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="#162536" android:orientation="vertical" android:padding="12dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="💤 SLEEP" android:textColor="#9CA3AF" android:textSize="10sp" android:textStyle="bold"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="7h 42m" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
-                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/tvRecoveryPercent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="--"
+                            android:textColor="#00D4FF"
+                            android:textSize="48sp"
+                            android:textStyle="bold" />
 
-                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="#162536" android:orientation="vertical" android:padding="12dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🎯 FOCUS" android:textColor="#9CA3AF" android:textSize="10sp" android:textStyle="bold"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Upper Body" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
-                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/tvRecoveryLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@id/tvRecoveryPercent"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_toEndOf="@id/tvRecoveryPercent"
+                            android:text="GOAL\nPROGRESS"
+                            android:textColor="#10B981"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:lineSpacingExtra="2dp" />
 
-                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="#162536" android:orientation="vertical" android:padding="12dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚡ READINESS" android:textColor="#9CA3AF" android:textSize="10sp" android:textStyle="bold"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="High" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
-                        </LinearLayout>
+                        <GridLayout
+                            android:id="@+id/glMetrics"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tvRecoveryPercent"
+                            android:layout_marginTop="16dp"
+                            android:columnCount="2"
+                            android:rowCount="2">
 
-                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="#162536" android:orientation="vertical" android:padding="12dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🛡️ AI CONFIDENCE" android:textColor="#9CA3AF" android:textSize="10sp" android:textStyle="bold"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="98%" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
-                        </LinearLayout>
-                    </GridLayout>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="#162536" android:orientation="vertical" android:padding="12dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚖️ WEIGHT" android:textColor="#9CA3AF" android:textSize="10sp" android:textStyle="bold"/>
+                                <TextView android:id="@+id/tvHomeWeightStat" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="-- kg" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
+                            </LinearLayout>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/glMetrics"
-                        android:layout_marginTop="16dp"
-                        android:text="&quot;Recovery looks excellent today. You are ready for a productive workout.&quot;"
-                        android:textColor="#9CA3AF"
-                        android:textSize="13sp"
-                        android:textStyle="italic" />
-                </RelativeLayout>
-            </com.google.android.material.card.MaterialCardView>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="#162536" android:orientation="vertical" android:padding="12dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🎯 TODAY'S FOCUS" android:textColor="#9CA3AF" android:textSize="10sp" android:textStyle="bold"/>
+                                <TextView android:id="@+id/tvHomeWorkoutFocusStat" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Workout" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
+                            </LinearLayout>
+
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="#162536" android:orientation="vertical" android:padding="12dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🔥 STREAK" android:textColor="#9CA3AF" android:textSize="10sp" android:textStyle="bold"/>
+                                <TextView android:id="@+id/tvHomeStreakStat" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="0 Days" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
+                            </LinearLayout>
+
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="#162536" android:orientation="vertical" android:padding="12dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🥗 CALORIE GOAL" android:textColor="#9CA3AF" android:textSize="10sp" android:textStyle="bold"/>
+                                <TextView android:id="@+id/tvHomeCalorieGoalStat" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Tracked" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
+                            </LinearLayout>
+                        </GridLayout>
+
+                        <TextView
+                            android:id="@+id/tvHomeAiQuote"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/glMetrics"
+                            android:layout_marginTop="16dp"
+                            android:text="Connecting with AI coach for today's plan..."
+                            android:textColor="#9CA3AF"
+                            android:textSize="13sp"
+                            android:textStyle="italic" />
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
 
 
             <com.google.android.material.card.MaterialCardView
@@ -197,8 +234,8 @@
                             android:layout_marginStart="12dp"
                             android:orientation="vertical">
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TODAY'S WORKOUT" android:textColor="#00D4FF" android:textSize="11sp" android:textStyle="bold"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Upper Body Power" android:textColor="#FFFFFF" android:textSize="18sp" android:textStyle="bold"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="45m • 420 kcal • Intermediate" android:textColor="#9CA3AF" android:textSize="12sp"/>
+                            <TextView android:id="@+id/tvHomeWorkoutTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Upper Body Power" android:textColor="#FFFFFF" android:textSize="18sp" android:textStyle="bold"/>
+                            <TextView android:id="@+id/tvHomeWorkoutMeta" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="45m • 420 kcal • Intermediate" android:textColor="#9CA3AF" android:textSize="12sp"/>
                         </LinearLayout>
                     </RelativeLayout>
 
@@ -207,22 +244,25 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Progress" android:textColor="#9CA3AF" android:textSize="12sp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="2/8 exercises" android:textColor="#FFFFFF" android:textSize="12sp"/>
+                        <TextView android:id="@+id/tvHomeWorkoutProgressText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="0/0 exercises" android:textColor="#FFFFFF" android:textSize="12sp"/>
                     </RelativeLayout>
 
                     <ProgressBar
+                        android:id="@+id/pbHomeWorkout"
                         style="@android:style/Widget.ProgressBar.Horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="6dp"
                         android:layout_marginTop="6dp"
-                        android:progress="25"
+                        android:max="100"
+                        android:progress="0"
                         android:progressTint="#00D4FF" />
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnContinueWorkoutHome"
                         android:layout_width="match_parent"
                         android:layout_height="52dp"
                         android:layout_marginTop="12dp"
-                        android:text="▶ Continue Workout"
+                        android:text="▶ Start Workout"
                         android:textColor="#071018"
                         android:textStyle="bold"
                         app:backgroundTint="#22F3D1"
@@ -249,7 +289,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Nutrition" android:textColor="#FFFFFF" android:textSize="18sp" android:textStyle="bold"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="1,420 / 2,200 kcal" android:textColor="#9CA3AF" android:textSize="14sp"/>
+                        <TextView android:id="@+id/tvHomeCalorieSummary" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="0 / 2,000 kcal" android:textColor="#9CA3AF" android:textSize="14sp"/>
                     </RelativeLayout>
 
                     <!-- Circular Progress Indicators overlay arrays -->
@@ -262,24 +302,24 @@
 
                         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
                             <RelativeLayout android:layout_width="54dp" android:layout_height="54dp">
-                                <ProgressBar android:id="@+id/pbHomeProtein" android:layout_width="match_parent" android:layout_height="match_parent" android:progress="70" android:indeterminate="false" android:progressDrawable="@android:drawable/progress_horizontal"/>
-                                <TextView android:id="@+id/tvHomeProteinPercent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:text="70%" android:textColor="#FFFFFF" android:textSize="11sp" android:textStyle="bold"/>
+                                <ProgressBar android:id="@+id/pbHomeProtein" android:layout_width="match_parent" android:layout_height="match_parent" android:progress="0" android:indeterminate="false" android:progressDrawable="@android:drawable/progress_horizontal"/>
+                                <TextView android:id="@+id/tvHomeProteinPercent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:text="0%" android:textColor="#FFFFFF" android:textSize="11sp" android:textStyle="bold"/>
                             </RelativeLayout>
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="PROTEIN" android:textColor="#9CA3AF" android:textSize="10sp"/>
                         </LinearLayout>
 
                         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
                             <RelativeLayout android:layout_width="54dp" android:layout_height="54dp">
-                                <ProgressBar android:id="@+id/pbHomeCarbs" android:layout_width="match_parent" android:layout_height="match_parent" android:progress="50" android:indeterminate="false" android:progressDrawable="@android:drawable/progress_horizontal"/>
-                                <TextView android:id="@+id/tvHomeCarbsPercent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:text="50%" android:textColor="#FFFFFF" android:textSize="11sp" android:textStyle="bold"/>
+                                <ProgressBar android:id="@+id/pbHomeCarbs" android:layout_width="match_parent" android:layout_height="match_parent" android:progress="0" android:indeterminate="false" android:progressDrawable="@android:drawable/progress_horizontal"/>
+                                <TextView android:id="@+id/tvHomeCarbsPercent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:text="0%" android:textColor="#FFFFFF" android:textSize="11sp" android:textStyle="bold"/>
                             </RelativeLayout>
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="CARBS" android:textColor="#9CA3AF" android:textSize="10sp"/>
                         </LinearLayout>
 
                         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
                             <RelativeLayout android:layout_width="54dp" android:layout_height="54dp">
-                                <ProgressBar android:id="@+id/pbHomeWater" android:layout_width="match_parent" android:layout_height="match_parent" android:progress="80" android:indeterminate="false" android:progressDrawable="@android:drawable/progress_horizontal"/>
-                                <TextView android:id="@+id/tvHomeWaterPercent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:text="80%" android:textColor="#FFFFFF" android:textSize="11sp" android:textStyle="bold"/>
+                                <ProgressBar android:id="@+id/pbHomeWater" android:layout_width="match_parent" android:layout_height="match_parent" android:progress="0" android:indeterminate="false" android:progressDrawable="@android:drawable/progress_horizontal"/>
+                                <TextView android:id="@+id/tvHomeWaterPercent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:text="0%" android:textColor="#FFFFFF" android:textSize="11sp" android:textStyle="bold"/>
                             </RelativeLayout>
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="WATER" android:textColor="#9CA3AF" android:textSize="10sp"/>
                         </LinearLayout>
@@ -326,6 +366,7 @@
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal">
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAddMealHome"
                             android:layout_width="0dp"
                             android:layout_height="44dp"
                             android:layout_weight="1"
@@ -335,6 +376,7 @@
                             app:backgroundTint="#1C2638"
                             app:cornerRadius="8dp"/>
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnScanFoodHome"
                             android:layout_width="0dp"
                             android:layout_height="44dp"
                             android:layout_weight="1"
@@ -417,6 +459,41 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:scrollbars="none" />
 
+            <!-- 🏋️ MODULE 6: GYMS NEAR YOU (Real Data Only) -->
+            <RelativeLayout
+                android:id="@+id/rlNearbyGymsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🏋️ Gyms Near You"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvExploreAllGyms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="See All →"
+                    android:textColor="#00D4FF"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHomeNearbyGyms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:scrollbars="none" />
+
             <!-- 🔥 MODULE 7: THE CORE INFRASTRUCTURE PERFORMANCE STREAKS CARD -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -436,25 +513,25 @@
 
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
                         <com.google.android.material.imageview.ShapeableImageView android:layout_width="44dp" android:layout_height="44dp" android:background="#162536" android:padding="10dp" android:src="@android:drawable/ic_menu_compass" app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" app:strokeColor="#1A10B981" app:strokeWidth="2dp" app:tint="#10B981" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="9 Days" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" android:gravity="center"/>
+                        <TextView android:id="@+id/tvHomeStreakDays" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="0 Days" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" android:gravity="center"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="STREAK" android:textColor="#9CA3AF" android:textSize="9sp" android:layout_marginTop="1dp" android:gravity="center"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
                         <com.google.android.material.imageview.ShapeableImageView android:layout_width="44dp" android:layout_height="44dp" android:background="#162536" android:padding="10dp" android:src="@android:drawable/ic_menu_manage" app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" app:strokeColor="#1A00D4FF" app:strokeWidth="2dp" app:tint="#00D4FF" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Lvl 8" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" android:gravity="center"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="LEVEL" android:textColor="#9CA3AF" android:textSize="9sp" android:layout_marginTop="1dp" android:gravity="center"/>
+                        <TextView android:id="@+id/tvHomeSessionsCompleted" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="0 Done" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" android:gravity="center"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SESSIONS" android:textColor="#9CA3AF" android:textSize="9sp" android:layout_marginTop="1dp" android:gravity="center"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
                         <com.google.android.material.imageview.ShapeableImageView android:layout_width="44dp" android:layout_height="44dp" android:background="#162536" android:padding="10dp" android:src="@android:drawable/btn_star_big_on" app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" app:strokeColor="#1AFFC107" app:strokeWidth="2dp" app:tint="#FFC107" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="2 New" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" android:gravity="center"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PRS" android:textColor="#9CA3AF" android:textSize="9sp" android:layout_marginTop="1dp" android:gravity="center"/>
+                        <TextView android:id="@+id/tvHomeWeightGoalPercent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="0%" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" android:gravity="center"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="GOAL HIT" android:textColor="#9CA3AF" android:textSize="9sp" android:layout_marginTop="1dp" android:gravity="center"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
                         <com.google.android.material.imageview.ShapeableImageView android:layout_width="44dp" android:layout_height="44dp" android:background="#162536" android:padding="10dp" android:src="@android:drawable/ic_menu_preferences" app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" app:strokeColor="#1AA78BFA" app:strokeWidth="2dp" app:tint="#A78BFA" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="85%" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" android:gravity="center"/>
+                        <TextView android:id="@+id/tvHomeConsistencyPercent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="0%" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" android:gravity="center"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CONSIST." android:textColor="#9CA3AF" android:textSize="9sp" android:layout_marginTop="1dp" android:gravity="center"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -481,4 +558,5 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>

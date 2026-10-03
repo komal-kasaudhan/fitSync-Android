@@ -128,12 +128,32 @@ class WelcomeActivity : AppCompatActivity() {
                         .setDuration(100)
                         .start()
 
-                    startActivity(
-                        Intent(
-                            this@WelcomeActivity,
-                            OnboardingActivity::class.java
+                    val sharedPreferences = getSharedPreferences("FitSync", MODE_PRIVATE)
+                    val roles = sharedPreferences.getString("ROLES_STRING", "") ?: ""
+                    val needsOnboarding = sharedPreferences.getBoolean("NEEDS_ONBOARDING", true)
+
+                    if (roles.contains("admin")) {
+                        startActivity(
+                            Intent(
+                                this@WelcomeActivity,
+                                com.esha.fitsync.screens.admin.AdminDashboardActivity::class.java
+                            )
                         )
-                    )
+                    } else if (!needsOnboarding) {
+                        startActivity(
+                            Intent(
+                                this@WelcomeActivity,
+                                MainActivity::class.java
+                            )
+                        )
+                    } else {
+                        startActivity(
+                            Intent(
+                                this@WelcomeActivity,
+                                OnboardingActivity::class.java
+                            )
+                        )
+                    }
 
                     finish()
                 }

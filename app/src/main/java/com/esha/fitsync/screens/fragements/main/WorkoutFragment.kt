@@ -66,6 +66,7 @@ class WorkoutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        android.util.Log.d("SheetDebug", "WorkoutFragment.onViewCreated called. hasAutoOpenedBottomSheetThisSession=$hasAutoOpenedBottomSheetThisSession")
 
         val apiService = RetrofitClient.api
         val repository = WorkoutRepository(apiService)
@@ -161,15 +162,35 @@ class WorkoutFragment : Fragment() {
     }
 
     private fun openCreatePlanBottomSheet() {
-        if (!isAdded || parentFragmentManager.isStateSaved) return
-        val bottomSheet = CreateWorkoutPlanBottomSheet(workoutViewModel)
-        bottomSheet.isCancelable = true
-        bottomSheet.show(childFragmentManager, "CreateWorkoutPlanBottomSheet")
+        if (!isAdded) return
+        view?.post {
+            if (!isAdded) return@post
+            val fm = childFragmentManager
+            if (fm.isStateSaved || fm.isDestroyed) return@post
+            if (fm.findFragmentByTag("CreateWorkoutPlanBottomSheet") != null) return@post
+
+            android.util.Log.d("SheetDebug", "openCreatePlanBottomSheet: showing CreateWorkoutPlanBottomSheet")
+            val bottomSheet = CreateWorkoutPlanBottomSheet(workoutViewModel)
+            bottomSheet.isCancelable = true
+            bottomSheet.show(fm, "CreateWorkoutPlanBottomSheet")
+        }
     }
 
     private fun checkAndLoadWorkoutPlan() {
         viewLifecycleOwner.lifecycleScope.launch {
             if (!isAdded || _binding == null) return@launch
+
+            val forceDashboard = arguments?.getBoolean("FORCE_LOAD_DASHBOARD", false) == true
+            if (forceDashboard) {
+                arguments?.remove("FORCE_LOAD_DASHBOARD")
+                hasAutoOpenedBottomSheetThisSession = true
+                android.util.Log.d("SheetDebug", "Branch taken: DASHBOARD (forced from AI loader)")
+                binding.llNoPlanState.visibility = View.GONE
+                binding.llWorkoutContent.visibility = View.VISIBLE
+                loadWorkoutPlanContent()
+                return@launch
+            }
+
             _binding?.srlWorkoutRefresh?.isRefreshing = true
             try {
                 val planRes = RetrofitClient.api.getCurrentWorkoutPlan()
@@ -182,6 +203,10 @@ class WorkoutFragment : Fragment() {
 
                 val hasPlan = if (planRes.isSuccessful && planRes.body() != null) {
                     checkIfUserHasPlan(planRes.body())
+                } else if (planRes.code() == 404 || planRes.code() == 400) {
+                    // Server explicitly confirmed user has no active plan
+                    com.esha.fitsync.data.AppCacheManager.saveWorkoutPlanJson("")
+                    false
                 } else {
                     val cached = com.esha.fitsync.data.AppCacheManager.getWorkoutPlanJson()
                     if (!cached.isNullOrBlank()) {
@@ -190,21 +215,44 @@ class WorkoutFragment : Fragment() {
                     } else false
                 }
 
+                val parsedObj = try {
+                    if (planRes.isSuccessful && planRes.body() != null) {
+                        if (planRes.body()!!.isJsonObject) planRes.body()!!.asJsonObject else null
+                    } else {
+                        val cached = com.esha.fitsync.data.AppCacheManager.getWorkoutPlanJson()
+                        if (!cached.isNullOrBlank()) {
+                            val elem = com.google.gson.JsonParser.parseString(cached)
+                            if (elem.isJsonObject) elem.asJsonObject else null
+                        } else null
+                    }
+                } catch (e: Exception) { null }
+
+                val daysSize = when {
+                    parsedObj == null -> "N/A (null/non-object)"
+                    parsedObj.has("days") && parsedObj.get("days").isJsonArray -> parsedObj.getAsJsonArray("days").size().toString()
+                    parsedObj.has("plan") && parsedObj.get("plan").isJsonObject && parsedObj.getAsJsonObject("plan").has("days") && parsedObj.getAsJsonObject("plan").get("days").isJsonArray -> parsedObj.getAsJsonObject("plan").getAsJsonArray("days").size().toString()
+                    else -> "missing/null"
+                }
+
+                android.util.Log.d("SheetDebug", "raw plan/current response: $rawJson")
+                android.util.Log.d("SheetDebug", "hasPlan: $hasPlan, days size: $daysSize")
+
                 if (!isAdded || _binding == null) return@launch
 
                 if (!hasPlan) {
+                    android.util.Log.d("SheetDebug", "Branch taken: SHEET (No plan yet). hasAutoOpenedBottomSheetThisSession=$hasAutoOpenedBottomSheetThisSession, isAdded=$isAdded")
                     // New user without an active workout plan:
-                    // Show empty state "No plan yet" with "Create my plan" button.
-                    // Do NOT call loadWorkoutPlanContent() or show any routine.
-                    binding.llNoPlanState.visibility = View.VISIBLE
+                    // Hide dashboard, show empty state with "Create my plan" button.
                     binding.llWorkoutContent.visibility = View.GONE
+                    binding.llNoPlanState.visibility = View.VISIBLE
 
-                    if (!hasAutoOpenedBottomSheetThisSession && isAdded && !parentFragmentManager.isStateSaved) {
+                    if (!hasAutoOpenedBottomSheetThisSession) {
                         hasAutoOpenedBottomSheetThisSession = true
                         openCreatePlanBottomSheet()
                     }
                 } else {
-                    // Existing user with a plan: load dashboard as before
+                    android.util.Log.d("SheetDebug", "Branch taken: DASHBOARD (Plan exists)")
+                    // User has a plan: load the real fragment dashboard
                     binding.llNoPlanState.visibility = View.GONE
                     binding.llWorkoutContent.visibility = View.VISIBLE
 
@@ -215,19 +263,22 @@ class WorkoutFragment : Fragment() {
                 }
             } catch (e: Exception) {
                 android.util.Log.e("FitSyncApi", "Error checking current workout plan", e)
+                android.util.Log.e("SheetDebug", "Exception checking current workout plan: ${e.message}", e)
                 if (!isAdded || _binding == null) return@launch
                 val cached = com.esha.fitsync.data.AppCacheManager.getWorkoutPlanJson()
                 if (!cached.isNullOrBlank()) {
                     val elem = try { com.google.gson.JsonParser.parseString(cached) } catch (_: Exception) { null }
                     if (checkIfUserHasPlan(elem)) {
+                        android.util.Log.d("SheetDebug", "Branch taken (from catch/cache): DASHBOARD")
                         binding.llNoPlanState.visibility = View.GONE
                         binding.llWorkoutContent.visibility = View.VISIBLE
                         loadWorkoutPlanContent()
                         return@launch
                     }
                 }
-                binding.llNoPlanState.visibility = View.VISIBLE
+                android.util.Log.d("SheetDebug", "Branch taken (from catch): SHEET (fallback empty state)")
                 binding.llWorkoutContent.visibility = View.GONE
+                binding.llNoPlanState.visibility = View.VISIBLE
             } finally {
                 _binding?.srlWorkoutRefresh?.isRefreshing = false
             }
@@ -239,16 +290,30 @@ class WorkoutFragment : Fragment() {
         if (!element.isJsonObject) return false
         val obj = element.asJsonObject
 
+        // 0. Explicit failure status from backend
+        if (obj.has("success") && !obj.get("success").asBoolean) {
+            return false
+        }
+
         // 1. Explicit hasPlan boolean if returned by backend
         if (obj.has("hasPlan")) {
             val hasPlan = try { obj.get("hasPlan").asBoolean } catch (_: Exception) { true }
             if (!hasPlan) return false
         }
 
-        // 2. Check days array
+        // 2. Check if plan or data is null or empty object
+        if (obj.has("plan") && (obj.get("plan").isJsonNull || (obj.get("plan").isJsonObject && obj.getAsJsonObject("plan").size() == 0))) {
+            return false
+        }
+        if (obj.has("data") && (obj.get("data").isJsonNull || (obj.get("data").isJsonObject && obj.getAsJsonObject("data").size() == 0))) {
+            return false
+        }
+
+        // 3. Check days array
         val daysArray = when {
             obj.has("days") && obj.get("days").isJsonArray -> obj.getAsJsonArray("days")
             obj.has("plan") && obj.get("plan").isJsonObject && obj.getAsJsonObject("plan").has("days") && obj.getAsJsonObject("plan").get("days").isJsonArray -> obj.getAsJsonObject("plan").getAsJsonArray("days")
+            obj.has("data") && obj.get("data").isJsonObject && obj.getAsJsonObject("data").has("days") && obj.getAsJsonObject("data").get("days").isJsonArray -> obj.getAsJsonObject("data").getAsJsonArray("days")
             else -> null
         }
 

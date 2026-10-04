@@ -90,17 +90,20 @@ class LoginActivity : AppCompatActivity() {
                                 val previousEmail = sharedPref.getString("USER_EMAIL", null)
                                 val newEmail = authResponse.user?.email ?: email
 
-                                if (previousEmail != null && !previousEmail.equals(newEmail, ignoreCase = true)) {
+                                if (previousEmail == null || !previousEmail.equals(newEmail, ignoreCase = true)) {
                                     sharedPref.edit().clear().apply()
                                     com.esha.fitsync.data.AppCacheManager.clearAll()
-                                    com.esha.fitsync.screens.fragments.WorkoutFragment.hasAutoOpenedBottomSheetThisSession = false
                                 }
+                                com.esha.fitsync.screens.fragments.WorkoutFragment.hasAutoOpenedBottomSheetThisSession = false
 
                                 val editor = sharedPref.edit()
                                 editor.putString("TOKEN", authResponse.token)
                                 editor.putString("USER_EMAIL", newEmail)
 
-                                val userId = authResponse.user?.id ?: authResponse.data?.id
+                                val userId = authResponse.user?.id
+                                    ?: authResponse.user?.mongoId
+                                    ?: authResponse.data?.id
+                                    ?: authResponse.data?.mongoId
                                 if (!userId.isNullOrEmpty()) {
                                     editor.putString("USER_ID", userId)
                                 }

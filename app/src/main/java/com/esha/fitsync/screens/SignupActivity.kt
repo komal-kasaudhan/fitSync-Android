@@ -94,14 +94,26 @@ class SignupActivity : AppCompatActivity() {
                                     Toast.LENGTH_SHORT
                                 ).show()
 
+                                com.esha.fitsync.data.AppCacheManager.clearAll()
+                                com.esha.fitsync.screens.fragments.WorkoutFragment.hasAutoOpenedBottomSheetThisSession = false
+
                                 val sharedPref =
                                     getSharedPreferences("FitSync", MODE_PRIVATE)
 
-                                sharedPref.edit()
-                                    .putString("TOKEN", authResponse.token)
-                                    .putString("USER_NAME", name)
-                                    .putString("USER_EMAIL", email)
-                                    .apply()
+                                val editor = sharedPref.edit()
+                                editor.clear()
+                                editor.putString("TOKEN", authResponse.token)
+                                editor.putString("USER_NAME", name)
+                                editor.putString("USER_EMAIL", email)
+
+                                val userId = authResponse.user?.id
+                                    ?: authResponse.user?.mongoId
+                                    ?: authResponse.data?.id
+                                    ?: authResponse.data?.mongoId
+                                if (!userId.isNullOrEmpty()) {
+                                    editor.putString("USER_ID", userId)
+                                }
+                                editor.apply()
 
                                 startActivity(
                                     Intent(

@@ -173,5 +173,6 @@ object AppCacheManager {
         cachedRecommendations = null
         prefs?.edit()?.clear()?.apply()
         com.esha.fitsync.data.repository.DailyTargetsRepository.clearCache()
+        com.esha.fitsync.screens.fragments.WorkoutFragment.hasAutoOpenedBottomSheetThisSession = false
     }
 }

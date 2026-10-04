@@ -110,6 +110,9 @@ class AnalysisActivity : AppCompatActivity() {
     }
 
     private fun navigateToHomeDashboard() {
+        val sharedPref = getSharedPreferences("FitSync", MODE_PRIVATE)
+        sharedPref.edit().putBoolean("NEEDS_ONBOARDING", false).apply()
+
         Toast.makeText(this, "Welcome to FitSync!", Toast.LENGTH_SHORT).show()
 
         val intent = Intent(this, MainActivity::class.java)

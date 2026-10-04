@@ -7,10 +7,10 @@
     android:layout_marginEnd="12dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="@color/surface"
-    app:cardCornerRadius="12dp"
+    app:cardBackgroundColor="#111827"
+    app:cardCornerRadius="16dp"
     app:cardElevation="0dp"
-    app:strokeColor="@color/border"
+    app:strokeColor="#1F2E3D"
     app:strokeWidth="1dp">
 
     <LinearLayout
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|end"
                 android:layout_margin="8dp"
-                android:background="@drawable/bg_badge_rounded"
+                android:background="@drawable/bg_badge_home"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="6dp"
                 android:paddingVertical="3dp">
@@ -45,14 +45,14 @@
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:src="@drawable/ic_star"
-                    app:tint="@color/tertiary" />
+                    app:tint="#FBBF24" />
 
                 <TextView
                     android:id="@+id/tvHomeGymRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
-                    android:textColor="@color/text_primary"
+                    android:textColor="#FFFFFF"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     tools:text="4.8" />
@@ -65,10 +65,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|start"
                 android:layout_margin="8dp"
-                android:background="@drawable/bg_badge_rounded"
+                android:background="@drawable/bg_badge_home"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="3dp"
-                android:textColor="@color/primary"
+                android:textColor="#00D4FF"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 tools:text="1.9 km away" />
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="@color/text_primary"
+                android:textColor="#FFFFFF"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="Iron Paradise Gym" />
@@ -99,7 +99,7 @@
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="@color/text_secondary"
+                android:textColor="#9CA3AF"
                 android:textSize="12sp"
                 tools:text="City Center, Bokaro" />
 
@@ -115,7 +115,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="@color/tertiary"
+                    android:textColor="#10B981"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     tools:text="₹199 / day" />
@@ -124,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Book →"
-                    android:textColor="@color/primary"
+                    android:textColor="#00D4FF"
                     android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>

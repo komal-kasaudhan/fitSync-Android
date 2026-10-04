@@ -521,13 +521,12 @@ class HomeFragment : Fragment() {
 
     private fun updateMealCheck(iv: ImageView?, isChecked: Boolean) {
         if (iv == null) return
-        val context = context ?: return
         if (isChecked) {
             iv.setImageResource(android.R.drawable.checkbox_on_background)
-            iv.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.primary))
+            iv.imageTintList = ColorStateList.valueOf(Color.parseColor("#00D4FF"))
         } else {
             iv.setImageResource(android.R.drawable.checkbox_off_background)
-            iv.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.text_secondary))
+            iv.imageTintList = ColorStateList.valueOf(Color.parseColor("#9CA3AF"))
         }
     }
 
@@ -538,7 +537,7 @@ class HomeFragment : Fragment() {
 
         val paintBg = Paint().apply {
             isAntiAlias = true
-            color = Color.parseColor("#334155")
+            color = Color.parseColor("#1F2E3D")
             style = Paint.Style.FILL
         }
         canvas.drawCircle(px / 2f, px / 2f, px / 2f, paintBg)
@@ -552,7 +551,7 @@ class HomeFragment : Fragment() {
 
         val paintText = Paint().apply {
             isAntiAlias = true
-            color = Color.parseColor("#F8FAFC")
+            color = Color.parseColor("#FFFFFF")
             textSize = px * 0.40f
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
             textAlign = Paint.Align.CENTER

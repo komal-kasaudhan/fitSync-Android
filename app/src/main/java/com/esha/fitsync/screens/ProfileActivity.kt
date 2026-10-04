@@ -11,6 +11,7 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -20,7 +21,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -34,7 +34,9 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -45,6 +47,7 @@ import java.io.FileOutputStream
 
 class ProfileActivity : AppCompatActivity() {
 
+    private lateinit var mainProfileLayout: View
     private lateinit var btnProfileBack: ImageView
     private lateinit var llProfileError: LinearLayout
     private lateinit var tvProfileErrorMessage: TextView
@@ -58,6 +61,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private lateinit var etProfileName: EditText
     private lateinit var etProfileEmail: EditText
+    private lateinit var tvPhonePrompt: TextView
     private lateinit var cardProfilePhone: MaterialCardView
     private lateinit var etProfilePhone: EditText
     private lateinit var tvPhoneError: TextView
@@ -87,6 +91,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        mainProfileLayout = findViewById(R.id.mainProfileLayout)
         btnProfileBack = findViewById(R.id.btnProfileBack)
         llProfileError = findViewById(R.id.llProfileError)
         tvProfileErrorMessage = findViewById(R.id.tvProfileErrorMessage)
@@ -100,6 +105,7 @@ class ProfileActivity : AppCompatActivity() {
 
         etProfileName = findViewById(R.id.etProfileName)
         etProfileEmail = findViewById(R.id.etProfileEmail)
+        tvPhonePrompt = findViewById(R.id.tvPhonePrompt)
         cardProfilePhone = findViewById(R.id.cardProfilePhone)
         etProfilePhone = findViewById(R.id.etProfilePhone)
         tvPhoneError = findViewById(R.id.tvPhoneError)
@@ -122,9 +128,15 @@ class ProfileActivity : AppCompatActivity() {
             showPhotoSourceDialog()
         }
 
-        etProfilePhone.doAfterTextChanged {
+        etProfilePhone.doAfterTextChanged { text ->
+            val value = text?.toString()?.trim() ?: ""
+            if (value.isEmpty()) {
+                tvPhonePrompt.visibility = View.VISIBLE
+            } else {
+                tvPhonePrompt.visibility = View.GONE
+            }
             tvPhoneError.visibility = View.GONE
-            cardProfilePhone.strokeColor = ContextCompat.getColor(this, R.color.border)
+            cardProfilePhone.strokeColor = Color.parseColor("#1F2E3D")
         }
 
         btnSaveProfile.setOnClickListener {
@@ -139,16 +151,33 @@ class ProfileActivity : AppCompatActivity() {
     private fun loadCachedData() {
         val prefs = getSharedPreferences("FitSync", Context.MODE_PRIVATE)
         val name = prefs.getString("USER_NAME", "") ?: ""
-        val email = prefs.getString("USER_EMAIL", "") ?: ""
+        var email = prefs.getString("USER_EMAIL", "") ?: ""
         val phone = prefs.getString("USER_PHONE", "") ?: ""
         val avatar = prefs.getString("USER_AVATAR", null)
+
+        // If email was not explicitly saved in prefs, attempt extraction from JWT token payload
+        if (email.isBlank()) {
+            val token = prefs.getString("TOKEN", null)
+            val extracted = extractEmailFromToken(token)
+            if (!extracted.isNullOrBlank()) {
+                email = extracted
+                prefs.edit().putString("USER_EMAIL", email).apply()
+            }
+        }
 
         lastLoadedName = name
         currentAvatarUrl = avatar
 
         if (name.isNotBlank()) etProfileName.setText(name)
         if (email.isNotBlank()) etProfileEmail.setText(email)
-        if (phone.isNotBlank()) etProfilePhone.setText(phone)
+
+        val clean10 = sanitize10DigitPhone(phone)
+        if (clean10.isNotEmpty()) {
+            etProfilePhone.setText(clean10)
+            tvPhonePrompt.visibility = View.GONE
+        } else {
+            tvPhonePrompt.visibility = View.VISIBLE
+        }
 
         displayAvatar(avatar, name)
     }
@@ -159,7 +188,18 @@ class ProfileActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.api.getUserProfile()
+                // Try PUT/GET api/user/profile first, fallback to api/auth/profile
+                val response = try {
+                    val resUser = RetrofitClient.api.getUserProfileAlt()
+                    if (resUser.isSuccessful && resUser.body() != null) {
+                        resUser
+                    } else {
+                        RetrofitClient.api.getUserProfile()
+                    }
+                } catch (_: Exception) {
+                    RetrofitClient.api.getUserProfile()
+                }
+
                 if (response.isSuccessful && response.body() != null) {
                     val root = response.body()!!
                     val userObj = if (root.has("user") && root.get("user").isJsonObject) {
@@ -205,14 +245,21 @@ class ProfileActivity : AppCompatActivity() {
 
         etProfileName.setText(name)
         etProfileEmail.setText(email)
-        etProfilePhone.setText(phone)
+
+        val clean10 = sanitize10DigitPhone(phone)
+        if (clean10.isNotEmpty()) {
+            etProfilePhone.setText(clean10)
+            tvPhonePrompt.visibility = View.GONE
+        } else {
+            tvPhonePrompt.visibility = View.VISIBLE
+        }
 
         // Cache loaded data
         val prefs = getSharedPreferences("FitSync", Context.MODE_PRIVATE)
         prefs.edit().apply {
             if (name.isNotBlank()) putString("USER_NAME", name)
             if (email.isNotBlank()) putString("USER_EMAIL", email)
-            if (phone.isNotBlank()) putString("USER_PHONE", phone)
+            if (clean10.isNotBlank()) putString("USER_PHONE", "+91$clean10")
             if (!avatar.isNullOrBlank()) putString("USER_AVATAR", avatar)
             apply()
         }
@@ -220,9 +267,34 @@ class ProfileActivity : AppCompatActivity() {
         displayAvatar(avatar, name)
     }
 
+    private fun sanitize10DigitPhone(rawPhone: String): String {
+        val digits = rawPhone.replace("[^0-9]".toRegex(), "")
+        return if (digits.length > 10 && digits.startsWith("91")) {
+            digits.substring(2)
+        } else if (digits.length >= 10) {
+            digits.takeLast(10)
+        } else {
+            digits
+        }
+    }
+
+    private fun extractEmailFromToken(token: String?): String? {
+        if (token.isNullOrBlank()) return null
+        return try {
+            val parts = token.split(".")
+            if (parts.size >= 2) {
+                val decodedBytes = Base64.decode(parts[1], Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP)
+                val payloadJson = String(decodedBytes, Charsets.UTF_8)
+                val obj = JsonParser.parseString(payloadJson).asJsonObject
+                obj.get("email")?.asString
+            } else null
+        } catch (_: Exception) {
+            null
+        }
+    }
+
     private fun displayAvatar(avatarUrl: String?, name: String) {
         val initialsBitmap = createInitialsBitmap(name.ifBlank { "User" })
-
         val initialsDrawable = android.graphics.drawable.BitmapDrawable(resources, initialsBitmap)
 
         if (!avatarUrl.isNullOrBlank()) {
@@ -313,31 +385,52 @@ class ProfileActivity : AppCompatActivity() {
             val reqBody = bytes.toRequestBody("image/jpeg".toMediaTypeOrNull())
             val part = MultipartBody.Part.createFormData("photo", "profile_${System.currentTimeMillis()}.jpg", reqBody)
 
-            // Try dedicated profile photo upload endpoint first
-            val res = try {
-                RetrofitClient.api.uploadProfilePhoto(part)
-            } catch (_: Exception) {
-                // Fallback to gym upload if profile endpoint does not exist
-                val gymRes = RetrofitClient.api.uploadGymPhoto(part)
-                if (gymRes.isSuccessful && gymRes.body() != null) {
-                    val url = gymRes.body()!!.url
-                    currentAvatarUrl = url
-                    getSharedPreferences("FitSync", Context.MODE_PRIVATE).edit()
-                        .putString("USER_AVATAR", url).apply()
-                    Toast.makeText(this@ProfileActivity, "Photo uploaded successfully", Toast.LENGTH_SHORT).show()
+            var uploadedUrl: String? = null
+            try {
+                val resUser = RetrofitClient.api.uploadProfilePhotoUserRoute(part)
+                if (resUser.isSuccessful && resUser.body() != null) {
+                    uploadedUrl = resUser.body()?.get("url")?.asString
+                        ?: resUser.body()?.get("avatar")?.asString
+                        ?: resUser.body()?.get("photo")?.asString
                 }
-                return
+            } catch (_: Exception) {}
+
+            if (uploadedUrl == null) {
+                try {
+                    val resAuth = RetrofitClient.api.uploadProfilePhoto(part)
+                    if (resAuth.isSuccessful && resAuth.body() != null) {
+                        uploadedUrl = resAuth.body()?.get("url")?.asString
+                            ?: resAuth.body()?.get("avatar")?.asString
+                            ?: resAuth.body()?.get("photo")?.asString
+                    }
+                } catch (_: Exception) {}
             }
 
-            if (res.isSuccessful && res.body() != null) {
-                val body = res.body()!!
-                val url = body.get("url")?.asString ?: body.get("avatar")?.asString
-                if (!url.isNullOrBlank()) {
-                    currentAvatarUrl = url
-                    getSharedPreferences("FitSync", Context.MODE_PRIVATE).edit()
-                        .putString("USER_AVATAR", url).apply()
-                }
-                Toast.makeText(this@ProfileActivity, "Photo uploaded successfully", Toast.LENGTH_SHORT).show()
+            if (uploadedUrl == null) {
+                try {
+                    val resAvatar = RetrofitClient.api.uploadUserAvatar(part)
+                    if (resAvatar.isSuccessful && resAvatar.body() != null) {
+                        uploadedUrl = resAvatar.body()?.get("url")?.asString
+                            ?: resAvatar.body()?.get("avatar")?.asString
+                            ?: resAvatar.body()?.get("photo")?.asString
+                    }
+                } catch (_: Exception) {}
+            }
+
+            if (uploadedUrl == null) {
+                try {
+                    val gymRes = RetrofitClient.api.uploadGymPhoto(part)
+                    if (gymRes.isSuccessful && gymRes.body() != null) {
+                        uploadedUrl = gymRes.body()?.url
+                    }
+                } catch (_: Exception) {}
+            }
+
+            if (!uploadedUrl.isNullOrBlank()) {
+                currentAvatarUrl = uploadedUrl
+                getSharedPreferences("FitSync", Context.MODE_PRIVATE).edit()
+                    .putString("USER_AVATAR", uploadedUrl).apply()
+                Snackbar.make(mainProfileLayout, "Photo uploaded successfully", Snackbar.LENGTH_SHORT).show()
             }
         } catch (_: Exception) {
             // Keep local cached photo
@@ -378,7 +471,7 @@ class ProfileActivity : AppCompatActivity() {
 
         val paintBg = Paint().apply {
             isAntiAlias = true
-            color = Color.parseColor("#334155") // border / surface_variant
+            color = Color.parseColor("#1F2E3D") // Workout/Nutrition border tone
             style = Paint.Style.FILL
         }
         canvas.drawCircle(px / 2f, px / 2f, px / 2f, paintBg)
@@ -392,7 +485,7 @@ class ProfileActivity : AppCompatActivity() {
 
         val paintText = Paint().apply {
             isAntiAlias = true
-            color = Color.parseColor("#F8FAFC") // text_primary
+            color = Color.parseColor("#FFFFFF") // Crisp white text
             textSize = px * 0.38f
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
             textAlign = Paint.Align.CENTER
@@ -405,7 +498,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun saveProfile() {
         val name = etProfileName.text.toString().trim()
-        val phone = etProfilePhone.text.toString().trim()
+        val phoneInput = etProfilePhone.text.toString().trim()
 
         if (name.isBlank()) {
             etProfileName.error = "Name cannot be empty"
@@ -413,47 +506,68 @@ class ProfileActivity : AppCompatActivity() {
             return
         }
 
-        // Validate Phone Number
-        val digitsOnly = phone.replace("[^0-9]".toRegex(), "")
-        if (phone.isNotEmpty() && digitsOnly.length != 10) {
+        // Validate 10-digit Phone Number (country code +91 default)
+        val digitsOnly = phoneInput.replace("[^0-9]".toRegex(), "")
+        if (phoneInput.isNotEmpty() && digitsOnly.length != 10) {
             tvPhoneError.text = "Please enter a valid 10-digit phone number"
             tvPhoneError.visibility = View.VISIBLE
-            cardProfilePhone.strokeColor = ContextCompat.getColor(this, R.color.error)
+            cardProfilePhone.strokeColor = Color.parseColor("#EF4444")
             etProfilePhone.requestFocus()
             return
         }
 
         tvPhoneError.visibility = View.GONE
-        cardProfilePhone.strokeColor = ContextCompat.getColor(this, R.color.border)
+        cardProfilePhone.strokeColor = Color.parseColor("#1F2E3D")
+
+        val formattedPhone = if (digitsOnly.length == 10) "+91$digitsOnly" else ""
 
         // 1. Immediately persist to SharedPreferences
         val prefs = getSharedPreferences("FitSync", Context.MODE_PRIVATE)
         prefs.edit().apply {
             putString("USER_NAME", name)
-            putString("USER_PHONE", phone)
+            putString("USER_PHONE", formattedPhone)
             if (!currentAvatarUrl.isNullOrBlank()) {
                 putString("USER_AVATAR", currentAvatarUrl)
             }
             apply()
         }
 
+        // Keep 10-digit number in the field and hide empty prompt if filled
+        if (digitsOnly.length == 10) {
+            etProfilePhone.setText(digitsOnly)
+            tvPhonePrompt.visibility = View.GONE
+        } else {
+            tvPhonePrompt.visibility = View.VISIBLE
+        }
+
         // 2. Notify cache and triggers
         AppCacheManager.notifyDataChanged()
 
-        // 3. Asynchronously call update endpoint
+        // 3. Asynchronously call update endpoint (PUT api/user/profile with fallback to api/auth/profile)
         lifecycleScope.launch {
             try {
-                val body = mutableMapOf("name" to name, "phone" to phone)
+                val body = mutableMapOf(
+                    "name" to name,
+                    "phone" to formattedPhone
+                )
                 currentAvatarUrl?.let { body["avatar"] = it }
-                RetrofitClient.api.updateUserProfile(body)
+
+                try {
+                    val resUser = RetrofitClient.api.updateUserProfileAlt(body)
+                    if (!resUser.isSuccessful) {
+                        RetrofitClient.api.updateUserProfile(body)
+                    }
+                } catch (_: Exception) {
+                    RetrofitClient.api.updateUserProfile(body)
+                }
             } catch (_: Exception) {
-                // Silent fallback: local data is already updated
+                // Silent fallback: local state is preserved
             }
         }
 
-        Toast.makeText(this, "Profile saved successfully", Toast.LENGTH_SHORT).show()
+        // 4. Show Snackbar and keep the value
+        Snackbar.make(mainProfileLayout, "Profile saved successfully", Snackbar.LENGTH_SHORT).show()
         setResult(RESULT_OK)
-        finish()
     }
 
     private fun showLogoutConfirmationDialog() {

@@ -225,9 +225,29 @@ interface ApiService {
         @Body body: Map<String, String>
     ): Response<com.google.gson.JsonObject>
 
+    @retrofit2.http.GET("api/user/profile")
+    suspend fun getUserProfileAlt(): Response<com.google.gson.JsonObject>
+
+    @retrofit2.http.PUT("api/user/profile")
+    suspend fun updateUserProfileAlt(
+        @Body body: Map<String, String>
+    ): Response<com.google.gson.JsonObject>
+
     @retrofit2.http.Multipart
     @POST("api/auth/profile/photo")
     suspend fun uploadProfilePhoto(
+        @retrofit2.http.Part photo: okhttp3.MultipartBody.Part
+    ): Response<com.google.gson.JsonObject>
+
+    @retrofit2.http.Multipart
+    @POST("api/user/profile/photo")
+    suspend fun uploadProfilePhotoUserRoute(
+        @retrofit2.http.Part photo: okhttp3.MultipartBody.Part
+    ): Response<com.google.gson.JsonObject>
+
+    @retrofit2.http.Multipart
+    @POST("api/user/avatar")
+    suspend fun uploadUserAvatar(
         @retrofit2.http.Part photo: okhttp3.MultipartBody.Part
     ): Response<com.google.gson.JsonObject>
 

@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_dark">
+    android:background="#071018">
 
     <!-- Top App Bar Layer -->
     <LinearLayout
         android:id="@+id/llHeaderBar"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:background="@color/bg_dark"
+        android:background="#071018"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp">
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="FitSync"
-            android:textColor="@color/text_primary"
+            android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -29,13 +29,13 @@
             android:id="@+id/btnProfile"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@color/surface_variant"
+            android:background="#111827"
             android:clickable="true"
             android:focusable="true"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_user"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-            app:strokeColor="@color/border"
+            app:strokeColor="#1F2E3D"
             app:strokeWidth="1dp" />
     </LinearLayout>
 
@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/llHeaderBar"
-        android:background="@color/border" />
+        android:background="#1F2E3D" />
 
     <!-- Swipe to Refresh & Scrollable Content -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -73,7 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:background="@color/surface"
+                    android:background="#111827"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingHorizontal="16dp"
@@ -86,7 +86,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Cannot reach server. Using cached data."
-                        android:textColor="@color/error"
+                        android:textColor="#EF4444"
                         android:textSize="12sp" />
 
                     <TextView
@@ -95,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:padding="4dp"
                         android:text="RETRY"
-                        android:textColor="@color/primary"
+                        android:textColor="#00D4FF"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -106,7 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Good Morning"
-                    android:textColor="@color/text_primary"
+                    android:textColor="#FFFFFF"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -115,10 +115,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:cardBackgroundColor="@color/surface"
-                    app:cardCornerRadius="12dp"
+                    app:cardBackgroundColor="#111827"
+                    app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
-                    app:strokeColor="@color/border"
+                    app:strokeColor="#1F2E3D"
                     app:strokeWidth="1dp">
 
                     <LinearLayout
@@ -135,7 +135,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Nutrition"
-                                android:textColor="@color/text_primary"
+                                android:textColor="#FFFFFF"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
@@ -145,11 +145,11 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
                                 android:text="0 / 2,000 kcal"
-                                android:textColor="@color/text_secondary"
+                                android:textColor="#9CA3AF"
                                 android:textSize="14sp" />
                         </RelativeLayout>
 
-                        <!-- Circular Progress Rings (Single Hue: Primary with tonal shades) -->
+                        <!-- Circular Progress Rings -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -176,9 +176,9 @@
                                         android:indeterminate="false"
                                         android:max="100"
                                         android:progress="0"
-                                        app:indicatorColor="@color/primary"
+                                        app:indicatorColor="#00D4FF"
                                         app:indicatorSize="54dp"
-                                        app:trackColor="@color/border"
+                                        app:trackColor="#1F2E3D"
                                         app:trackCornerRadius="3dp"
                                         app:trackThickness="5dp" />
 
@@ -188,7 +188,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerInParent="true"
                                         android:text="0%"
-                                        android:textColor="@color/text_primary"
+                                        android:textColor="#FFFFFF"
                                         android:textSize="12sp"
                                         android:textStyle="bold" />
                                 </RelativeLayout>
@@ -198,7 +198,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:text="Protein"
-                                    android:textColor="@color/text_secondary"
+                                    android:textColor="#9CA3AF"
                                     android:textSize="12sp" />
                             </LinearLayout>
 
@@ -221,9 +221,9 @@
                                         android:indeterminate="false"
                                         android:max="100"
                                         android:progress="0"
-                                        app:indicatorColor="@color/primary_variant"
+                                        app:indicatorColor="#36A8FF"
                                         app:indicatorSize="54dp"
-                                        app:trackColor="@color/border"
+                                        app:trackColor="#1F2E3D"
                                         app:trackCornerRadius="3dp"
                                         app:trackThickness="5dp" />
 
@@ -233,7 +233,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerInParent="true"
                                         android:text="0%"
-                                        android:textColor="@color/text_primary"
+                                        android:textColor="#FFFFFF"
                                         android:textSize="12sp"
                                         android:textStyle="bold" />
                                 </RelativeLayout>
@@ -243,7 +243,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:text="Carbs"
-                                    android:textColor="@color/text_secondary"
+                                    android:textColor="#9CA3AF"
                                     android:textSize="12sp" />
                             </LinearLayout>
 
@@ -266,9 +266,9 @@
                                         android:indeterminate="false"
                                         android:max="100"
                                         android:progress="0"
-                                        app:indicatorColor="@color/primary_light"
+                                        app:indicatorColor="#00D4FF"
                                         app:indicatorSize="54dp"
-                                        app:trackColor="@color/border"
+                                        app:trackColor="#1F2E3D"
                                         app:trackCornerRadius="3dp"
                                         app:trackThickness="5dp" />
 
@@ -278,7 +278,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerInParent="true"
                                         android:text="0%"
-                                        android:textColor="@color/text_primary"
+                                        android:textColor="#FFFFFF"
                                         android:textSize="12sp"
                                         android:textStyle="bold" />
                                 </RelativeLayout>
@@ -288,7 +288,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:text="Water"
-                                    android:textColor="@color/text_secondary"
+                                    android:textColor="#9CA3AF"
                                     android:textSize="12sp" />
                             </LinearLayout>
                         </LinearLayout>
@@ -313,7 +313,7 @@
                                     android:layout_width="16dp"
                                     android:layout_height="16dp"
                                     android:src="@android:drawable/checkbox_off_background"
-                                    app:tint="@color/text_secondary" />
+                                    app:tint="#9CA3AF" />
 
                                 <TextView
                                     android:id="@+id/tvLabelBreakfast"
@@ -321,7 +321,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="6dp"
                                     android:text="Breakfast"
-                                    android:textColor="@color/text_secondary"
+                                    android:textColor="#9CA3AF"
                                     android:textSize="12sp" />
                             </LinearLayout>
 
@@ -337,7 +337,7 @@
                                     android:layout_width="16dp"
                                     android:layout_height="16dp"
                                     android:src="@android:drawable/checkbox_off_background"
-                                    app:tint="@color/text_secondary" />
+                                    app:tint="#9CA3AF" />
 
                                 <TextView
                                     android:id="@+id/tvLabelLunch"
@@ -345,7 +345,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="6dp"
                                     android:text="Lunch"
-                                    android:textColor="@color/text_secondary"
+                                    android:textColor="#9CA3AF"
                                     android:textSize="12sp" />
                             </LinearLayout>
 
@@ -360,7 +360,7 @@
                                     android:layout_width="16dp"
                                     android:layout_height="16dp"
                                     android:src="@android:drawable/checkbox_off_background"
-                                    app:tint="@color/text_secondary" />
+                                    app:tint="#9CA3AF" />
 
                                 <TextView
                                     android:id="@+id/tvLabelDinner"
@@ -368,7 +368,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="6dp"
                                     android:text="Dinner"
-                                    android:textColor="@color/text_secondary"
+                                    android:textColor="#9CA3AF"
                                     android:textSize="12sp" />
                             </LinearLayout>
                         </LinearLayout>
@@ -381,11 +381,12 @@
                             android:layout_height="48dp"
                             android:layout_marginTop="16dp"
                             android:text="Manage nutrition →"
-                            android:textColor="@color/primary"
+                            android:textColor="#00D4FF"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            app:cornerRadius="12dp"
-                            app:strokeColor="@color/border" />
+                            app:cornerRadius="16dp"
+                            app:strokeColor="#1F2E3D"
+                            app:strokeWidth="1dp" />
 
                         <!-- Quick Actions Row: Add Meal & Scan Food -->
                         <LinearLayout
@@ -403,26 +404,29 @@
                                 android:ellipsize="end"
                                 android:maxLines="1"
                                 android:text="+ Add meal"
-                                android:textColor="@color/white"
+                                android:textColor="#071018"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
-                                app:backgroundTint="@color/primary"
-                                app:cornerRadius="12dp" />
+                                app:backgroundTint="#00D4FF"
+                                app:cornerRadius="16dp" />
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnScanFoodHome"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
                                 android:layout_width="0dp"
                                 android:layout_height="48dp"
                                 android:layout_marginStart="4dp"
                                 android:layout_weight="1"
+                                android:backgroundTint="#111827"
                                 android:ellipsize="end"
                                 android:maxLines="1"
                                 android:text="Scan food"
-                                android:textColor="@color/text_primary"
+                                android:textColor="#FFFFFF"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
-                                app:backgroundTint="@color/surface_variant"
-                                app:cornerRadius="12dp" />
+                                app:cornerRadius="16dp"
+                                app:strokeColor="#1F2E3D"
+                                app:strokeWidth="1dp" />
                         </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -432,10 +436,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:cardBackgroundColor="@color/surface"
-                    app:cardCornerRadius="12dp"
+                    app:cardBackgroundColor="#111827"
+                    app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
-                    app:strokeColor="@color/border"
+                    app:strokeColor="#1F2E3D"
                     app:strokeWidth="1dp">
 
                     <LinearLayout
@@ -447,18 +451,19 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Today's workout"
-                            android:textColor="@color/primary"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:text="TODAY'S WORKOUT"
+                            android:textColor="#36A8FF"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:letterSpacing="0.05" />
 
                         <TextView
                             android:id="@+id/tvHomeWorkoutTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="6dp"
                             android:text="Upper Body Power"
-                            android:textColor="@color/text_primary"
+                            android:textColor="#FFFFFF"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -468,7 +473,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="45m • 420 kcal"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="#9CA3AF"
                             android:textSize="12sp" />
 
                         <RelativeLayout
@@ -480,7 +485,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Progress"
-                                android:textColor="@color/text_secondary"
+                                android:textColor="#9CA3AF"
                                 android:textSize="12sp" />
 
                             <TextView
@@ -489,7 +494,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
                                 android:text="0/0 exercises"
-                                android:textColor="@color/text_primary"
+                                android:textColor="#FFFFFF"
                                 android:textSize="12sp" />
                         </RelativeLayout>
 
@@ -501,8 +506,8 @@
                             android:layout_marginTop="6dp"
                             android:max="100"
                             android:progress="0"
-                            android:progressBackgroundTint="@color/border"
-                            android:progressTint="@color/primary" />
+                            android:progressBackgroundTint="#1F2E3D"
+                            android:progressTint="#00D4FF" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnContinueWorkoutHome"
@@ -510,11 +515,11 @@
                             android:layout_height="48dp"
                             android:layout_marginTop="16dp"
                             android:text="Start workout"
-                            android:textColor="@color/white"
+                            android:textColor="#071018"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            app:backgroundTint="@color/primary"
-                            app:cornerRadius="12dp" />
+                            app:backgroundTint="#00D4FF"
+                            app:cornerRadius="16dp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -529,7 +534,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Gyms near you"
-                        android:textColor="@color/text_primary"
+                        android:textColor="#FFFFFF"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -540,7 +545,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:text="See all →"
-                        android:textColor="@color/primary"
+                        android:textColor="#00D4FF"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </RelativeLayout>
@@ -570,7 +575,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:background="@color/surface"
+                    android:background="#111827"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="20dp"
@@ -580,7 +585,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="No gyms within 5 km"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="#9CA3AF"
                         android:textSize="14sp" />
 
                     <com.google.android.material.button.MaterialButton
@@ -590,7 +595,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="See all"
-                        android:textColor="@color/primary"
+                        android:textColor="#00D4FF"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -601,7 +606,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:background="@color/surface"
+                    android:background="#111827"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="20dp"
@@ -612,7 +617,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="Enable location to find gyms near you"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="#9CA3AF"
                         android:textSize="14sp" />
 
                     <com.google.android.material.button.MaterialButton
@@ -621,11 +626,11 @@
                         android:layout_height="48dp"
                         android:layout_marginTop="12dp"
                         android:text="Enable location"
-                        android:textColor="@color/white"
+                        android:textColor="#071018"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        app:backgroundTint="@color/primary"
-                        app:cornerRadius="12dp" />
+                        app:backgroundTint="#00D4FF"
+                        app:cornerRadius="16dp" />
                 </LinearLayout>
 
             </LinearLayout>

@@ -2,16 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainProfileLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_dark">
+    android:background="#071018">
 
     <!-- Top App Bar -->
     <LinearLayout
         android:id="@+id/llProfileTopBar"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:background="@color/bg_dark"
+        android:background="#071018"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp">
@@ -25,7 +26,7 @@
             android:focusable="true"
             android:padding="6dp"
             android:src="@drawable/arrow_back"
-            app:tint="@color/text_primary" />
+            app:tint="#FFFFFF" />
 
         <TextView
             android:layout_width="0dp"
@@ -33,7 +34,7 @@
             android:layout_marginStart="12dp"
             android:layout_weight="1"
             android:text="Profile"
-            android:textColor="@color/text_primary"
+            android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -44,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/llProfileTopBar"
-        android:background="@color/border" />
+        android:background="#1F2E3D" />
 
     <!-- Error Banner with Retry -->
     <LinearLayout
@@ -52,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/profileHeaderDivider"
-        android:background="@color/surface"
+        android:background="#111827"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
@@ -65,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Could not load latest profile"
-            android:textColor="@color/error"
+            android:textColor="#EF4444"
             android:textSize="12sp" />
 
         <com.google.android.material.button.MaterialButton
@@ -74,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:text="Retry"
-            android:textColor="@color/primary"
+            android:textColor="#00D4FF"
             android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -87,8 +88,8 @@
         android:layout_below="@id/llProfileError"
         android:visibility="gone"
         app:shimmer_auto_start="true"
-        app:shimmer_base_color="@color/shimmer_base"
-        app:shimmer_highlight_color="@color/shimmer_highlight">
+        app:shimmer_base_color="#111827"
+        app:shimmer_highlight_color="#1F2E3D">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,31 +101,31 @@
             <View
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/bg_action_clickable_pill" />
+                android:background="@drawable/bg_shimmer_placeholder_dark" />
 
             <View
                 android:layout_width="120dp"
                 android:layout_height="24dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/bg_action_clickable_pill" />
+                android:background="@drawable/bg_shimmer_placeholder_dark" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginTop="32dp"
-                android:background="@drawable/bg_action_clickable_pill" />
+                android:background="@drawable/bg_shimmer_placeholder_dark" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/bg_action_clickable_pill" />
+                android:background="@drawable/bg_shimmer_placeholder_dark" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/bg_action_clickable_pill" />
+                android:background="@drawable/bg_shimmer_placeholder_dark" />
 
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
@@ -160,11 +161,11 @@
                         android:id="@+id/ivProfilePhoto"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:background="@color/surface"
+                        android:background="#111827"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_user"
                         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-                        app:strokeColor="@color/border"
+                        app:strokeColor="#1F2E3D"
                         app:strokeWidth="2dp" />
 
                     <ProgressBar
@@ -173,7 +174,7 @@
                         android:layout_height="32dp"
                         android:layout_gravity="center"
                         android:indeterminate="true"
-                        android:indeterminateTint="@color/primary"
+                        android:indeterminateTint="#00D4FF"
                         android:visibility="gone" />
                 </FrameLayout>
 
@@ -184,7 +185,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Change photo"
-                    android:textColor="@color/primary"
+                    android:textColor="#00D4FF"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -196,7 +197,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="Name"
-                android:textColor="@color/text_secondary"
+                android:textColor="#9CA3AF"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -204,10 +205,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="6dp"
-                app:cardBackgroundColor="@color/surface"
-                app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="#111827"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:strokeColor="@color/border"
+                app:strokeColor="#1F2E3D"
                 app:strokeWidth="1dp">
 
                 <EditText
@@ -221,8 +222,8 @@
                     android:inputType="textPersonName"
                     android:maxLines="1"
                     android:paddingHorizontal="16dp"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_secondary"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#6B7280"
                     android:textSize="14sp" />
             </com.google.android.material.card.MaterialCardView>
 
@@ -232,7 +233,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Email"
-                android:textColor="@color/text_secondary"
+                android:textColor="#9CA3AF"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -240,10 +241,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="6dp"
-                app:cardBackgroundColor="@color/surface"
-                app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="#111827"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:strokeColor="@color/border"
+                app:strokeColor="#1F2E3D"
                 app:strokeWidth="1dp">
 
                 <EditText
@@ -252,53 +253,100 @@
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:clickable="false"
-                    android:focusable="false"
+                    android:cursorVisible="false"
                     android:drawableStart="@drawable/ic_mail"
                     android:drawablePadding="12dp"
+                    android:focusable="false"
                     android:hint="Email address"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:paddingHorizontal="16dp"
-                    android:textColor="@color/text_secondary"
-                    android:textColorHint="@color/text_secondary"
+                    android:textColor="#9CA3AF"
+                    android:textColorHint="#6B7280"
                     android:textSize="14sp" />
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Editable Phone -->
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Phone Number Header with Prompt -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Phone Number"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Phone Number"
+                    android:textColor="#9CA3AF"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvPhonePrompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add your phone number"
+                    android:textColor="#00D4FF"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+            </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardProfilePhone"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="6dp"
-                app:cardBackgroundColor="@color/surface"
-                app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="#111827"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:strokeColor="@color/border"
+                app:strokeColor="#1F2E3D"
                 app:strokeWidth="1dp">
 
-                <EditText
-                    android:id="@+id/etProfilePhone"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@null"
-                    android:drawableStart="@drawable/ic_call"
-                    android:drawablePadding="12dp"
-                    android:hint="10-digit phone number"
-                    android:inputType="phone"
-                    android:maxLines="1"
-                    android:paddingHorizontal="16dp"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_secondary"
-                    android:textSize="14sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/ic_call"
+                        app:tint="#9CA3AF" />
+
+                    <TextView
+                        android:id="@+id/tvCountryCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="+91"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="20dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="#1F2E3D" />
+
+                    <EditText
+                        android:id="@+id/etProfilePhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:hint="10-digit number"
+                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:paddingEnd="16dp"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#6B7280"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
@@ -307,7 +355,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Please enter a valid 10-digit phone number"
-                android:textColor="@color/error"
+                android:textColor="#EF4444"
                 android:textSize="12sp"
                 android:visibility="gone" />
 
@@ -315,28 +363,30 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveProfile"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="52dp"
                 android:layout_marginTop="32dp"
                 android:text="Save"
-                android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textColor="#071018"
+                android:textSize="15sp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/primary"
-                app:cornerRadius="12dp" />
+                app:backgroundTint="#00D4FF"
+                app:cornerRadius="16dp" />
 
             <!-- Log Out Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLogoutProfile"
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="52dp"
                 android:layout_marginTop="16dp"
+                android:backgroundTint="#111827"
                 android:text="Log out"
-                android:textColor="@color/error"
-                android:textSize="14sp"
+                android:textColor="#EF4444"
+                android:textSize="15sp"
                 android:textStyle="bold"
-                app:cornerRadius="12dp"
-                app:strokeColor="@color/border" />
+                app:cornerRadius="16dp"
+                app:strokeColor="#1F2E3D"
+                app:strokeWidth="1dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

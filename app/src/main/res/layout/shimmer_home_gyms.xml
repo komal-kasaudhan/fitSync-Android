@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:shimmer_auto_start="true"
-    app:shimmer_base_color="@color/shimmer_base"
-    app:shimmer_highlight_color="@color/shimmer_highlight">
+    app:shimmer_base_color="#111827"
+    app:shimmer_highlight_color="#1F2E3D">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -18,10 +18,10 @@
             android:layout_width="240dp"
             android:layout_height="200dp"
             android:layout_marginEnd="12dp"
-            app:cardBackgroundColor="@color/surface"
-            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="#111827"
+            app:cardCornerRadius="16dp"
             app:cardElevation="0dp"
-            app:strokeColor="@color/border"
+            app:strokeColor="#1F2E3D"
             app:strokeWidth="1dp" />
 
         <!-- Placeholder 2 -->
@@ -29,20 +29,21 @@
             android:layout_width="240dp"
             android:layout_height="200dp"
             android:layout_marginEnd="12dp"
-            app:cardBackgroundColor="@color/surface"
-            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="#111827"
+            app:cardCornerRadius="16dp"
             app:cardElevation="0dp"
-            app:strokeColor="@color/border"
+            app:strokeColor="#1F2E3D"
             app:strokeWidth="1dp" />
 
         <!-- Placeholder 3 -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="240dp"
             android:layout_height="200dp"
-            app:cardBackgroundColor="@color/surface"
-            app:cardCornerRadius="12dp"
+            android:layout_marginEnd="12dp"
+            app:cardBackgroundColor="#111827"
+            app:cardCornerRadius="16dp"
             app:cardElevation="0dp"
-            app:strokeColor="@color/border"
+            app:strokeColor="#1F2E3D"
             app:strokeWidth="1dp" />
 
     </LinearLayout>

@@ -100,6 +100,7 @@ class SignupActivity : AppCompatActivity() {
                                 sharedPref.edit()
                                     .putString("TOKEN", authResponse.token)
                                     .putString("USER_NAME", name)
+                                    .putString("USER_EMAIL", email)
                                     .apply()
 
                                 startActivity(

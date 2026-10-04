@@ -89,6 +89,7 @@ class LoginActivity : AppCompatActivity() {
 
                                 val editor = sharedPref.edit()
                                 editor.putString("TOKEN", authResponse.token)
+                                editor.putString("USER_EMAIL", authResponse.user?.email ?: email)
 
                                 // Roles list extraction
                                 val rolesList = authResponse.roles.ifEmpty {

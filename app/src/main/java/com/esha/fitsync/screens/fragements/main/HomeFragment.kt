@@ -48,6 +48,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import kotlinx.coroutines.launch
 import java.util.Calendar
+import java.util.Locale
 
 class HomeFragment : Fragment() {
 
@@ -439,6 +440,46 @@ class HomeFragment : Fragment() {
             updateMealCheck(ivCheckBreakfast, eatenCal > 0)
             updateMealCheck(ivCheckLunch, eatenCal > 600)
             updateMealCheck(ivCheckDinner, eatenCal > 1200)
+
+            // Synchronize with DailyTargetsRepository so all screens use one data source
+            com.esha.fitsync.data.repository.DailyTargetsRepository.updateNutrition(
+                proteinConsumed = pConsumed,
+                proteinTarget = pTarget,
+                waterConsumedLiters = wConsumed,
+                waterTargetLiters = wTarget,
+                caloriesConsumed = eatenCal,
+                caloriesTarget = targetCalVal
+            )
+
+            android.util.Log.d(
+                "FitSyncSync",
+                "Home Screen -> Protein: ${pConsumed.toInt()}/${pTarget.toInt()}g (${pPct}%), Water: ${String.format(Locale.US, "%.1f/%.1fL", wConsumed, wTarget)} (${wPct}%)"
+            )
+        } else {
+            val cached = com.esha.fitsync.data.repository.DailyTargetsRepository.getCachedTargets()
+            val pConsumed = cached.proteinConsumed
+            val pTarget = if (cached.proteinTarget > 0) cached.proteinTarget else 120.0
+            val pPct = cached.proteinPercent
+            pbHomeProtein?.setProgressCompat(pPct, false)
+            tvHomeProteinPercent?.text = "$pPct%"
+
+            val wConsumed = cached.waterConsumedLiters
+            val wTarget = if (cached.waterTargetLiters > 0) cached.waterTargetLiters else 3.0
+            val wPct = cached.waterPercent
+            pbHomeWater?.setProgressCompat(wPct, false)
+            tvHomeWaterPercent?.text = "$wPct%"
+
+            android.util.Log.d(
+                "FitSyncSync",
+                "Home Screen (Cached) -> Protein: ${pConsumed.toInt()}/${pTarget.toInt()}g (${pPct}%), Water: ${String.format(Locale.US, "%.1f/%.1fL", wConsumed, wTarget)} (${wPct}%)"
+            )
+        }
+
+        val weekly = summary.weeklyWorkout
+        if (weekly != null) {
+            val sDone = weekly.sessionsCompleted
+            val sPlan = if (weekly.sessionsPlanned > 0) weekly.sessionsPlanned else 5
+            com.esha.fitsync.data.repository.DailyTargetsRepository.updateWeeklyGoal(sDone, sPlan)
         }
 
         // 3. Today's Workout Card

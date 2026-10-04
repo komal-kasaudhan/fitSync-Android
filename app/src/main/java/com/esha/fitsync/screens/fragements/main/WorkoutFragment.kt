@@ -83,9 +83,15 @@ class WorkoutFragment : Fragment() {
             loadWorkoutPlanContent()
         }
 
+        // Instantly display cached targets to prevent blank values
+        val cachedTargets = com.esha.fitsync.data.repository.DailyTargetsRepository.getCachedTargets()
+        bindDailyTargets(cachedTargets)
+
         viewLifecycleOwner.lifecycleScope.launch {
             com.esha.fitsync.data.AppCacheManager.refreshTrigger.collect {
                 if (isAdded && _binding != null) {
+                    val freshCached = com.esha.fitsync.data.repository.DailyTargetsRepository.getCachedTargets()
+                    bindDailyTargets(freshCached)
                     fetchRealWorkoutPlan()
                 }
             }
@@ -95,6 +101,8 @@ class WorkoutFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         if (isAdded && _binding != null) {
+            val freshCached = com.esha.fitsync.data.repository.DailyTargetsRepository.getCachedTargets()
+            bindDailyTargets(freshCached)
             fetchRealWorkoutPlan()
         }
     }
@@ -207,6 +215,12 @@ class WorkoutFragment : Fragment() {
                     binding.tvCompletionValue.text = "${stats.weekCompletionPercent}%"
                     binding.pbOverallProgress.progress = stats.weightProgressPercent.coerceIn(0, 100)
                     binding.tvOverallProgressText.text = "${stats.weightProgressPercent}%"
+
+                    val sDone = stats.weeklyStreak?.weeklySessionsCompleted ?: 0
+                    val sPlan = if ((stats.weeklyStreak?.weeklySessionsPlanned ?: 0) > 0) {
+                        stats.weeklyStreak!!.weeklySessionsPlanned
+                    } else 5
+                    com.esha.fitsync.data.repository.DailyTargetsRepository.updateWeeklyGoal(sDone, sPlan)
                 }
 
                 // 2. Feature E: Today's Workout
@@ -267,37 +281,64 @@ class WorkoutFragment : Fragment() {
                     setupAvailableChips(binding.cgAvailableEquipment, userEquip)
                 }
 
-                // 5. Feature H: Daily Target Overview
-                val targetsRes = RetrofitClient.api.getTargetsOverview()
-                if (isAdded && _binding != null && targetsRes.isSuccessful && targetsRes.body() != null) {
-                    val overview = targetsRes.body()!!
-                    val goal = overview.weeklyGoal
-                    val sDone = goal?.sessionsDone ?: 0
-                    val sPlan = goal?.sessionsPlanned ?: 5
-                    binding.tvWeeklyGoalText.text = "$sDone/$sPlan days"
-                    binding.pbWeeklyGoal.progress = goal?.sessionsPercent?.coerceIn(0, 100) ?: 0
-
-                    val prot = overview.todayProtein
-                    binding.tvProteinText.text = "${prot?.consumed ?: 0}/${prot?.target ?: 100}g"
-                    binding.pbProtein.progress = prot?.percent?.coerceIn(0, 100) ?: 0
-
-                    val wat = overview.todayWater
-                    val wCurrL = (wat?.consumed ?: 0) / 1000.0
-                    val wTargL = (wat?.target ?: 2500) / 1000.0
-                    binding.tvWaterText.text = String.format(Locale.US, "%.1f/%.1fL", wCurrL, wTargL)
-                    binding.pbWater.progress = wat?.percent?.coerceIn(0, 100) ?: 0
-                }
+                // 5. Feature H: Daily Target Overview (from unified DailyTargetsRepository using getTodayNutrition)
+                val todayStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+                val targets = com.esha.fitsync.data.repository.DailyTargetsRepository.fetchDailyNutrition(todayStr)
+                bindDailyTargets(targets)
 
                 // 6. Dynamic AI Nutrition/Workout Insight
-                val todayStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
                 fetchDynamicInsight(todayStr)
 
             } catch (e: Exception) {
                 android.util.Log.e("FITSYNC_WORKOUT", "Error fetching workout data", e)
+                val cached = com.esha.fitsync.data.repository.DailyTargetsRepository.getCachedTargets()
+                bindDailyTargets(cached.copy(isFromCache = true))
             } finally {
                 _binding?.srlWorkoutRefresh?.isRefreshing = false
             }
         }
+    }
+
+    private fun bindDailyTargets(targets: com.esha.fitsync.data.repository.DailyTargetsData) {
+        val b = _binding ?: return
+
+        // 1. Weekly Goal: sessions done / planned
+        val sDone = targets.weeklySessionsDone
+        val sPlan = if (targets.weeklySessionsPlanned > 0) targets.weeklySessionsPlanned else 5
+        val weeklyPct = targets.weeklyGoalPercent
+        b.tvWeeklyGoalText.text = "$sDone/$sPlan days"
+        b.pbWeeklyGoal.max = 100
+        b.pbWeeklyGoal.progress = weeklyPct
+
+        // 2. Protein: consumed / target
+        val pCurr = targets.proteinConsumed.toInt()
+        val pTarg = if (targets.proteinTarget > 0) targets.proteinTarget.toInt() else 120
+        val proteinPct = targets.proteinPercent
+        b.tvProteinText.text = "${pCurr}/${pTarg}g"
+        b.pbProtein.max = 100
+        b.pbProtein.progress = proteinPct
+
+        // 3. Water: consumed / target
+        val wCurr = targets.waterConsumedLiters
+        val wTarg = if (targets.waterTargetLiters > 0) targets.waterTargetLiters else 3.0
+        val waterPct = targets.waterPercent
+        b.tvWaterText.text = String.format(Locale.US, "%.1f/%.1fL", wCurr, wTarg)
+        b.pbWater.max = 100
+        b.pbWater.progress = waterPct
+
+        // 4. Offline note
+        if (targets.isFromCache) {
+            b.tvDailyTargetsSyncStatus.text = "Can't reach server (showing cached data)"
+            b.tvDailyTargetsSyncStatus.visibility = View.VISIBLE
+        } else {
+            b.tvDailyTargetsSyncStatus.visibility = View.GONE
+        }
+
+        // 5. Verify by logging with tag FitSyncSync
+        android.util.Log.d(
+            "FitSyncSync",
+            "Workout Screen -> Protein: ${pCurr}/${pTarg}g (${proteinPct}%), Water: ${String.format(Locale.US, "%.1f/%.1fL", wCurr, wTarg)} (${waterPct}%), Weekly Goal: $sDone/$sPlan days (${weeklyPct}%)"
+        )
     }
 
     private fun triggerGenerateAiPlan() {

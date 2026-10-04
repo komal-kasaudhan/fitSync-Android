@@ -136,6 +136,12 @@ class NutritionActivity : AppCompatActivity() {
         initViews()
         setupListeners()
         loadDashboardData()
+
+        lifecycleScope.launch {
+            com.esha.fitsync.data.AppCacheManager.refreshTrigger.collect {
+                loadDashboardData()
+            }
+        }
     }
 
     override fun onResume() {
@@ -337,6 +343,21 @@ class NutritionActivity : AppCompatActivity() {
                         pbWater.progress = ((it.water.current / wTarg) * 100).toInt().coerceIn(0, 100)
 
                         updateTimelineMeals(it.mealsLogged)
+
+                        // Synchronize to unified DailyTargetsRepository
+                        com.esha.fitsync.data.repository.DailyTargetsRepository.updateNutrition(
+                            proteinConsumed = it.protein.current,
+                            proteinTarget = if (it.protein.target > 0) it.protein.target else 120.0,
+                            waterConsumedLiters = it.water.current,
+                            waterTargetLiters = if (it.water.target > 0) it.water.target else 3.0,
+                            caloriesConsumed = eaten,
+                            caloriesTarget = targetCal
+                        )
+
+                        android.util.Log.d(
+                            "FitSyncSync",
+                            "Nutrition Screen -> Protein: ${pCurr}/${pTarg}g, Water: $formattedWater"
+                        )
                     }
                 }
 
@@ -351,6 +372,23 @@ class NutritionActivity : AppCompatActivity() {
 
             } catch (e: Exception) {
                 android.util.Log.e("FITSYNC_NETWORK", "Exception in loadDashboardData", e)
+                val cached = com.esha.fitsync.data.repository.DailyTargetsRepository.getCachedTargets()
+                val pCurr = cached.proteinConsumed.toInt()
+                val pTarg = if (cached.proteinTarget > 0) cached.proteinTarget.toInt() else 120
+                tvProteinVal.text = "${pCurr}/${pTarg}g"
+                pbProtein.max = 100
+                pbProtein.progress = cached.proteinPercent
+
+                val formattedWater = String.format(Locale.US, "%.1f/%.1fL", cached.waterConsumedLiters, cached.waterTargetLiters)
+                tvWaterVal.text = formattedWater
+                tvHydrationProgress.text = formattedWater
+                pbWater.max = 100
+                pbWater.progress = cached.waterPercent
+
+                android.util.Log.d(
+                    "FitSyncSync",
+                    "Nutrition Screen (Cached) -> Protein: ${pCurr}/${pTarg}g, Water: $formattedWater"
+                )
             } finally {
                 srlNutritionRefresh.isRefreshing = false
             }

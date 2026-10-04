@@ -477,34 +477,53 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Daily Targets" android:textColor="@color/white" android:textStyle="bold" android:textSize="16sp" android:layout_marginBottom="16dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Daily Targets"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvDailyTargetsSyncStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Can't reach server (showing cached data)"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        android:visibility="gone" />
+                </LinearLayout>
 
                 <!-- Item 1: Weekly Goal -->
                 <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="6dp">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Weekly Goal" android:textColor="#9CA3AF" android:textSize="13sp"/>
-                    <!-- ✅ CHANGED: Standard TextView ID mapping for text labels -->
-                    <TextView android:id="@+id/tvWeeklyGoalText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="3/5 days" android:textColor="@color/white" android:textStyle="bold" android:textSize="13sp"/>
+                    <TextView android:id="@+id/tvWeeklyGoalText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="--/-- days" android:textColor="@color/white" android:textStyle="bold" android:textSize="13sp"/>
                 </RelativeLayout>
-                <!-- ✅ CHANGED: Assigned unique ID to the real ProgressBar -->
-                <ProgressBar android:id="@+id/pbWeeklyGoal" android:layout_width="match_parent" android:layout_height="4dp" style="?android:attr/progressBarStyleHorizontal" android:progress="60" android:max="100" app:indicatorColor="#19F5B0" app:trackColor="#1F2E3D" android:layout_marginBottom="16dp"/>
+                <ProgressBar android:id="@+id/pbWeeklyGoal" android:layout_width="match_parent" android:layout_height="4dp" style="?android:attr/progressBarStyleHorizontal" android:progress="0" android:max="100" app:indicatorColor="#19F5B0" app:trackColor="#1F2E3D" android:layout_marginBottom="16dp"/>
 
                 <!-- Item 2: Protein -->
                 <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="6dp">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Protein" android:textColor="#9CA3AF" android:textSize="13sp"/>
-                    <!-- ✅ CHANGED: Standard TextView ID mapping for text labels -->
-                    <TextView android:id="@+id/tvProteinText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="80/150g" android:textColor="@color/white" android:textStyle="bold" android:textSize="13sp"/>
+                    <TextView android:id="@+id/tvProteinText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="--/--g" android:textColor="@color/white" android:textStyle="bold" android:textSize="13sp"/>
                 </RelativeLayout>
-                <!-- ✅ CHANGED: Assigned unique ID to the real ProgressBar -->
-                <ProgressBar android:id="@+id/pbProtein" android:layout_width="match_parent" android:layout_height="4dp" style="?android:attr/progressBarStyleHorizontal" android:progress="53" android:max="100" app:indicatorColor="#36A8FF" app:trackColor="#1F2E3D" android:layout_marginBottom="16dp"/>
+                <ProgressBar android:id="@+id/pbProtein" android:layout_width="match_parent" android:layout_height="4dp" style="?android:attr/progressBarStyleHorizontal" android:progress="0" android:max="100" app:indicatorColor="#36A8FF" app:trackColor="#1F2E3D" android:layout_marginBottom="16dp"/>
 
                 <!-- Item 3: Water -->
                 <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="6dp">
                     <TextView  android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Water" android:textColor="#9CA3AF" android:textSize="13sp"/>
-                    <!-- ✅ CHANGED: Standard TextView ID mapping for text labels -->
-                    <TextView android:id="@+id/tvWaterText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="2/3L" android:textColor="@color/white" android:textStyle="bold" android:textSize="13sp"/>
+                    <TextView android:id="@+id/tvWaterText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="--/--L" android:textColor="@color/white" android:textStyle="bold" android:textSize="13sp"/>
                 </RelativeLayout>
 
-                <ProgressBar android:id="@+id/pbWater" android:layout_width="match_parent" android:layout_height="4dp" style="?android:attr/progressBarStyleHorizontal" android:progress="66" android:max="100" app:indicatorColor="#00D4FF" app:trackColor="#1F2E3D"/>
+                <ProgressBar android:id="@+id/pbWater" android:layout_width="match_parent" android:layout_height="4dp" style="?android:attr/progressBarStyleHorizontal" android:progress="0" android:max="100" app:indicatorColor="#00D4FF" app:trackColor="#1F2E3D"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

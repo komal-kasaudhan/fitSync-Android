@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 
 data class PreferencePayload(
-    @SerializedName("userId") val userId: String,
+    @SerializedName("userId") val userId: String? = null,
     @SerializedName("daysPerWeek") val daysPerWeek: Int,
     @SerializedName("specificDays") val specificDays: List<String>,
     @SerializedName("preferredDurationMinutes") val preferredDurationMinutes: Int,

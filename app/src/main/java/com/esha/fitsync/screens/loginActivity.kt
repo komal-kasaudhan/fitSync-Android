@@ -87,9 +87,23 @@ class LoginActivity : AppCompatActivity() {
                                 val sharedPref =
                                     getSharedPreferences("FitSync", MODE_PRIVATE)
 
+                                val previousEmail = sharedPref.getString("USER_EMAIL", null)
+                                val newEmail = authResponse.user?.email ?: email
+
+                                if (previousEmail != null && !previousEmail.equals(newEmail, ignoreCase = true)) {
+                                    sharedPref.edit().clear().apply()
+                                    com.esha.fitsync.data.AppCacheManager.clearAll()
+                                    com.esha.fitsync.screens.fragments.WorkoutFragment.hasAutoOpenedBottomSheetThisSession = false
+                                }
+
                                 val editor = sharedPref.edit()
                                 editor.putString("TOKEN", authResponse.token)
-                                editor.putString("USER_EMAIL", authResponse.user?.email ?: email)
+                                editor.putString("USER_EMAIL", newEmail)
+
+                                val userId = authResponse.user?.id ?: authResponse.data?.id
+                                if (!userId.isNullOrEmpty()) {
+                                    editor.putString("USER_ID", userId)
+                                }
 
                                 // Roles list extraction
                                 val rolesList = authResponse.roles.ifEmpty {

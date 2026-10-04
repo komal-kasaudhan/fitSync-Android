@@ -52,6 +52,10 @@ class WorkoutFragment : Fragment() {
     private var snapHelperAttached = false
     private var weeklyPlanAdapter: WeeklyPlanAdapter? = null
 
+    companion object {
+        var hasAutoOpenedBottomSheetThisSession = false
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,28 +75,19 @@ class WorkoutFragment : Fragment() {
         setupRecyclerView()
         setupListeners()
 
-        val sharedPreferences = requireActivity().getSharedPreferences("FitSync", Context.MODE_PRIVATE)
-        val isFirstTime = sharedPreferences.getBoolean("IS_FIRST_TIME_WORKOUT", false)
-        val forceLoadDashboard = arguments?.getBoolean("FORCE_LOAD_DASHBOARD", false) ?: false
-
-        if (isFirstTime && !forceLoadDashboard) {
-            val bottomSheet = CreateWorkoutPlanBottomSheet(workoutViewModel)
-            bottomSheet.isCancelable = false
-            bottomSheet.show(childFragmentManager, "CreateWorkoutPlanBottomSheet")
-        } else {
-            loadWorkoutPlanContent()
-        }
-
         // Instantly display cached targets to prevent blank values
         val cachedTargets = com.esha.fitsync.data.repository.DailyTargetsRepository.getCachedTargets()
         bindDailyTargets(cachedTargets)
+
+        // Decide plan status dynamically from server response instead of local flags
+        checkAndLoadWorkoutPlan()
 
         viewLifecycleOwner.lifecycleScope.launch {
             com.esha.fitsync.data.AppCacheManager.refreshTrigger.collect {
                 if (isAdded && _binding != null) {
                     val freshCached = com.esha.fitsync.data.repository.DailyTargetsRepository.getCachedTargets()
                     bindDailyTargets(freshCached)
-                    fetchRealWorkoutPlan()
+                    checkAndLoadWorkoutPlan()
                 }
             }
         }
@@ -103,7 +98,7 @@ class WorkoutFragment : Fragment() {
         if (isAdded && _binding != null) {
             val freshCached = com.esha.fitsync.data.repository.DailyTargetsRepository.getCachedTargets()
             bindDailyTargets(freshCached)
-            fetchRealWorkoutPlan()
+            checkAndLoadWorkoutPlan()
         }
     }
 
@@ -123,7 +118,11 @@ class WorkoutFragment : Fragment() {
 
     private fun setupListeners() {
         binding.srlWorkoutRefresh.setOnRefreshListener {
-            fetchRealWorkoutPlan()
+            checkAndLoadWorkoutPlan()
+        }
+
+        binding.btnCreateMyPlan.setOnClickListener {
+            openCreatePlanBottomSheet()
         }
 
         binding.cardLogWeight.setOnClickListener {
@@ -159,6 +158,120 @@ class WorkoutFragment : Fragment() {
         binding.btnPreviewRoutine.setOnClickListener {
             handleStartWorkoutClick()
         }
+    }
+
+    private fun openCreatePlanBottomSheet() {
+        if (!isAdded || parentFragmentManager.isStateSaved) return
+        val bottomSheet = CreateWorkoutPlanBottomSheet(workoutViewModel)
+        bottomSheet.isCancelable = true
+        bottomSheet.show(childFragmentManager, "CreateWorkoutPlanBottomSheet")
+    }
+
+    private fun checkAndLoadWorkoutPlan() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            if (!isAdded || _binding == null) return@launch
+            _binding?.srlWorkoutRefresh?.isRefreshing = true
+            try {
+                val planRes = RetrofitClient.api.getCurrentWorkoutPlan()
+                val rawJson = if (planRes.isSuccessful && planRes.body() != null) {
+                    planRes.body().toString()
+                } else {
+                    planRes.errorBody()?.string() ?: "{}"
+                }
+                android.util.Log.d("FitSyncApi", "GET /api/workout/plan/current response: $rawJson")
+
+                val hasPlan = if (planRes.isSuccessful && planRes.body() != null) {
+                    checkIfUserHasPlan(planRes.body())
+                } else {
+                    val cached = com.esha.fitsync.data.AppCacheManager.getWorkoutPlanJson()
+                    if (!cached.isNullOrBlank()) {
+                        val elem = try { com.google.gson.JsonParser.parseString(cached) } catch (_: Exception) { null }
+                        checkIfUserHasPlan(elem)
+                    } else false
+                }
+
+                if (!isAdded || _binding == null) return@launch
+
+                if (!hasPlan) {
+                    // New user without an active workout plan:
+                    // Show empty state "No plan yet" with "Create my plan" button.
+                    // Do NOT call loadWorkoutPlanContent() or show any routine.
+                    binding.llNoPlanState.visibility = View.VISIBLE
+                    binding.llWorkoutContent.visibility = View.GONE
+
+                    if (!hasAutoOpenedBottomSheetThisSession && isAdded && !parentFragmentManager.isStateSaved) {
+                        hasAutoOpenedBottomSheetThisSession = true
+                        openCreatePlanBottomSheet()
+                    }
+                } else {
+                    // Existing user with a plan: load dashboard as before
+                    binding.llNoPlanState.visibility = View.GONE
+                    binding.llWorkoutContent.visibility = View.VISIBLE
+
+                    if (planRes.isSuccessful && planRes.body() != null) {
+                        com.esha.fitsync.data.AppCacheManager.saveWorkoutPlanJson(rawJson)
+                    }
+                    loadWorkoutPlanContent()
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("FitSyncApi", "Error checking current workout plan", e)
+                if (!isAdded || _binding == null) return@launch
+                val cached = com.esha.fitsync.data.AppCacheManager.getWorkoutPlanJson()
+                if (!cached.isNullOrBlank()) {
+                    val elem = try { com.google.gson.JsonParser.parseString(cached) } catch (_: Exception) { null }
+                    if (checkIfUserHasPlan(elem)) {
+                        binding.llNoPlanState.visibility = View.GONE
+                        binding.llWorkoutContent.visibility = View.VISIBLE
+                        loadWorkoutPlanContent()
+                        return@launch
+                    }
+                }
+                binding.llNoPlanState.visibility = View.VISIBLE
+                binding.llWorkoutContent.visibility = View.GONE
+            } finally {
+                _binding?.srlWorkoutRefresh?.isRefreshing = false
+            }
+        }
+    }
+
+    private fun checkIfUserHasPlan(element: JsonElement?): Boolean {
+        if (element == null || element.isJsonNull) return false
+        if (!element.isJsonObject) return false
+        val obj = element.asJsonObject
+
+        // 1. Explicit hasPlan boolean if returned by backend
+        if (obj.has("hasPlan")) {
+            val hasPlan = try { obj.get("hasPlan").asBoolean } catch (_: Exception) { true }
+            if (!hasPlan) return false
+        }
+
+        // 2. Check days array
+        val daysArray = when {
+            obj.has("days") && obj.get("days").isJsonArray -> obj.getAsJsonArray("days")
+            obj.has("plan") && obj.get("plan").isJsonObject && obj.getAsJsonObject("plan").has("days") && obj.getAsJsonObject("plan").get("days").isJsonArray -> obj.getAsJsonObject("plan").getAsJsonArray("days")
+            else -> null
+        }
+
+        if (daysArray != null) {
+            if (daysArray.size() == 0) return false
+            var totalExercises = 0
+            for (i in 0 until daysArray.size()) {
+                val dayItem = daysArray.get(i)
+                if (dayItem.isJsonObject) {
+                    val dayObj = dayItem.asJsonObject
+                    if (dayObj.has("exercises") && dayObj.get("exercises").isJsonArray) {
+                        totalExercises += dayObj.getAsJsonArray("exercises").size()
+                    }
+                }
+            }
+            if (totalExercises == 0) return false
+            return true
+        }
+
+        // 3. Fallback: check routines parsed from plan
+        val routines = parseRoutinesFromJsonElement(element)
+        if (routines.isEmpty()) return false
+        return routines.any { it.exercises.isNotEmpty() }
     }
 
     private fun loadWorkoutPlanContent() {
@@ -236,9 +349,9 @@ class WorkoutFragment : Fragment() {
                 val planRes = RetrofitClient.api.getCurrentWorkoutPlan()
                 if (isAdded && _binding != null && planRes.isSuccessful && planRes.body() != null) {
                     val rawJson = planRes.body().toString()
-                    android.util.Log.d("FITSYNC_PLAN", "GET /api/workout/plan/current response: $rawJson")
+                    android.util.Log.d("FitSyncApi", "GET /api/workout/plan/current response: $rawJson")
                     val routines = parseRoutinesFromJsonElement(planRes.body())
-                    android.util.Log.d("FITSYNC_PLAN", "Parsed routines count: ${routines.size}")
+                    android.util.Log.d("FitSyncApi", "Parsed routines count: ${routines.size}")
 
                     if (routines.isNotEmpty()) {
                         com.esha.fitsync.data.AppCacheManager.saveWorkoutPlanJson(rawJson)

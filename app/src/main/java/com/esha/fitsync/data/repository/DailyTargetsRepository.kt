@@ -61,6 +61,10 @@ object DailyTargetsRepository {
         AppCacheManager.put(CACHE_KEY, data)
     }
 
+    fun clearCache() {
+        inMemoryTargets = null
+    }
+
     fun updateNutrition(
         proteinConsumed: Double,
         proteinTarget: Double,

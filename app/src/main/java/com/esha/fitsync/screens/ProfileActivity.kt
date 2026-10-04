@@ -587,9 +587,9 @@ class ProfileActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("FitSync", Context.MODE_PRIVATE)
         prefs.edit().clear().apply()
 
-        // 2. Clear app data cache
-        val cachePrefs = getSharedPreferences("FitSyncDataCache", Context.MODE_PRIVATE)
-        cachePrefs.edit().clear().apply()
+        // 2. Clear app data cache and reset in-memory state
+        AppCacheManager.clearAll()
+        com.esha.fitsync.screens.fragments.WorkoutFragment.hasAutoOpenedBottomSheetThisSession = false
 
         Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show()
 

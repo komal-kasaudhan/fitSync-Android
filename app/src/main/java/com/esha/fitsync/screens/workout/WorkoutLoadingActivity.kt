@@ -147,6 +147,10 @@ class WorkoutLoadingActivity : AppCompatActivity() {
     }
 
     private fun routeCleanlyToMainDashboard() {
+        // Clear stale cached workout plan and notify Workout, Home, and Nutrition screens to refresh
+        com.esha.fitsync.data.AppCacheManager.saveWorkoutPlanJson("")
+        com.esha.fitsync.data.AppCacheManager.notifyDataChanged()
+
         val intent = Intent(this, MainActivity::class.java).apply {
             putExtra("TARGET_FRAGMENT", "WORKOUT_FRAGMENT")
             putExtra("FROM_LOADING", true)

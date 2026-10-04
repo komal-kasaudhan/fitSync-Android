@@ -21,6 +21,80 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+        <!-- Empty State for User with No Plan -->
+        <LinearLayout
+            android:id="@+id/llNoPlanState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="32dp"
+            android:visibility="gone">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#111827"
+                app:cardCornerRadius="20dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#1F2E3D">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="28dp">
+
+                    <ImageView
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:src="@drawable/ic_fitness_center"
+                        app:tint="#00D4FF"
+                        android:layout_marginBottom="16dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No plan yet"
+                        android:textColor="@color/white"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="You don't have an active workout plan. Create a personalized training routine tailored to your schedule and goals."
+                        android:textColor="#9CA3AF"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.2"
+                        android:layout_marginBottom="24dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCreateMyPlan"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:text="Create my plan"
+                        android:textColor="#071018"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="#00D4FF"
+                        app:cornerRadius="14dp"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <!-- Main Dashboard Content Container -->
+        <LinearLayout
+            android:id="@+id/llWorkoutContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -564,6 +638,7 @@
             android:layout_marginBottom="20dp"
             android:background="?android:attr/selectableItemBackground"/>
 
+        </LinearLayout>
     </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

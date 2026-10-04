@@ -163,4 +163,15 @@ object AppCacheManager {
             null
         }
     }
+
+    fun clearAll() {
+        cachedHomeSummary = null
+        cachedWeeklyNutrition = null
+        cachedInsight = null
+        cachedPlanJson = null
+        cachedTodayWorkout = null
+        cachedRecommendations = null
+        prefs?.edit()?.clear()?.apply()
+        com.esha.fitsync.data.repository.DailyTargetsRepository.clearCache()
+    }
 }

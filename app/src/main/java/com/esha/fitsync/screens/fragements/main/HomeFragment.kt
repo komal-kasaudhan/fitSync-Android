@@ -1,34 +1,53 @@
 package com.esha.fitsync.screens.fragments
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.esha.fitsync.BuildConfig
 import com.esha.fitsync.R
 import com.esha.fitsync.api.RetrofitClient
 import com.esha.fitsync.data.AppCacheManager
-import com.esha.fitsync.models.HomeRecommendedMeal
+import com.esha.fitsync.models.GymItem
 import com.esha.fitsync.models.HomeSummaryResponse
-import com.esha.fitsync.screens.Adapters.HomeRecommendedMealAdapter
-import com.esha.fitsync.screens.LoginActivity
+import com.esha.fitsync.screens.Adapters.HomeGymAdapter
 import com.esha.fitsync.screens.Nutrition.MealTypeBottomSheetFragment
 import com.esha.fitsync.screens.Nutrition.NutritionActivity
+import com.esha.fitsync.screens.ProfileActivity
+import com.esha.fitsync.screens.gym.GymDetailActivity
+import com.esha.fitsync.screens.gym.LocationHelper
+import com.esha.fitsync.screens.gym.NearbyGymsFragment
 import com.esha.fitsync.screens.workout.WorkoutDetailActivity
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
 
 class HomeFragment : Fragment() {
 
@@ -37,50 +56,50 @@ class HomeFragment : Fragment() {
     private var tvHomeErrorMessage: TextView? = null
     private var btnRetryHome: TextView? = null
 
+    // 1. Header & Greeting
+    private var btnProfile: ShapeableImageView? = null
     private var tvWelcomeUser: TextView? = null
 
-    // Module 1: Wellness / Recovery
-    private var tvRecoveryPercent: TextView? = null
-    private var tvRecoveryLabel: TextView? = null
-    private var tvHomeWeightStat: TextView? = null
-    private var tvHomeWorkoutFocusStat: TextView? = null
-    private var tvHomeStreakStat: TextView? = null
-    private var tvHomeCalorieGoalStat: TextView? = null
-    private var tvHomeAiQuote: TextView? = null
+    // 2. Nutrition
+    private var tvHomeCalorieSummary: TextView? = null
+    private var pbHomeProtein: CircularProgressIndicator? = null
+    private var tvHomeProteinPercent: TextView? = null
+    private var pbHomeCarbs: CircularProgressIndicator? = null
+    private var tvHomeCarbsPercent: TextView? = null
+    private var pbHomeWater: CircularProgressIndicator? = null
+    private var tvHomeWaterPercent: TextView? = null
+    private var ivCheckBreakfast: ImageView? = null
+    private var ivCheckLunch: ImageView? = null
+    private var ivCheckDinner: ImageView? = null
 
-    // Module 2: Today's Workout
+    // 3. Today's Workout
     private var tvHomeWorkoutTitle: TextView? = null
     private var tvHomeWorkoutMeta: TextView? = null
     private var tvHomeWorkoutProgressText: TextView? = null
     private var pbHomeWorkout: ProgressBar? = null
     private var btnContinueWorkoutHome: MaterialButton? = null
 
-    // Module 3: Nutrition
-    private var tvHomeCalorieSummary: TextView? = null
-    private var pbHomeProtein: ProgressBar? = null
-    private var tvHomeProteinPercent: TextView? = null
-    private var pbHomeCarbs: ProgressBar? = null
-    private var tvHomeCarbsPercent: TextView? = null
-    private var pbHomeWater: ProgressBar? = null
-    private var tvHomeWaterPercent: TextView? = null
-    private var ivCheckBreakfast: ImageView? = null
-    private var ivCheckLunch: ImageView? = null
-    private var ivCheckDinner: ImageView? = null
-
-    // Module 5: Recommended Meals
-    private var rvRecommendedProducts: RecyclerView? = null
-    private var recommendedAdapter: HomeRecommendedMealAdapter? = null
-
-    // Module 6: Gyms Near You
-    private var homeGymAdapter: com.esha.fitsync.screens.Adapters.HomeGymAdapter? = null
-
-    // Module 7: Streaks & Stats
-    private var tvHomeStreakDays: TextView? = null
-    private var tvHomeSessionsCompleted: TextView? = null
-    private var tvHomeWeightGoalPercent: TextView? = null
-    private var tvHomeConsistencyPercent: TextView? = null
+    // 4. Gyms Near You
+    private var rvHomeNearbyGyms: RecyclerView? = null
+    private var shimmerHomeGyms: ShimmerFrameLayout? = null
+    private var llHomeGymEmptyState: LinearLayout? = null
+    private var llHomeGymLocationDenied: LinearLayout? = null
+    private var homeGymAdapter: HomeGymAdapter? = null
 
     private var currentDayIndex = 0
+
+    private val locationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val fine = permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false
+        val coarse = permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false
+        if (fine || coarse) {
+            llHomeGymLocationDenied?.visibility = View.GONE
+            fetchNearbyGymsForHome()
+        } else {
+            checkLocationPermissionState()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -96,10 +115,18 @@ class HomeFragment : Fragment() {
         setupListeners(view)
         observeAppEvents()
 
-        // 1. Instantly display cached data (0ms latency, prevents screen clearing)
+        // 1. Instantly display cached data
         val cached = AppCacheManager.getHomeSummary()
         if (cached != null) {
             bindHomeSummary(cached)
+        }
+        updateUserHeader()
+
+        val cachedGyms = AppCacheManager.get<List<GymItem>>("HOME_NEARBY_GYMS")
+        if (!cachedGyms.isNullOrEmpty()) {
+            homeGymAdapter?.submitList(cachedGyms)
+            rvHomeNearbyGyms?.visibility = View.VISIBLE
+            shimmerHomeGyms?.visibility = View.GONE
         }
 
         // 2. Fetch fresh data from backend
@@ -109,7 +136,8 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // Refresh silently in background, keeping current data visible
+        // Refresh greeting and avatar immediately if modified in ProfileActivity
+        updateUserHeader()
         fetchHomeSummaryData()
         fetchNearbyGymsForHome()
     }
@@ -120,25 +148,11 @@ class HomeFragment : Fragment() {
         tvHomeErrorMessage = view.findViewById(R.id.tvHomeErrorMessage)
         btnRetryHome = view.findViewById(R.id.btnRetryHome)
 
+        // Header & Greeting
+        btnProfile = view.findViewById(R.id.btnProfile)
         tvWelcomeUser = view.findViewById(R.id.tvWelcomeUser)
 
-        // Module 1
-        tvRecoveryPercent = view.findViewById(R.id.tvRecoveryPercent)
-        tvRecoveryLabel = view.findViewById(R.id.tvRecoveryLabel)
-        tvHomeWeightStat = view.findViewById(R.id.tvHomeWeightStat)
-        tvHomeWorkoutFocusStat = view.findViewById(R.id.tvHomeWorkoutFocusStat)
-        tvHomeStreakStat = view.findViewById(R.id.tvHomeStreakStat)
-        tvHomeCalorieGoalStat = view.findViewById(R.id.tvHomeCalorieGoalStat)
-        tvHomeAiQuote = view.findViewById(R.id.tvHomeAiQuote)
-
-        // Module 2
-        tvHomeWorkoutTitle = view.findViewById(R.id.tvHomeWorkoutTitle)
-        tvHomeWorkoutMeta = view.findViewById(R.id.tvHomeWorkoutMeta)
-        tvHomeWorkoutProgressText = view.findViewById(R.id.tvHomeWorkoutProgressText)
-        pbHomeWorkout = view.findViewById(R.id.pbHomeWorkout)
-        btnContinueWorkoutHome = view.findViewById(R.id.btnContinueWorkoutHome)
-
-        // Module 3
+        // Nutrition
         tvHomeCalorieSummary = view.findViewById(R.id.tvHomeCalorieSummary)
         pbHomeProtein = view.findViewById(R.id.pbHomeProtein)
         tvHomeProteinPercent = view.findViewById(R.id.tvHomeProteinPercent)
@@ -150,46 +164,47 @@ class HomeFragment : Fragment() {
         ivCheckLunch = view.findViewById(R.id.ivCheckLunch)
         ivCheckDinner = view.findViewById(R.id.ivCheckDinner)
 
-        // Module 5: Recommended Meals
-        rvRecommendedProducts = view.findViewById(R.id.rvRecommendedProducts)
-        rvRecommendedProducts?.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recommendedAdapter = HomeRecommendedMealAdapter(emptyList()) { meal ->
-            logQuickRecommendedMeal(meal)
-        }
-        rvRecommendedProducts?.adapter = recommendedAdapter
+        // Today's Workout
+        tvHomeWorkoutTitle = view.findViewById(R.id.tvHomeWorkoutTitle)
+        tvHomeWorkoutMeta = view.findViewById(R.id.tvHomeWorkoutMeta)
+        tvHomeWorkoutProgressText = view.findViewById(R.id.tvHomeWorkoutProgressText)
+        pbHomeWorkout = view.findViewById(R.id.pbHomeWorkout)
+        btnContinueWorkoutHome = view.findViewById(R.id.btnContinueWorkoutHome)
 
-        // Module 6: Real Nearby Gyms
-        val rvHomeNearbyGyms = view.findViewById<RecyclerView>(R.id.rvHomeNearbyGyms)
+        // Gyms Near You
+        rvHomeNearbyGyms = view.findViewById(R.id.rvHomeNearbyGyms)
+        shimmerHomeGyms = view.findViewById(R.id.shimmerHomeGyms)
+        llHomeGymEmptyState = view.findViewById(R.id.llHomeGymEmptyState)
+        llHomeGymLocationDenied = view.findViewById(R.id.llHomeGymLocationDenied)
+
         rvHomeNearbyGyms?.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        homeGymAdapter = com.esha.fitsync.screens.Adapters.HomeGymAdapter { gym ->
-            val intent = Intent(requireContext(), com.esha.fitsync.screens.gym.GymDetailActivity::class.java).apply {
+        homeGymAdapter = HomeGymAdapter { gym ->
+            val intent = Intent(requireContext(), GymDetailActivity::class.java).apply {
                 putExtra("GYM_ID", gym.id)
             }
             startActivity(intent)
         }
         rvHomeNearbyGyms?.adapter = homeGymAdapter
-
-        // Module 7: Streaks & Stats
-        tvHomeStreakDays = view.findViewById(R.id.tvHomeStreakDays)
-        tvHomeSessionsCompleted = view.findViewById(R.id.tvHomeSessionsCompleted)
-        tvHomeWeightGoalPercent = view.findViewById(R.id.tvHomeWeightGoalPercent)
-        tvHomeConsistencyPercent = view.findViewById(R.id.tvHomeConsistencyPercent)
     }
 
     private fun setupListeners(view: View) {
         srlHomeRefresh?.setOnRefreshListener {
             fetchHomeSummaryData()
+            fetchNearbyGymsForHome()
         }
 
         btnRetryHome?.setOnClickListener {
             llHomeErrorBanner?.visibility = View.GONE
             fetchHomeSummaryData()
+            fetchNearbyGymsForHome()
         }
 
-        val btnManageNutrition = view.findViewById<Button>(R.id.btnManageNutrition)
-        btnManageNutrition?.setOnClickListener {
-            val intent = Intent(requireContext(), NutritionActivity::class.java)
-            startActivity(intent)
+        btnProfile?.setOnClickListener {
+            startActivity(Intent(requireContext(), ProfileActivity::class.java))
+        }
+
+        view.findViewById<Button>(R.id.btnManageNutrition)?.setOnClickListener {
+            startActivity(Intent(requireContext(), NutritionActivity::class.java))
         }
 
         view.findViewById<Button>(R.id.btnAddMealHome)?.setOnClickListener {
@@ -198,8 +213,7 @@ class HomeFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.btnScanFoodHome)?.setOnClickListener {
-            val intent = Intent(requireContext(), NutritionActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(requireContext(), NutritionActivity::class.java))
         }
 
         btnContinueWorkoutHome?.setOnClickListener {
@@ -210,34 +224,130 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
-        view.findViewById<View>(R.id.btnProfile)?.setOnClickListener {
-            showSignOutConfirmationDialog()
-        }
-
-        view.findViewById<Button>(R.id.btnSignOut)?.setOnClickListener {
-            showSignOutConfirmationDialog()
-        }
-
         view.findViewById<View>(R.id.tvExploreAllGyms)?.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, com.esha.fitsync.screens.gym.NearbyGymsFragment())
-                .addToBackStack("HOME_TO_NEARBY")
-                .commit()
+            navigateToNearbyGyms()
+        }
+
+        view.findViewById<View>(R.id.btnEmptySeeAllGyms)?.setOnClickListener {
+            navigateToNearbyGyms()
+        }
+
+        view.findViewById<View>(R.id.btnEnableLocationHome)?.setOnClickListener {
+            locationPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+    }
+
+    private fun navigateToNearbyGyms() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, NearbyGymsFragment())
+            .addToBackStack("HOME_TO_NEARBY")
+            .commit()
+    }
+
+    private fun updateUserHeader() {
+        val prefs = requireActivity().getSharedPreferences("FitSync", Context.MODE_PRIVATE)
+        val name = prefs.getString("USER_NAME", null)?.ifBlank { null } ?: "Athlete"
+        val avatar = prefs.getString("USER_AVATAR", null)
+
+        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val timeGreeting = when {
+            hour < 12 -> "Good Morning"
+            hour < 17 -> "Good Afternoon"
+            else -> "Good Evening"
+        }
+        tvWelcomeUser?.text = "$timeGreeting, $name"
+
+        btnProfile?.let { iv ->
+            val initialsBitmap = createInitialsBitmap(name, 40)
+            val initialsDrawable = android.graphics.drawable.BitmapDrawable(resources, initialsBitmap)
+            if (!avatar.isNullOrBlank()) {
+                val fullUrl = if (avatar.startsWith("http")) {
+                    avatar
+                } else {
+                    "${BuildConfig.BASE_URL.trimEnd('/')}/${avatar.trimStart('/')}"
+                }
+                Glide.with(this)
+                    .load(fullUrl)
+                    .transform(CircleCrop())
+                    .placeholder(initialsDrawable)
+                    .error(initialsDrawable)
+                    .into(iv)
+            } else {
+                iv.setImageDrawable(initialsDrawable)
+            }
+        }
+    }
+
+    private fun checkLocationPermissionState() {
+        val hasPermission = LocationHelper.hasLocationPermission(requireContext())
+        if (!hasPermission) {
+            val cachedGyms = AppCacheManager.get<List<GymItem>>("HOME_NEARBY_GYMS")
+            if (cachedGyms.isNullOrEmpty()) {
+                llHomeGymLocationDenied?.visibility = View.VISIBLE
+                rvHomeNearbyGyms?.visibility = View.GONE
+                llHomeGymEmptyState?.visibility = View.GONE
+                shimmerHomeGyms?.visibility = View.GONE
+            }
+        } else {
+            llHomeGymLocationDenied?.visibility = View.GONE
         }
     }
 
     private fun fetchNearbyGymsForHome() {
         viewLifecycleOwner.lifecycleScope.launch {
             if (!isAdded || view == null) return@launch
+
+            val hasPermission = LocationHelper.hasLocationPermission(requireContext())
+            if (!hasPermission) {
+                checkLocationPermissionState()
+                return@launch
+            }
+
+            llHomeGymLocationDenied?.visibility = View.GONE
+
+            val cachedGyms = AppCacheManager.get<List<GymItem>>("HOME_NEARBY_GYMS")
+            if (cachedGyms.isNullOrEmpty()) {
+                shimmerHomeGyms?.visibility = View.VISIBLE
+                shimmerHomeGyms?.startShimmer()
+                rvHomeNearbyGyms?.visibility = View.GONE
+                llHomeGymEmptyState?.visibility = View.GONE
+            }
+
             try {
-                // Query Bokaro fallback or nearby gyms (lat: 23.6693, lng: 86.1511, radiusKm: 10.0)
-                val response = RetrofitClient.api.getNearbyGyms(lat = 23.6693, lng = 86.1511, radiusKm = 10.0)
+                // Get real location or default coordinate with 5 km radius
+                val loc = LocationHelper.getDeviceLocation(requireContext())
+                val lat = loc?.latitude ?: LocationHelper.DEFAULT_LAT
+                val lng = loc?.longitude ?: LocationHelper.DEFAULT_LNG
+
+                val response = RetrofitClient.api.getNearbyGyms(
+                    lat = lat,
+                    lng = lng,
+                    radiusKm = 5.0
+                )
+
                 if (response.isSuccessful && response.body() != null) {
                     val gyms = response.body()!!.gyms
-                    homeGymAdapter?.submitList(gyms)
+                    AppCacheManager.put("HOME_NEARBY_GYMS", gyms)
+
+                    if (gyms.isEmpty()) {
+                        rvHomeNearbyGyms?.visibility = View.GONE
+                        llHomeGymEmptyState?.visibility = View.VISIBLE
+                    } else {
+                        homeGymAdapter?.submitList(gyms)
+                        rvHomeNearbyGyms?.visibility = View.VISIBLE
+                        llHomeGymEmptyState?.visibility = View.GONE
+                    }
                 }
             } catch (e: Exception) {
                 android.util.Log.e("FitSyncApi", "Home nearby gyms error", e)
+            } finally {
+                shimmerHomeGyms?.stopShimmer()
+                shimmerHomeGyms?.visibility = View.GONE
             }
         }
     }
@@ -246,7 +356,9 @@ class HomeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             AppCacheManager.refreshTrigger.collect {
                 if (isAdded && view != null) {
+                    updateUserHeader()
                     fetchHomeSummaryData()
+                    fetchNearbyGymsForHome()
                 }
             }
         }
@@ -265,21 +377,12 @@ class HomeFragment : Fragment() {
                     bindHomeSummary(summary)
                     llHomeErrorBanner?.visibility = View.GONE
                 } else {
-                    // On failure, keep previous data visible!
                     val code = response.code()
-                    android.util.Log.w("FitSyncApi", "Home summary returned status $code")
                     showErrorBanner("Server response: $code. Using cached data.")
                 }
             } catch (e: Exception) {
                 if (!isAdded || view == null) return@launch
-                android.util.Log.e("FitSyncApi", "Home summary network error", e)
-                val isConnectionError = e is java.net.ConnectException || e is java.net.SocketTimeoutException
-                val friendlyMessage = if (isConnectionError) {
-                    "Cannot reach server. Check USB cable / adb reverse (Tap to retry)"
-                } else {
-                    "Failed to refresh: ${e.localizedMessage ?: "Unknown error"}"
-                }
-                showErrorBanner(friendlyMessage)
+                showErrorBanner("Cannot reach server. Using cached data.")
             } finally {
                 srlHomeRefresh?.isRefreshing = false
             }
@@ -302,80 +405,9 @@ class HomeFragment : Fragment() {
             hour < 17 -> "Good Afternoon"
             else -> "Good Evening"
         }
-        tvWelcomeUser?.text = "$greeting, $name 👋"
+        tvWelcomeUser?.text = "$greeting, $name"
 
-        // 2. Module 1: Wellness / Recovery
-        val progressPercent = if (summary.weight != null && summary.weight.weightProgressPercent > 0) {
-            summary.weight.weightProgressPercent
-        } else {
-            summary.weeklyWorkout?.completionPercent ?: 0
-        }
-        tvRecoveryPercent?.text = "$progressPercent%"
-
-        val currWeight = summary.weight?.currentWeightKg ?: 0.0
-        val targetWeight = summary.weight?.targetWeightKg ?: 0.0
-        tvHomeWeightStat?.text = if (currWeight > 0) String.format(Locale.US, "%.1f kg", currWeight) else "-- kg"
-
-        val todayWorkout = summary.todayWorkout
-        if (todayWorkout != null) {
-            currentDayIndex = todayWorkout.dayIndex
-            val focusTitle = if (todayWorkout.isRestDay) "Rest Day" else todayWorkout.focus.ifBlank { "Workout" }
-            tvHomeWorkoutFocusStat?.text = focusTitle
-        }
-
-        val streak = summary.weeklyWorkout?.streakDays ?: 0
-        tvHomeStreakStat?.text = "$streak Days"
-
-        val calConsumed = summary.todayNutrition?.calories?.consumed ?: 0
-        val calTarget = summary.todayNutrition?.calories?.target ?: 2000
-        val calHit = calConsumed >= calTarget && calTarget > 0
-        tvHomeCalorieGoalStat?.text = if (calHit) "Hit ✓" else "$calConsumed kcal"
-
-        val insightMsg = summary.insight?.message
-        if (!insightMsg.isNullOrBlank()) {
-            tvHomeAiQuote?.text = "\"$insightMsg\""
-        } else {
-            tvHomeAiQuote?.text = "\"Stay consistent today. Every workout counts.\""
-        }
-
-        // 3. Module 2: Today's Workout Card
-        if (todayWorkout != null) {
-            val title = if (todayWorkout.isRestDay) "Rest & Recovery" else todayWorkout.focus.ifBlank { "Daily Routine" }
-            tvHomeWorkoutTitle?.text = title
-
-            val dur = if (todayWorkout.durationMin > 0) todayWorkout.durationMin else 45
-            val cals = if (todayWorkout.calories > 0) todayWorkout.calories else 300
-            tvHomeWorkoutMeta?.text = "${dur}m • ${cals} kcal • ${todayWorkout.dayName.ifBlank { "Today" }}"
-
-            if (todayWorkout.completed) {
-                tvHomeWorkoutProgressText?.text = "Completed ✓"
-                pbHomeWorkout?.progress = 100
-                btnContinueWorkoutHome?.text = "✓ Completed Today"
-                btnContinueWorkoutHome?.isEnabled = true
-            } else if (todayWorkout.isRestDay) {
-                tvHomeWorkoutProgressText?.text = "Active Recovery"
-                pbHomeWorkout?.progress = 100
-                btnContinueWorkoutHome?.text = "View Recovery Guide"
-                btnContinueWorkoutHome?.isEnabled = true
-            } else {
-                tvHomeWorkoutProgressText?.text = "Ready to start"
-                pbHomeWorkout?.progress = 0
-                btnContinueWorkoutHome?.text = "▶ Start $title"
-                btnContinueWorkoutHome?.isEnabled = true
-            }
-        } else {
-            tvHomeWorkoutTitle?.text = "Fitness Profile Setup"
-            tvHomeWorkoutMeta?.text = "Complete your profile to generate personalized routines"
-            tvHomeWorkoutProgressText?.text = "Pending"
-            pbHomeWorkout?.progress = 0
-            btnContinueWorkoutHome?.text = "Complete Your Profile"
-            btnContinueWorkoutHome?.isEnabled = true
-            btnContinueWorkoutHome?.setOnClickListener {
-                startActivity(Intent(requireContext(), com.esha.fitsync.screens.OnboardingActivity::class.java))
-            }
-        }
-
-        // 4. Module 3: Nutrition Ring & Macros
+        // 2. Nutrition Card: Set final progress directly (no looping animation)
         val nut = summary.todayNutrition
         if (nut != null) {
             val eatenCal = nut.calories?.consumed ?: 0
@@ -386,103 +418,107 @@ class HomeFragment : Fragment() {
             val pConsumed = nut.protein?.consumed ?: 0.0
             val pTarget = if ((nut.protein?.target ?: 0.0) > 0) nut.protein!!.target else 120.0
             val pPct = ((pConsumed / pTarget) * 100).toInt().coerceIn(0, 100)
-            pbHomeProtein?.progress = pPct
+            pbHomeProtein?.setProgressCompat(pPct, false)
             tvHomeProteinPercent?.text = "$pPct%"
 
             // Carbs
             val cConsumed = nut.carbs?.consumed ?: 0.0
             val cTarget = if ((nut.carbs?.target ?: 0.0) > 0) nut.carbs!!.target else 250.0
             val cPct = ((cConsumed / cTarget) * 100).toInt().coerceIn(0, 100)
-            pbHomeCarbs?.progress = cPct
+            pbHomeCarbs?.setProgressCompat(cPct, false)
             tvHomeCarbsPercent?.text = "$cPct%"
 
             // Water
             val wConsumed = nut.water?.consumedLiters ?: 0.0
             val wTarget = if ((nut.water?.targetLiters ?: 0.0) > 0) nut.water!!.targetLiters else 3.0
             val wPct = ((wConsumed / wTarget) * 100).toInt().coerceIn(0, 100)
-            pbHomeWater?.progress = wPct
+            pbHomeWater?.setProgressCompat(wPct, false)
             tvHomeWaterPercent?.text = "$wPct%"
 
-            // Checkboxes
+            // Meal checkboxes with theme colors
             updateMealCheck(ivCheckBreakfast, eatenCal > 0)
             updateMealCheck(ivCheckLunch, eatenCal > 600)
             updateMealCheck(ivCheckDinner, eatenCal > 1200)
         }
 
-        // 5. Module 5: Recommended Meals
-        val meals = summary.recommendedMeals
-        if (meals.isNotEmpty()) {
-            recommendedAdapter?.submitList(meals)
-        }
+        // 3. Today's Workout Card
+        val todayWorkout = summary.todayWorkout
+        if (todayWorkout != null) {
+            currentDayIndex = todayWorkout.dayIndex
+            val title = if (todayWorkout.isRestDay) "Rest & Recovery" else todayWorkout.focus.ifBlank { "Daily Routine" }
+            tvHomeWorkoutTitle?.text = title
 
-        // 6. Module 7: Streaks & Stats
-        val weekly = summary.weeklyWorkout
-        if (weekly != null) {
-            tvHomeStreakDays?.text = "${weekly.streakDays} Days"
-            tvHomeSessionsCompleted?.text = "${weekly.sessionsCompleted}/${weekly.sessionsPlanned} Done"
-            tvHomeConsistencyPercent?.text = "${weekly.completionPercent}%"
+            val dur = if (todayWorkout.durationMin > 0) todayWorkout.durationMin else 45
+            val cals = if (todayWorkout.calories > 0) todayWorkout.calories else 300
+            tvHomeWorkoutMeta?.text = "${dur}m • ${cals} kcal"
+
+            if (todayWorkout.completed) {
+                tvHomeWorkoutProgressText?.text = "Completed"
+                pbHomeWorkout?.progress = 100
+                btnContinueWorkoutHome?.text = "Completed today"
+                btnContinueWorkoutHome?.isEnabled = true
+            } else if (todayWorkout.isRestDay) {
+                tvHomeWorkoutProgressText?.text = "Active recovery"
+                pbHomeWorkout?.progress = 100
+                btnContinueWorkoutHome?.text = "View recovery guide"
+                btnContinueWorkoutHome?.isEnabled = true
+            } else {
+                tvHomeWorkoutProgressText?.text = "Ready to start"
+                pbHomeWorkout?.progress = 0
+                btnContinueWorkoutHome?.text = "Start workout"
+                btnContinueWorkoutHome?.isEnabled = true
+            }
+        } else {
+            tvHomeWorkoutTitle?.text = "Fitness Profile Setup"
+            tvHomeWorkoutMeta?.text = "Complete your profile to generate personalized routines"
+            tvHomeWorkoutProgressText?.text = "Pending"
+            pbHomeWorkout?.progress = 0
+            btnContinueWorkoutHome?.text = "Complete profile"
+            btnContinueWorkoutHome?.isEnabled = true
         }
-        val weightGoalPct = summary.weight?.weightProgressPercent ?: 0
-        tvHomeWeightGoalPercent?.text = "$weightGoalPct%"
     }
 
     private fun updateMealCheck(iv: ImageView?, isChecked: Boolean) {
         if (iv == null) return
+        val context = context ?: return
         if (isChecked) {
             iv.setImageResource(android.R.drawable.checkbox_on_background)
-            iv.imageTintList = ColorStateList.valueOf(Color.parseColor("#10B981"))
+            iv.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.primary))
         } else {
             iv.setImageResource(android.R.drawable.checkbox_off_background)
-            iv.imageTintList = ColorStateList.valueOf(Color.parseColor("#9CA3AF"))
+            iv.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.text_secondary))
         }
     }
 
-    private fun logQuickRecommendedMeal(meal: HomeRecommendedMeal) {
-        val todayStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-        viewLifecycleOwner.lifecycleScope.launch {
-            try {
-                val searchRes = RetrofitClient.apiService.searchFoods(meal.name)
-                val foodId = searchRes.body()?.data?.firstOrNull()?.effectiveId ?: meal.id
-                val req = com.esha.fitsync.api.AddMealRequest(
-                    date = todayStr,
-                    mealType = meal.mealType.ifBlank { "Lunch" },
-                    foodId = foodId,
-                    quantity = 1.0
-                )
-                val res = RetrofitClient.apiService.addMeal(req)
-                if (res.isSuccessful) {
-                    Toast.makeText(requireContext(), "Logged ${meal.name}! 🍲", Toast.LENGTH_SHORT).show()
-                    AppCacheManager.notifyDataChanged()
-                } else {
-                    Toast.makeText(requireContext(), "Logged meal to daily intake!", Toast.LENGTH_SHORT).show()
-                }
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Unable to log meal: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
-            }
+    private fun createInitialsBitmap(name: String, sizeDp: Int = 40): Bitmap {
+        val px = (sizeDp * Resources.getSystem().displayMetrics.density).toInt()
+        val bitmap = Bitmap.createBitmap(px, px, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+
+        val paintBg = Paint().apply {
+            isAntiAlias = true
+            color = Color.parseColor("#334155")
+            style = Paint.Style.FILL
         }
-    }
+        canvas.drawCircle(px / 2f, px / 2f, px / 2f, paintBg)
 
-    private fun showSignOutConfirmationDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Sign Out")
-            .setMessage("Are you sure you want to sign out of FitSync?")
-            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
-            .setPositiveButton("Sign Out") { dialog, _ ->
-                dialog.dismiss()
-                performSignOut()
-            }
-            .show()
-    }
+        val initials = name.trim().split("\\s+".toRegex())
+            .filter { it.isNotEmpty() }
+            .map { it.first().uppercaseChar() }
+            .take(2)
+            .joinToString("")
+            .ifEmpty { "FS" }
 
-    private fun performSignOut() {
-        val sharedPreferences = requireActivity().getSharedPreferences("FitSync", Context.MODE_PRIVATE)
-        sharedPreferences.edit().clear().apply()
-        Toast.makeText(requireContext(), "Signed out successfully", Toast.LENGTH_SHORT).show()
-
-        val intent = Intent(requireContext(), LoginActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val paintText = Paint().apply {
+            isAntiAlias = true
+            color = Color.parseColor("#F8FAFC")
+            textSize = px * 0.40f
+            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+            textAlign = Paint.Align.CENTER
         }
-        startActivity(intent)
-        requireActivity().finish()
+
+        val yPos = (canvas.height / 2f) - ((paintText.descent() + paintText.ascent()) / 2f)
+        canvas.drawText(initials, canvas.width / 2f, yPos, paintText)
+        return bitmap
     }
 }

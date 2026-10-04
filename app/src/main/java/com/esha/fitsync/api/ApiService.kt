@@ -220,6 +220,17 @@ interface ApiService {
     @retrofit2.http.GET("api/auth/profile")
     suspend fun getUserProfile(): Response<com.google.gson.JsonObject>
 
+    @retrofit2.http.PUT("api/auth/profile")
+    suspend fun updateUserProfile(
+        @Body body: Map<String, String>
+    ): Response<com.google.gson.JsonObject>
+
+    @retrofit2.http.Multipart
+    @POST("api/auth/profile/photo")
+    suspend fun uploadProfilePhoto(
+        @retrofit2.http.Part photo: okhttp3.MultipartBody.Part
+    ): Response<com.google.gson.JsonObject>
+
     // 🛡️ Admin Suite
     @retrofit2.http.GET("api/admin/me")
     suspend fun getAdminMe(): Response<com.esha.fitsync.models.AdminMeResponse>

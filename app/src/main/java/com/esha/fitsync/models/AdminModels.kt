@@ -89,7 +89,10 @@ data class AdminEntityItem(
     @SerializedName("location") val location: GeoLocation? = null,
     @SerializedName("fssaiNumber") val fssaiNumber: String? = null,
     @SerializedName("bio") val bio: String? = null,
-    @SerializedName("description") val description: String? = null
+    @SerializedName("description") val description: String? = null,
+    @SerializedName("openingHours") val openingHours: List<GymOpeningHour> = emptyList(),
+    @SerializedName("plans") val plans: List<GymPlan> = emptyList(),
+    @SerializedName("holidays") val holidays: List<GymHoliday> = emptyList()
 ) {
     val displayName: String
         get() = when {

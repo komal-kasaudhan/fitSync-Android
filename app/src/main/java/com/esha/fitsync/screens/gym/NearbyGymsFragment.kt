@@ -416,7 +416,13 @@ class NearbyGymsFragment : Fragment() {
         tvName.text = gym.name
         tvRating.text = String.format(Locale.US, "%.1f", gym.ratingAvg)
         tvDistance.text = String.format(Locale.US, "%.2f km away", gym.distanceKm)
-        tvPrice.text = "From ₹${gym.startingPrice.toInt()} / day"
+        val startPrice = gym.startingPriceRaw ?: gym.plans.filter { it.isActive }.minOfOrNull { it.price }
+        if (startPrice != null && startPrice > 0) {
+            tvPrice.visibility = View.VISIBLE
+            tvPrice.text = "From Rs ${startPrice.toInt()}"
+        } else {
+            tvPrice.visibility = View.GONE
+        }
 
         val photoUrl = gym.primaryPhoto
         if (!photoUrl.isNullOrEmpty()) {

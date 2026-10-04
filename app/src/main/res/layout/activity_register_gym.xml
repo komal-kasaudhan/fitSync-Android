@@ -332,53 +332,147 @@
                     android:text="Shower" />
             </com.google.android.material.chip.ChipGroup>
 
-            <!-- Capacity & Pricing -->
+            <!-- 5. Opening Hours -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="5. OPENING HOURS &amp; TIMINGS"
+                    android:textColor="@color/text_gray_blue"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.08" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCopyMondayAll"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="Copy Mon to all"
+                    android:textColor="@color/gym_accent"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                android:text="Configure open/close shifts per day. Add split timings (morning &amp; evening)."
+                android:textColor="@color/text_muted"
+                android:textSize="11sp" />
+
+            <LinearLayout
+                android:id="@+id/layoutDaysScheduleContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <!-- 6. Holidays -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="5. CAPACITY &amp; PRICING"
+                android:text="6. HOLIDAYS &amp; CLOSURES"
                 android:textColor="@color/text_gray_blue"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:letterSpacing="0.08" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                android:text="Add dates when the gym will be closed (e.g. festivals, maintenance)."
+                android:textColor="@color/text_muted"
+                android:textSize="11sp" />
+
             <LinearLayout
+                android:id="@+id/layoutHolidaysContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddHoliday"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="4dp"
+                android:text="+ Add Holiday / Closure"
+                android:textColor="@color/gym_accent"
+                android:textSize="13sp"
+                app:strokeColor="@color/border" />
+
+            <!-- 7. Membership Plans -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="7. MEMBERSHIP PLANS"
+                android:textColor="@color/text_gray_blue"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.08" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                android:text="At least 1 active plan required (Day Pass, Weekly, Monthly, etc.)"
+                android:textColor="@color/text_muted"
+                android:textSize="11sp" />
+
+            <LinearLayout
+                android:id="@+id/layoutPlansContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddPlan"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="4dp"
+                android:text="+ Add Membership Plan"
+                android:textColor="@color/gym_accent"
+                android:textSize="13sp"
+                app:strokeColor="@color/border" />
+
+            <!-- 8. Slot Capacity -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="8. CAPACITY PER SLOT"
+                android:textColor="@color/text_gray_blue"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.08" />
+
+            <EditText
+                android:id="@+id/etCapacityPerSlot"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/etCapacityPerSlot"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="6dp"
-                    android:background="@drawable/bg_search_input"
-                    android:hint="Capacity / Slot"
-                    android:inputType="number"
-                    android:paddingHorizontal="14dp"
-                    android:text="20"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/text_gray_blue"
-                    android:textSize="14sp" />
-
-                <EditText
-                    android:id="@+id/etDayPassPrice"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="6dp"
-                    android:background="@drawable/bg_search_input"
-                    android:hint="Day Pass (₹) *"
-                    android:inputType="number"
-                    android:paddingHorizontal="14dp"
-                    android:text="150"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/text_gray_blue"
-                    android:textSize="14sp" />
-            </LinearLayout>
+                android:background="@drawable/bg_search_input"
+                android:hint="Maximum members per hour slot (default 20)"
+                android:inputType="number"
+                android:paddingHorizontal="14dp"
+                android:text="20"
+                android:textColor="@color/white"
+                android:textColorHint="@color/text_gray_blue"
+                android:textSize="14sp" />
 
             <!-- Submit Button -->
             <Button

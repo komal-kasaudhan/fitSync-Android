@@ -169,6 +169,35 @@ class AdminReviewActivity : AppCompatActivity() {
             cardLocation.visibility = View.GONE
         }
 
+        // Opening Hours & Membership Plans
+        val cardOpeningHours = findViewById<View>(R.id.cardReviewOpeningHours)
+        val layoutHoursTable = findViewById<LinearLayout>(R.id.layoutReviewOpeningHoursTable)
+        val cardPlans = findViewById<View>(R.id.cardReviewPlans)
+        val layoutPlans = findViewById<LinearLayout>(R.id.layoutReviewPlansContainer)
+
+        if (entityType.equals("gyms", ignoreCase = true)) {
+            cardOpeningHours.visibility = View.VISIBLE
+            cardPlans.visibility = View.VISIBLE
+            bindOpeningHoursTable(layoutHoursTable, currentEntity.openingHours)
+            bindPlansList(layoutPlans, currentEntity.plans)
+
+            if (currentEntity.openingHours.isEmpty() || currentEntity.plans.isEmpty()) {
+                lifecycleScope.launch {
+                    try {
+                        val res = RetrofitClient.api.getGymDetails(currentEntity.id)
+                        if (res.isSuccessful && res.body()?.gym != null) {
+                            val gym = res.body()!!.gym!!
+                            bindOpeningHoursTable(layoutHoursTable, gym.openingHours)
+                            bindPlansList(layoutPlans, gym.plans)
+                        }
+                    } catch (_: Exception) {}
+                }
+            }
+        } else {
+            cardOpeningHours.visibility = View.GONE
+            cardPlans.visibility = View.GONE
+        }
+
         // Action Buttons
         val btnApprove = findViewById<MaterialButton>(R.id.btnAdminApprove)
         val btnReject = findViewById<MaterialButton>(R.id.btnAdminReject)
@@ -177,6 +206,112 @@ class AdminReviewActivity : AppCompatActivity() {
         btnApprove.setOnClickListener { updateStatus("approved", null) }
         btnSuspend.setOnClickListener { updateStatus("suspended", null) }
         btnReject.setOnClickListener { showRejectDialog() }
+    }
+
+    private fun bindOpeningHoursTable(container: LinearLayout, hours: List<com.esha.fitsync.models.GymOpeningHour>) {
+        container.removeAllViews()
+        val days = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+        days.forEach { dayName ->
+            val match = hours.find { it.day.equals(dayName, ignoreCase = true) }
+            val row = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                setPadding(0, 6, 0, 6)
+            }
+            val tvDay = TextView(this).apply {
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                text = dayName
+                textSize = 13f
+                setTextColor(ContextCompat.getColor(this@AdminReviewActivity, R.color.text_white_crisp))
+            }
+            val tvShifts = TextView(this).apply {
+                textSize = 13f
+                if (match == null || match.isClosed) {
+                    text = "Closed"
+                    setTextColor(ContextCompat.getColor(this@AdminReviewActivity, R.color.status_rejected))
+                } else {
+                    val shiftList = match.displayShifts
+                    text = if (shiftList.isNotEmpty()) {
+                        shiftList.joinToString(", ") { "${it.open} - ${it.close}" }
+                    } else {
+                        "${match.open} - ${match.close}"
+                    }
+                    setTextColor(ContextCompat.getColor(this@AdminReviewActivity, R.color.gym_accent))
+                }
+            }
+            row.addView(tvDay)
+            row.addView(tvShifts)
+            container.addView(row)
+        }
+    }
+
+    private fun bindPlansList(container: LinearLayout, plans: List<com.esha.fitsync.models.GymPlan>) {
+        container.removeAllViews()
+        if (plans.isEmpty()) {
+            val emptyTv = TextView(this).apply {
+                text = "No membership plans listed."
+                setTextColor(ContextCompat.getColor(this@AdminReviewActivity, R.color.text_gray_blue))
+                textSize = 12f
+            }
+            container.addView(emptyTv)
+            return
+        }
+
+        plans.forEach { plan ->
+            val planCard = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                setBackgroundResource(R.drawable.bg_search_input)
+                setPadding(14, 12, 14, 12)
+                val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                params.setMargins(0, 0, 0, 10)
+                layoutParams = params
+            }
+
+            val topRow = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = android.view.Gravity.CENTER_VERTICAL
+            }
+            val tvName = TextView(this).apply {
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                text = "${plan.name} (${plan.durationDays}d)"
+                textSize = 14f
+                setTextColor(ContextCompat.getColor(this@AdminReviewActivity, R.color.white))
+                setTypeface(typeface, android.graphics.Typeface.BOLD)
+            }
+            val tvPrice = TextView(this).apply {
+                text = "₹${plan.price.toInt()}"
+                textSize = 15f
+                setTextColor(ContextCompat.getColor(this@AdminReviewActivity, R.color.gym_gold))
+                setTypeface(typeface, android.graphics.Typeface.BOLD)
+            }
+            topRow.addView(tvName)
+            topRow.addView(tvPrice)
+            planCard.addView(topRow)
+
+            if (plan.mrp != null && plan.mrp > plan.price) {
+                val tvMrp = TextView(this).apply {
+                    text = "MRP: ₹${plan.mrp.toInt()}"
+                    textSize = 11f
+                    paintFlags = paintFlags or android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
+                    setTextColor(ContextCompat.getColor(this@AdminReviewActivity, R.color.text_muted))
+                }
+                planCard.addView(tvMrp)
+            }
+
+            val detailsText = mutableListOf<String>()
+            detailsText.add("Type: ${plan.displayType}")
+            if (plan.maxFreezeDays > 0) detailsText.add("Freeze: ${plan.maxFreezeDays}d")
+            if (plan.inclusions.isNotEmpty()) detailsText.add("Includes: ${plan.inclusions.joinToString(", ")}")
+
+            val tvMeta = TextView(this).apply {
+                text = detailsText.joinToString(" • ")
+                textSize = 12f
+                setTextColor(ContextCompat.getColor(this@AdminReviewActivity, R.color.text_gray_blue))
+                setPadding(0, 4, 0, 0)
+            }
+            planCard.addView(tvMeta)
+
+            container.addView(planCard)
+        }
     }
 
     private fun updateStatusBadge(tvBadge: TextView, status: String) {

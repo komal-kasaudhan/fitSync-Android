@@ -86,55 +86,63 @@
                     android:orientation="horizontal" />
             </HorizontalScrollView>
 
-            <!-- Step 2: Select Slot -->
+            <!-- Step 2: Select Slot / Timing -->
             <LinearLayout
+                android:id="@+id/layoutSlotContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="2. SELECT TIME SLOT"
+                        android:textColor="@color/text_gray_blue"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.08" />
+
+                    <ProgressBar
+                        android:id="@+id/pbSlotsLoading"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:indeterminateTint="@color/gym_accent"
+                        android:visibility="gone" />
+                </LinearLayout>
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/tvSlotsNotice"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="2. SELECT TIME SLOT"
+                    android:layout_marginTop="4dp"
+                    android:text="Slots are real-time capacity managed. Past slots are disabled."
                     android:textColor="@color/text_gray_blue"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.08" />
+                    android:textSize="11sp" />
 
-                <ProgressBar
-                    android:id="@+id/pbSlotsLoading"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:indeterminateTint="@color/gym_accent"
-                    android:visibility="gone" />
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupSlots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:chipSpacing="10dp"
+                    app:singleSelection="true" />
             </LinearLayout>
 
+            <!-- Step 3: Session / Membership Plan -->
             <TextView
-                android:id="@+id/tvSlotsNotice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Slots are real-time capacity managed. Past slots are disabled."
-                android:textColor="@color/text_gray_blue"
-                android:textSize="11sp" />
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroupSlots"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:chipSpacing="10dp"
-                app:singleSelection="true" />
-
-            <!-- Step 3: Session Type -->
-            <TextView
+                android:id="@+id/tvStep3Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="3. SESSION PASS"
+                android:text="3. SELECTED PLAN"
                 android:textColor="@color/text_gray_blue"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -163,18 +171,20 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvSelectedPlanTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Standard Day Pass"
+                            android:text="Day Pass"
                             android:textColor="@color/white"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvSelectedPlanSubtitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Full access to strength, cardio &amp; lockers for 1 slot"
+                            android:text="Full access to strength, cardio &amp; lockers"
                             android:textColor="@color/text_gray_blue"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -195,7 +205,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="4. BOOKING SUMMARY"
+                android:text="4. SUMMARY"
                 android:textColor="@color/text_gray_blue"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -216,6 +226,7 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
+                    <!-- Plan Name row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -225,7 +236,33 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Date"
+                            android:text="Plan"
+                            android:textColor="@color/text_gray_blue"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/tvSummaryPlan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Day Pass"
+                            android:textColor="@color/gym_accent"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Start Date row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvSummaryDateLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Start Date"
                             android:textColor="@color/text_gray_blue"
                             android:textSize="13sp" />
 
@@ -239,7 +276,36 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
+                    <!-- End Date row (for membership) -->
                     <LinearLayout
+                        android:id="@+id/rowSummaryEndDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Valid Until"
+                            android:textColor="@color/text_gray_blue"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/tvSummaryEndDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2026-11-03"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Slot row (for single day pass) -->
+                    <LinearLayout
+                        android:id="@+id/rowSummarySlot"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -249,7 +315,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Selected Slot"
+                            android:text="Time Slot"
                             android:textColor="@color/text_gray_blue"
                             android:textSize="13sp" />
 
@@ -257,7 +323,7 @@
                             android:id="@+id/tvSummarySlot"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="08:00 - 09:00"
+                            android:text="All-day Gym Hours"
                             android:textColor="@color/white"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -376,6 +442,7 @@
             app:tint="@color/gym_green" />
 
         <TextView
+            android:id="@+id/tvConfirmationTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -393,11 +460,22 @@
             android:textColor="@color/text_white_crisp"
             android:textSize="15sp" />
 
+        <TextView
+            android:id="@+id/tvConfirmedPlanName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Monthly Elite Plan"
+            android:textColor="@color/gym_accent"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
         <!-- 6-Digit Check-In Code Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="20dp"
             app:cardBackgroundColor="@color/gym_card_surface"
             app:cardCornerRadius="16dp"
             app:strokeColor="@color/gym_accent"
@@ -411,6 +489,7 @@
                 android:padding="20dp">
 
                 <TextView
+                    android:id="@+id/tvCheckInCodeLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="YOUR 6-DIGIT CHECK-IN CODE"
@@ -431,6 +510,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvCheckInCodeDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -451,11 +531,25 @@
             android:textColor="@color/text_gray_blue"
             android:textSize="13sp" />
 
+        <TextView
+            android:id="@+id/tvConfirmedDaysLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_badge_rounded"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:text="ACTIVE • 30 DAYS LEFT"
+            android:textColor="@color/gym_green"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/btnViewMyBookings"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="28dp"
             android:backgroundTint="@color/gym_accent"
             android:text="View in My Bookings"
             android:textColor="@color/black"

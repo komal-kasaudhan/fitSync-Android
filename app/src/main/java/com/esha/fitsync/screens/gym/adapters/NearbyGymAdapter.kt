@@ -44,6 +44,7 @@ class NearbyGymAdapter(
         private val tvGymAddress: TextView = itemView.findViewById(R.id.tvGymAddress)
         private val tvAmenities: TextView = itemView.findViewById(R.id.tvAmenities)
         private val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
+        private val layoutPriceContainer: View? = itemView.findViewById(R.id.layoutPriceContainer)
 
         fun bind(gym: GymItem) {
             tvGymName.text = gym.name
@@ -57,12 +58,13 @@ class NearbyGymAdapter(
             tvRating.text = String.format(Locale.US, "%.1f (%d)", gym.ratingAvg, gym.ratingCount)
             tvDistance.text = String.format(Locale.US, "%.2f km", gym.distanceKm)
 
-            val price = gym.startingPrice
-            val planType = gym.startingPlanType?.replace("_", " ")?.replaceFirstChar { it.uppercase() } ?: "day"
-            if (price > 0) {
+            val price = gym.startingPriceRaw ?: gym.plans.filter { it.isActive }.minOfOrNull { it.price }
+            if (price != null && price > 0) {
+                layoutPriceContainer?.visibility = View.VISIBLE
                 tvPrice.visibility = View.VISIBLE
-                tvPrice.text = "From ₹${price.toInt()}/$planType"
+                tvPrice.text = "From Rs ${price.toInt()}"
             } else {
+                layoutPriceContainer?.visibility = View.GONE
                 tvPrice.visibility = View.GONE
             }
 
@@ -115,7 +117,7 @@ class NearbyGymAdapter(
         private fun isGymOpenNow(gym: GymItem): Boolean {
             val cal = Calendar.getInstance()
             val todayDateStr = java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(cal.time)
-            if (gym.holidays.any { it.equals(todayDateStr, ignoreCase = true) }) {
+            if (gym.holidays.any { it.date.equals(todayDateStr, ignoreCase = true) }) {
                 return false
             }
 

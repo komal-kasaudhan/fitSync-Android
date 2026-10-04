@@ -1,23 +1,31 @@
 package com.esha.fitsync.screens.gym
 
 import android.content.Intent
+import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.esha.fitsync.BuildConfig
 import com.esha.fitsync.R
 import com.esha.fitsync.api.RetrofitClient
 import com.esha.fitsync.maps.OsmMapProvider
+import com.esha.fitsync.models.GymEnquiryRequest
 import com.esha.fitsync.models.GymItem
+import com.esha.fitsync.models.GymPlan
 import com.esha.fitsync.screens.gym.adapters.GymPhotoPagerAdapter
 import com.esha.fitsync.screens.gym.adapters.GymReviewAdapter
 import com.google.android.material.button.MaterialButton
@@ -25,6 +33,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.launch
 import org.osmdroid.views.MapView
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
@@ -47,8 +56,18 @@ class GymDetailActivity : AppCompatActivity() {
     private lateinit var tvNoReviews: TextView
     private lateinit var chipGroupAmenities: ChipGroup
     private lateinit var layoutHours: LinearLayout
+    private lateinit var layoutDetailPlans: LinearLayout
     private lateinit var rvReviews: RecyclerView
     private lateinit var mapDetailOsm: MapView
+
+    // Enquiry views
+    private lateinit var etEnquiryName: EditText
+    private lateinit var etEnquiryPhone: EditText
+    private lateinit var etEnquiryEmail: EditText
+    private lateinit var chipGroupPreferredTime: ChipGroup
+    private lateinit var cbEnquiryTrial: CheckBox
+    private lateinit var etEnquiryMessage: EditText
+    private lateinit var btnSubmitEnquiry: MaterialButton
 
     private val photoAdapter = GymPhotoPagerAdapter()
     private val reviewAdapter = GymReviewAdapter()
@@ -80,8 +99,17 @@ class GymDetailActivity : AppCompatActivity() {
         tvNoReviews = findViewById(R.id.tvNoReviews)
         chipGroupAmenities = findViewById(R.id.chipGroupDetailAmenities)
         layoutHours = findViewById(R.id.layoutHoursSchedule)
+        layoutDetailPlans = findViewById(R.id.layoutDetailPlans)
         rvReviews = findViewById(R.id.rvReviews)
         mapDetailOsm = findViewById(R.id.mapDetailOsm)
+
+        etEnquiryName = findViewById(R.id.etEnquiryName)
+        etEnquiryPhone = findViewById(R.id.etEnquiryPhone)
+        etEnquiryEmail = findViewById(R.id.etEnquiryEmail)
+        chipGroupPreferredTime = findViewById(R.id.chipGroupPreferredTime)
+        cbEnquiryTrial = findViewById(R.id.cbEnquiryTrial)
+        etEnquiryMessage = findViewById(R.id.etEnquiryMessage)
+        btnSubmitEnquiry = findViewById(R.id.btnSubmitEnquiry)
 
         tvName.text = gymNameExtra
 
@@ -96,7 +124,6 @@ class GymDetailActivity : AppCompatActivity() {
         rvReviews.layoutManager = LinearLayoutManager(this)
         rvReviews.adapter = reviewAdapter
 
-        // Default map preview centered on default coords
         OsmMapProvider.setupMap(mapDetailOsm, LocationHelper.DEFAULT_LAT, LocationHelper.DEFAULT_LNG, 15.0, false)
         mapDetailOsm.setOnClickListener { openDirectionsIntent() }
     }
@@ -116,12 +143,12 @@ class GymDetailActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnBookSession).setOnClickListener {
             val gym = loadedGym
-            val intent = Intent(this, GymBookingActivity::class.java).apply {
-                putExtra("GYM_ID", gymId)
-                putExtra("GYM_NAME", gym?.name ?: gymNameExtra)
-                putExtra("PRICE", gym?.startingPrice ?: 150.0)
-            }
-            startActivity(intent)
+            val firstPlan = gym?.activePlans?.firstOrNull()
+            launchBookingOrMembershipFlow(firstPlan)
+        }
+
+        btnSubmitEnquiry.setOnClickListener {
+            submitEnquiry()
         }
     }
 
@@ -192,14 +219,20 @@ class GymDetailActivity : AppCompatActivity() {
             tvDescription.text = gym.description
         }
 
-        val price = gym.startingPrice
-        tvBottomPrice.text = if (price > 0) "₹${price.toInt()} / day" else "₹150 / day"
+        val startPrice = gym.startingPriceRaw ?: gym.plans.filter { it.isActive }.minOfOrNull { it.price }
+        if (startPrice != null && startPrice > 0) {
+            tvBottomPrice.visibility = View.VISIBLE
+            tvBottomPrice.text = "From Rs ${startPrice.toInt()}"
+        } else {
+            tvBottomPrice.visibility = View.GONE
+        }
 
         if (gym.photos.isNotEmpty()) {
             photoAdapter.submitList(gym.photos)
             tvPhotoCount.text = "1 / ${gym.photos.size}"
         }
 
+        // Amenities
         chipGroupAmenities.removeAllViews()
         gym.amenities.forEach { amenity ->
             val chip = Chip(this).apply {
@@ -212,7 +245,18 @@ class GymDetailActivity : AppCompatActivity() {
             chipGroupAmenities.addView(chip)
         }
 
+        // Open/Closed badge from real shifts
+        val isOpen = isGymOpenNow(gym)
+        if (isOpen) {
+            tvTodayOpenStatus.text = "OPEN NOW"
+            tvTodayOpenStatus.setTextColor(ContextCompat.getColor(this, R.color.gym_green))
+        } else {
+            tvTodayOpenStatus.text = "CLOSED"
+            tvTodayOpenStatus.setTextColor(ContextCompat.getColor(this, R.color.status_rejected))
+        }
+
         populateOpeningHours(gym)
+        populateMembershipPlans(gym)
 
         // Setup OSM static preview map
         val lat = gym.location?.lat ?: LocationHelper.DEFAULT_LAT
@@ -221,6 +265,42 @@ class GymDetailActivity : AppCompatActivity() {
         OsmMapProvider.clearMarkers(mapDetailOsm)
         OsmMapProvider.addMarker(mapDetailOsm, gym.id, lat, lng, gym.name) {
             openDirectionsIntent()
+        }
+    }
+
+    private fun isGymOpenNow(gym: GymItem): Boolean {
+        val cal = Calendar.getInstance()
+        val todayDateStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(cal.time)
+        if (gym.holidays.any { it.date.equals(todayDateStr, ignoreCase = true) }) {
+            return false
+        }
+
+        if (gym.openingHours.isEmpty()) return true
+        val dayOfWeek = getTodayDayName()
+        val todaySchedule = gym.openingHours.find { it.day.equals(dayOfWeek, ignoreCase = true) }
+            ?: return true
+
+        if (todaySchedule.isClosed) return false
+
+        val currentTotalMin = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE)
+        val shifts = todaySchedule.displayShifts
+        if (shifts.isEmpty()) return false
+
+        return shifts.any { shift ->
+            val openMin = parseTimeToMinutes(shift.open)
+            val closeMin = parseTimeToMinutes(shift.close)
+            currentTotalMin in openMin..closeMin
+        }
+    }
+
+    private fun parseTimeToMinutes(timeStr: String): Int {
+        return try {
+            val parts = timeStr.trim().split(":")
+            val h = parts[0].toInt()
+            val m = parts.getOrNull(1)?.toInt() ?: 0
+            h * 60 + m
+        } catch (_: Exception) {
+            0
         }
     }
 
@@ -258,7 +338,12 @@ class GymDetailActivity : AppCompatActivity() {
                         text = "Closed"
                         setTextColor(ContextCompat.getColor(this@GymDetailActivity, R.color.status_rejected))
                     } else {
-                        text = "${schedule.open} - ${schedule.close}"
+                        val shifts = schedule.displayShifts
+                        text = if (shifts.isNotEmpty()) {
+                            shifts.joinToString(", ") { "${it.open} - ${it.close}" }
+                        } else {
+                            "${schedule.open} - ${schedule.close}"
+                        }
                         setTextColor(
                             ContextCompat.getColor(
                                 this@GymDetailActivity,
@@ -276,6 +361,144 @@ class GymDetailActivity : AppCompatActivity() {
             row.addView(tvDay)
             row.addView(tvTime)
             layoutHours.addView(row)
+        }
+    }
+
+    private fun populateMembershipPlans(gym: GymItem) {
+        layoutDetailPlans.removeAllViews()
+        val plans = gym.activePlans
+        if (plans.isEmpty()) {
+            val emptyTv = TextView(this).apply {
+                text = "No plans currently active. Contact gym directly for walk-in passes."
+                setTextColor(ContextCompat.getColor(this@GymDetailActivity, R.color.text_muted))
+                textSize = 13f
+            }
+            layoutDetailPlans.addView(emptyTv)
+            return
+        }
+
+        val inflater = LayoutInflater.from(this)
+        plans.forEach { plan ->
+            val card = inflater.inflate(R.layout.item_detail_plan_card, layoutDetailPlans, false)
+
+            val tvName = card.findViewById<TextView>(R.id.tvPlanCardName)
+            val tvDuration = card.findViewById<TextView>(R.id.tvPlanCardDuration)
+            val tvPrice = card.findViewById<TextView>(R.id.tvPlanCardPrice)
+            val tvMrp = card.findViewById<TextView>(R.id.tvPlanCardMrp)
+            val tvFreeze = card.findViewById<TextView>(R.id.tvPlanCardFreeze)
+            val tvInclusions = card.findViewById<TextView>(R.id.tvPlanCardInclusions)
+            val btnChoose = card.findViewById<MaterialButton>(R.id.btnChoosePlan)
+
+            tvName.text = plan.name
+            tvDuration.text = "${plan.durationDays} days access • ${plan.displayType}"
+            tvPrice.text = "₹${plan.price.toInt()}"
+
+            if (plan.mrp != null && plan.mrp > plan.price) {
+                tvMrp.visibility = View.VISIBLE
+                tvMrp.text = "MRP: ₹${plan.mrp.toInt()}"
+                tvMrp.paintFlags = tvMrp.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            } else {
+                tvMrp.visibility = View.GONE
+            }
+
+            if (plan.maxFreezeDays > 0) {
+                tvFreeze.visibility = View.VISIBLE
+                tvFreeze.text = "❄️ Freezable up to ${plan.maxFreezeDays} days"
+            } else {
+                tvFreeze.visibility = View.GONE
+            }
+
+            if (plan.inclusions.isNotEmpty()) {
+                tvInclusions.visibility = View.VISIBLE
+                tvInclusions.text = "Inclusions: ${plan.inclusions.joinToString(", ")}"
+            } else {
+                tvInclusions.visibility = View.GONE
+            }
+
+            btnChoose.setOnClickListener {
+                launchBookingOrMembershipFlow(plan)
+            }
+
+            layoutDetailPlans.addView(card)
+        }
+    }
+
+    private fun launchBookingOrMembershipFlow(plan: GymPlan?) {
+        val gym = loadedGym
+        val intent = Intent(this, GymBookingActivity::class.java).apply {
+            putExtra("GYM_ID", gymId)
+            putExtra("GYM_NAME", gym?.name ?: gymNameExtra)
+            putExtra("PRICE", plan?.price ?: (gym?.startingPrice ?: 150.0))
+            if (plan != null) {
+                putExtra("PLAN_ID", plan.planId)
+                putExtra("PLAN_NAME", plan.name)
+                putExtra("PLAN_TYPE", plan.type)
+                putExtra("PLAN_DURATION", plan.durationDays)
+                putExtra("MAX_FREEZE_DAYS", plan.maxFreezeDays)
+            }
+        }
+        startActivity(intent)
+    }
+
+    private fun submitEnquiry() {
+        val name = etEnquiryName.text.toString().trim()
+        val phone = etEnquiryPhone.text.toString().trim()
+        val email = etEnquiryEmail.text.toString().trim().ifEmpty { null }
+        val message = etEnquiryMessage.text.toString().trim()
+        val wantsTrial = cbEnquiryTrial.isChecked
+
+        if (name.isEmpty()) {
+            etEnquiryName.error = "Name is required"
+            etEnquiryName.requestFocus()
+            return
+        }
+        if (phone.isEmpty()) {
+            etEnquiryPhone.error = "Phone is required"
+            etEnquiryPhone.requestFocus()
+            return
+        }
+
+        val preferredTime = when (chipGroupPreferredTime.checkedChipId) {
+            R.id.chipTimeAfternoon -> "afternoon"
+            R.id.chipTimeEvening -> "evening"
+            else -> "morning"
+        }
+
+        btnSubmitEnquiry.isEnabled = false
+        btnSubmitEnquiry.text = "Sending..."
+
+        val req = GymEnquiryRequest(
+            name = name,
+            phone = phone,
+            email = email,
+            message = message,
+            preferredTime = preferredTime,
+            wantsTrial = wantsTrial
+        )
+
+        lifecycleScope.launch {
+            try {
+                val res = RetrofitClient.api.sendGymEnquiry(gymId, req)
+                btnSubmitEnquiry.isEnabled = true
+                btnSubmitEnquiry.text = "Send Enquiry"
+
+                if (res.isSuccessful && res.body()?.success == true) {
+                    Toast.makeText(
+                        this@GymDetailActivity,
+                        "Enquiry submitted! The gym owner has been notified.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    etEnquiryMessage.setText("")
+                    cbEnquiryTrial.isChecked = false
+                } else {
+                    val errMsg = res.body()?.message ?: "Submission failed (${res.code()})"
+                    Toast.makeText(this@GymDetailActivity, errMsg, Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                btnSubmitEnquiry.isEnabled = true
+                btnSubmitEnquiry.text = "Send Enquiry"
+                Toast.makeText(this@GymDetailActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
         }
     }
 

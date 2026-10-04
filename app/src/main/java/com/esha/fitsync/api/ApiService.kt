@@ -298,7 +298,8 @@ interface ApiService {
 
     @POST("api/gym-memberships/{id}/cancel")
     suspend fun cancelGymMembership(
-        @retrofit2.http.Path("id") id: String
+        @retrofit2.http.Path("id") id: String,
+        @Body request: com.esha.fitsync.models.CancelMembershipRequest = com.esha.fitsync.models.CancelMembershipRequest()
     ): Response<com.esha.fitsync.models.GymMembershipActionResponse>
 
     @POST("api/gyms/{id}/enquiry")

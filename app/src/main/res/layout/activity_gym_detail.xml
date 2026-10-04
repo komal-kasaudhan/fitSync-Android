@@ -253,6 +253,189 @@
                     android:layout_marginVertical="18dp"
                     android:background="@color/gym_card_border" />
 
+                <!-- Membership Plans Section -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Membership Plans &amp; Passes"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Choose a pass or tiered membership. Direct booking with member code."
+                    android:textColor="@color/text_muted"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:id="@+id/layoutDetailPlans"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="18dp"
+                    android:background="@color/gym_card_border" />
+
+                <!-- Enquiry & Free Trial Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardDetailEnquiry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/gym_card_surface"
+                    app:cardCornerRadius="14dp"
+                    app:strokeColor="@color/gym_card_border"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Enquiry / Request Free Trial"
+                            android:textColor="@color/gym_accent"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Have questions? Send an enquiry directly to the gym owner."
+                            android:textColor="@color/text_gray_blue"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/etEnquiryName"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@drawable/bg_search_input"
+                            android:hint="Your Name *"
+                            android:paddingHorizontal="12dp"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/text_muted"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/etEnquiryPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_search_input"
+                            android:hint="Phone Number *"
+                            android:inputType="phone"
+                            android:paddingHorizontal="12dp"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/text_muted"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/etEnquiryEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_search_input"
+                            android:hint="Email (optional)"
+                            android:inputType="textEmailAddress"
+                            android:paddingHorizontal="12dp"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/text_muted"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Preferred Visiting Time"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chipGroupPreferredTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            app:singleSelection="true">
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipTimeMorning"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:text="Morning" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipTimeAfternoon"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Afternoon" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipTimeEvening"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Evening" />
+                        </com.google.android.material.chip.ChipGroup>
+
+                        <CheckBox
+                            android:id="@+id/cbEnquiryTrial"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:buttonTint="@color/gym_accent"
+                            android:text="I would like to request a 1-day free trial"
+                            android:textColor="@color/text_primary"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/etEnquiryMessage"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_search_input"
+                            android:gravity="top|start"
+                            android:hint="Any specific questions or fitness goals..."
+                            android:inputType="textMultiLine"
+                            android:padding="10dp"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/text_muted"
+                            android:textSize="13sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnSubmitEnquiry"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:layout_marginTop="12dp"
+                            android:backgroundTint="@color/gym_accent"
+                            android:text="Send Enquiry"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="18dp"
+                    android:background="@color/gym_card_border" />
+
                 <!-- Location Map Preview -->
                 <TextView
                     android:layout_width="wrap_content"

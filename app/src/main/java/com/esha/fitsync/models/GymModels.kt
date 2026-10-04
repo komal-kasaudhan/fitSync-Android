@@ -15,6 +15,36 @@ data class GymShift(
     @SerializedName("close") val close: String = "22:00"
 )
 
+@com.google.gson.annotations.JsonAdapter(GymHolidayAdapter::class)
+data class GymHoliday(
+    @SerializedName("date") val date: String = "",
+    @SerializedName("reason") val reason: String = ""
+)
+
+class GymHolidayAdapter : com.google.gson.JsonDeserializer<GymHoliday>, com.google.gson.JsonSerializer<GymHoliday> {
+    override fun deserialize(json: com.google.gson.JsonElement?, typeOfT: java.lang.reflect.Type?, context: com.google.gson.JsonDeserializationContext?): GymHoliday {
+        if (json == null || json.isJsonNull) return GymHoliday()
+        return if (json.isJsonObject) {
+            val obj = json.asJsonObject
+            GymHoliday(
+                date = obj.get("date")?.asString ?: "",
+                reason = obj.get("reason")?.asString ?: ""
+            )
+        } else if (json.isJsonPrimitive) {
+            GymHoliday(date = json.asString, reason = "")
+        } else {
+            GymHoliday()
+        }
+    }
+
+    override fun serialize(src: GymHoliday?, typeOfSrc: java.lang.reflect.Type?, context: com.google.gson.JsonSerializationContext?): com.google.gson.JsonElement {
+        val obj = com.google.gson.JsonObject()
+        obj.addProperty("date", src?.date ?: "")
+        obj.addProperty("reason", src?.reason ?: "")
+        return obj
+    }
+}
+
 data class GymOpeningHour(
     @SerializedName("day") val day: String = "",
     @SerializedName("open") val open: String = "06:00",
@@ -75,7 +105,7 @@ data class GymItem(
     @SerializedName("openingHours") val openingHours: List<GymOpeningHour> = emptyList(),
     @SerializedName("sessionTypes") val sessionTypes: List<GymSessionType> = emptyList(),
     @SerializedName("plans") val plans: List<GymPlan> = emptyList(),
-    @SerializedName("holidays") val holidays: List<String> = emptyList(),
+    @SerializedName("holidays") val holidays: List<GymHoliday> = emptyList(),
     @SerializedName("womenOnlyHours") val womenOnlyHours: WomenOnlyHours? = null,
     @SerializedName("startingPrice") val startingPriceRaw: Double? = null,
     @SerializedName("startingPlanType") val startingPlanType: String? = null,
@@ -266,10 +296,26 @@ data class CheckInRequest(
     @SerializedName("checkInCode") val checkInCode: String
 )
 
+data class CheckInVisit(
+    @SerializedName("id") val id: String = "",
+    @SerializedName("checkInTime") val checkInTime: String = "",
+    @SerializedName("memberCode") val memberCode: String = ""
+)
+
+data class CheckInMember(
+    @SerializedName("id") val id: String = "",
+    @SerializedName("name") val name: String = "",
+    @SerializedName("plan") val plan: String = "",
+    @SerializedName("planType") val planType: String = "",
+    @SerializedName("validUntil") val validUntil: String = ""
+)
+
 data class CheckInResponse(
     @SerializedName("success") val success: Boolean = false,
     @SerializedName("message") val message: String = "",
-    @SerializedName("booking") val booking: GymBookingDetails? = null
+    @SerializedName("booking") val booking: GymBookingDetails? = null,
+    @SerializedName("visit") val visit: CheckInVisit? = null,
+    @SerializedName("member") val member: CheckInMember? = null
 )
 
 data class GymEarningsSummary(
@@ -342,7 +388,7 @@ data class RegisterGymRequest(
     @SerializedName("amenities") val amenities: List<String> = emptyList(),
     @SerializedName("openingHours") val openingHours: List<GymOpeningHour> = emptyList(),
     @SerializedName("plans") val plans: List<GymPlan> = emptyList(),
-    @SerializedName("holidays") val holidays: List<String> = emptyList(),
+    @SerializedName("holidays") val holidays: List<GymHoliday> = emptyList(),
     @SerializedName("womenOnlyHours") val womenOnlyHours: WomenOnlyHours? = null,
     @SerializedName("sessionTypes") val sessionTypes: List<GymSessionType> = emptyList(),
     @SerializedName("capacityPerSlot") val capacityPerSlot: Int = 20
@@ -383,12 +429,19 @@ data class GymMembership(
     @SerializedName("createdAt") val createdAt: String? = null
 ) {
     val id: String get() = mongoId.ifEmpty { publicId ?: "" }
+    val displayGymName: String get() = gym?.name ?: gymName ?: "FitSync Partner Gym"
 }
+
+data class MembershipPaymentDetails(
+    @SerializedName("method") val method: String = "razorpay",
+    @SerializedName("paymentId") val paymentId: String = ""
+)
 
 data class CreateMembershipRequest(
     @SerializedName("gymId") val gymId: String,
     @SerializedName("planId") val planId: String,
-    @SerializedName("startDate") val startDate: String
+    @SerializedName("startDate") val startDate: String,
+    @SerializedName("paymentDetails") val paymentDetails: MembershipPaymentDetails? = null
 )
 
 data class CreateMembershipResponse(
@@ -414,7 +467,13 @@ data class SingleMembershipResponse(
 )
 
 data class FreezeMembershipRequest(
-    @SerializedName("freezeDays") val freezeDays: Int
+    @SerializedName("days") val days: Int = 1,
+    @SerializedName("freezeDays") val freezeDays: Int = days,
+    @SerializedName("reason") val reason: String = ""
+)
+
+data class CancelMembershipRequest(
+    @SerializedName("reason") val reason: String = ""
 )
 
 data class GymMembershipActionResponse(
@@ -428,6 +487,7 @@ data class GymMembershipActionResponse(
 data class GymEnquiryRequest(
     @SerializedName("name") val name: String,
     @SerializedName("phone") val phone: String,
+    @SerializedName("email") val email: String? = null,
     @SerializedName("message") val message: String = "",
     @SerializedName("preferredTime") val preferredTime: String? = null,
     @SerializedName("wantsTrial") val wantsTrial: Boolean = false
@@ -440,9 +500,11 @@ data class GymEnquiryItem(
     @SerializedName("userId") val userId: String? = null,
     @SerializedName("name") val name: String = "",
     @SerializedName("phone") val phone: String = "",
+    @SerializedName("email") val email: String? = null,
     @SerializedName("message") val message: String = "",
     @SerializedName("preferredTime") val preferredTime: String? = null,
     @SerializedName("wantsTrial") val wantsTrial: Boolean = false,
+    @SerializedName("status") val status: String = "new",
     @SerializedName("createdAt") val createdAt: String = ""
 ) {
     val id: String get() = mongoId.ifEmpty { publicId ?: "" }
@@ -454,9 +516,17 @@ data class GymEnquiriesResponse(
     @SerializedName("message") val message: String? = null
 )
 
+data class GymMemberUser(
+    @SerializedName("_id") val id: String = "",
+    @SerializedName("name") val name: String = "",
+    @SerializedName("email") val email: String = "",
+    @SerializedName("phone") val phone: String? = null
+)
+
 data class GymMemberInfo(
     @SerializedName("_id") val mongoId: String = "",
     @SerializedName("id") val publicId: String? = null,
+    @SerializedName("user") val user: GymMemberUser? = null,
     @SerializedName("userId") val userId: String? = null,
     @SerializedName("userName") val userName: String? = null,
     @SerializedName("userEmail") val userEmail: String? = null,
@@ -471,6 +541,8 @@ data class GymMemberInfo(
     @SerializedName("price") val price: Double = 0.0
 ) {
     val id: String get() = mongoId.ifEmpty { publicId ?: "" }
+    val displayName: String get() = user?.name ?: userName ?: "Member"
+    val displayEmail: String get() = user?.email ?: userEmail ?: ""
 }
 
 data class GymMembersListResponse(

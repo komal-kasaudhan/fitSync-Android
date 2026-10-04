@@ -64,6 +64,10 @@ class MyGymBookingsActivity : AppCompatActivity() {
     private fun setupListeners() {
         findViewById<ImageButton>(R.id.btnBookingsBack).setOnClickListener { finish() }
 
+        findViewById<View>(R.id.btnSwitchToMemberships)?.setOnClickListener {
+            startActivity(Intent(this, MyMembershipsActivity::class.java))
+        }
+
         val chipGroup = findViewById<ChipGroup>(R.id.chipGroupBookingFilter)
         chipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
             currentFilter = when (checkedIds.firstOrNull()) {

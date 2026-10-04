@@ -37,6 +37,7 @@ class ExploreFragment : Fragment() {
 
         val cardNearbyGyms = view.findViewById<MaterialCardView>(R.id.cardNearbyGyms)
         val cardMyBookings = view.findViewById<MaterialCardView>(R.id.cardMyBookings)
+        val cardMyMemberships = view.findViewById<MaterialCardView>(R.id.cardMyMemberships)
         val cardTrainers = view.findViewById<MaterialCardView>(R.id.cardTrainers)
         val cardShop = view.findViewById<MaterialCardView>(R.id.cardShop)
         val cardRegisterGym = view.findViewById<MaterialCardView>(R.id.cardRegisterGym)
@@ -56,6 +57,10 @@ class ExploreFragment : Fragment() {
 
         cardMyBookings.setOnClickListener {
             startActivity(Intent(requireContext(), MyGymBookingsActivity::class.java))
+        }
+
+        cardMyMemberships.setOnClickListener {
+            startActivity(Intent(requireContext(), com.esha.fitsync.screens.gym.MyMembershipsActivity::class.java))
         }
 
         cardTrainers.setOnClickListener {

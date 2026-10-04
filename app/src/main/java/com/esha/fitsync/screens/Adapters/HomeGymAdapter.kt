@@ -53,11 +53,10 @@ class HomeGymAdapter(
             tvRating.text = String.format(Locale.US, "%.1f", gym.ratingAvg)
             tvDistance.text = String.format(Locale.US, "%.1f km", gym.distanceKm)
 
-            val price = gym.startingPrice
-            val planType = gym.startingPlanType?.replace("_", " ")?.replaceFirstChar { it.uppercase() } ?: "day"
-            if (price > 0) {
+            val price = gym.startingPriceRaw ?: gym.plans.filter { it.isActive }.minOfOrNull { it.price }
+            if (price != null && price > 0) {
                 tvPrice.visibility = View.VISIBLE
-                tvPrice.text = "From ₹${price.toInt()}/$planType"
+                tvPrice.text = "From Rs ${price.toInt()}"
             } else {
                 tvPrice.visibility = View.GONE
             }

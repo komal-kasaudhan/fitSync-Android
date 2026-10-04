@@ -35,6 +35,9 @@
             android:name=".screens.gym.MyGymBookingsActivity"
             android:exported="false" />
         <activity
+            android:name=".screens.gym.MyMembershipsActivity"
+            android:exported="false" />
+        <activity
             android:name=".screens.gym.RegisterGymActivity"
             android:exported="false" />
         <activity

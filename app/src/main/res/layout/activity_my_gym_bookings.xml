@@ -29,13 +29,24 @@
                 app:tint="@color/white" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
+                android:layout_weight="1"
                 android:text="My Gym Bookings"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSwitchToMemberships"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:backgroundTint="@color/gym_card_border"
+                android:text="Memberships"
+                android:textColor="@color/brand_cyan"
+                android:textSize="11sp"
+                app:cornerRadius="8dp" />
         </LinearLayout>
 
         <!-- Filter Chips: All, Upcoming, Attended, Cancelled -->

@@ -181,7 +181,126 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- SECTION 2: Earnings & Revenue -->
+            <!-- SECTION 2: Members & Expiry -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="GYM MEMBERS &amp; EXPIRY"
+                    android:textColor="@color/text_gray_blue"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.08" />
+
+                <ProgressBar
+                    android:id="@+id/pbMembersLoading"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:indeterminateTint="@color/gym_accent"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupOwnerMemberFilter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterAllMembers"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="All Active Members"
+                    android:textColor="@color/white"
+                    app:chipBackgroundColor="@color/gym_chip_bg" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterExpiringSoon"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Expiring Soon ⚠️"
+                    android:textColor="@color/white"
+                    app:chipBackgroundColor="@color/gym_chip_bg" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvOwnerMembers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="false" />
+
+            <TextView
+                android:id="@+id/tvNoMembers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_search_input"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="No registered gym members yet."
+                android:textColor="@color/text_gray_blue"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <!-- SECTION 3: Enquiries -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="MEMBERSHIP &amp; TRIAL ENQUIRIES"
+                    android:textColor="@color/text_gray_blue"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.08" />
+
+                <ProgressBar
+                    android:id="@+id/pbEnquiriesLoading"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:indeterminateTint="@color/gym_accent"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvOwnerEnquiries"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:nestedScrollingEnabled="false" />
+
+            <TextView
+                android:id="@+id/tvNoEnquiries"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_search_input"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="No new member enquiries yet."
+                android:textColor="@color/text_gray_blue"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <!-- SECTION 4: Earnings & Revenue -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

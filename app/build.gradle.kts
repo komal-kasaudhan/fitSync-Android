@@ -22,11 +22,6 @@ android {
         ?: "http://localhost:8000/"
     val defaultBaseUrl = rawBaseUrl.trim().removeSurrounding("\"")
 
-    val rawGoogleClientId = localProperties.getProperty("GOOGLE_WEB_CLIENT_ID")
-        ?: localProperties.getProperty("googleWebClientId")
-        ?: ""
-    val defaultGoogleClientId = rawGoogleClientId.trim().removeSurrounding("\"")
-
     defaultConfig {
         applicationId = "com.esha.fitsync"
         minSdk = 26
@@ -36,7 +31,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "BASE_URL", "\"$defaultBaseUrl\"")
-        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"$defaultGoogleClientId\"")
     }
 
     buildTypes {
@@ -100,9 +94,4 @@ dependencies {
     // OpenStreetMap osmdroid & Fused Location
     implementation("org.osmdroid:osmdroid-android:6.1.20")
     implementation("com.google.android.gms:play-services-location:21.2.0")
-
-    // Credential Manager with GoogleIdOption
-    implementation("androidx.credentials:credentials:1.3.0")
-    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
-    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 }

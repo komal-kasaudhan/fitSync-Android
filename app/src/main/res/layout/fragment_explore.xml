@@ -144,7 +144,7 @@
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:src="@drawable/ic_calendar"
+                    android:src="@drawable/ic_event"
                     app:tint="@color/gym_accent" />
 
                 <LinearLayout
@@ -269,7 +269,7 @@
                     <ImageView
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-                        android:src="@drawable/ic_fitness"
+                        android:src="@drawable/ic_sports"
                         app:tint="@color/text_gray_blue" />
 
                     <TextView
@@ -332,7 +332,7 @@
                     <ImageView
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-                        android:src="@drawable/ic_star"
+                        android:src="@drawable/ic_storefront"
                         app:tint="@color/text_gray_blue" />
 
                     <TextView
@@ -472,11 +472,18 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_shield"
+                        app:tint="@color/gym_gold"
+                        android:layout_marginEnd="10dp" />
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="🛡️ FitSync Admin Console"
+                        android:text="FitSync Admin Console"
                         android:textColor="@color/white"
                         android:textSize="17sp"
                         android:textStyle="bold" />

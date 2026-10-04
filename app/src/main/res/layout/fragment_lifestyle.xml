@@ -76,7 +76,7 @@ android:background="@color/dark_bg">
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_mail"
+                        android:src="@drawable/ic_monitor_weight"
                         app:tint="@color/brand_cyan">
 
                     </ImageView>
@@ -139,7 +139,7 @@ android:background="@color/dark_bg">
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_mail"
+                        android:src="@drawable/ic_sports"
                         app:tint="@color/brand_cyan">
 
                     </ImageView>
@@ -203,7 +203,7 @@ android:background="@color/dark_bg">
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_mail"
+                        android:src="@drawable/ic_fitness_center"
                         app:tint="@color/brand_cyan">
 
                     </ImageView>
@@ -267,7 +267,7 @@ android:background="@color/dark_bg">
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_mail"
+                        android:src="@drawable/ic_local_fire_department"
                         app:tint="@color/brand_cyan">
 
                     </ImageView>
@@ -336,7 +336,7 @@ android:background="@color/dark_bg">
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_mail"
+                        android:src="@drawable/ic_nav_home"
                         app:tint="@color/cyan"
                         android:layout_gravity="center">
                     </ImageView>
@@ -387,7 +387,7 @@ android:background="@color/dark_bg">
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_mail"
+                        android:src="@drawable/ic_fitness_center"
                         android:layout_gravity="center"
                         app:tint="@color/cyan">
 

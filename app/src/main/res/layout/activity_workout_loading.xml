@@ -20,7 +20,7 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_mail"
+            android:src="@drawable/ic_fitness_center"
             app:tint="#00D4FF"/>
 
         <TextView
@@ -111,27 +111,27 @@
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#1F2E3D" android:layout_marginBottom="12dp"/>
 
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="10dp">
-                <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_mail" app:tint="#00D4FF" android:layout_marginEnd="10dp"/>
+                <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_person" app:tint="#00D4FF" android:layout_marginEnd="10dp"/>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Reading your profile" android:textColor="@color/white" android:textSize="13sp" android:textStyle="bold"/>
             </LinearLayout>
 
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="10dp">
-                <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_mail" app:tint="#00D4FF" android:layout_marginEnd="10dp"/>
+                <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_fitness_center" app:tint="#00D4FF" android:layout_marginEnd="10dp"/>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Matching exercises" android:textColor="@color/white" android:textSize="13sp" android:textStyle="bold"/>
             </LinearLayout>
 
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="10dp">
-                <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_mail" app:tint="#00D4FF" android:layout_marginEnd="10dp"/>
+                <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_event" app:tint="#00D4FF" android:layout_marginEnd="10dp"/>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Building weekly split" android:textColor="@color/white" android:textSize="13sp" android:textStyle="bold"/>
             </LinearLayout>
 
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="10dp">
-                <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_mail" app:tint="#4B5563" android:layout_marginEnd="10dp"/>
+                <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_local_fire_department" app:tint="#4B5563" android:layout_marginEnd="10dp"/>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Personalizing intensity" android:textColor="#4B5563" android:textSize="13sp"/>
             </LinearLayout>
 
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
-                <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_mail" app:tint="#4B5563" android:layout_marginEnd="10dp"/>
+                <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_check" app:tint="#4B5563" android:layout_marginEnd="10dp"/>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Finalizing workout plan" android:textColor="#4B5563" android:textSize="13sp"/>
             </LinearLayout>
         </LinearLayout>

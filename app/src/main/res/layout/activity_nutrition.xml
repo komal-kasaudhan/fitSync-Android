@@ -24,7 +24,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_revert"
+            android:src="@drawable/arrow_back"
             app:tint="#FFFFFF" />
 
         <TextView
@@ -42,13 +42,13 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginEnd="16dp"
-            android:src="@android:drawable/stat_notify_chat"
+            android:src="@drawable/ic_smart_toy"
             app:tint="#00D4FF" />
 
         <ImageView
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:src="@android:drawable/ic_popup_reminder"
+            android:src="@drawable/ic_event"
             app:tint="#FFFFFF" />
     </LinearLayout>
 
@@ -361,7 +361,7 @@
                             android:id="@+id/iconP"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@android:drawable/ic_menu_compass"
+                            android:src="@drawable/ic_restaurant"
                             app:tint="#00D4FF" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -534,7 +534,7 @@
                             android:id="@+id/iconW"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@android:drawable/ic_menu_compass"
+                            android:src="@drawable/ic_water_drop"
                             app:tint="#00D4FF" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -591,7 +591,7 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:layout_centerVertical="true"
-                        android:src="@android:drawable/ic_menu_compass"
+                        android:src="@drawable/ic_water_drop"
                         app:tint="#00D4FF" />
                     <LinearLayout
                         android:layout_width="wrap_content"

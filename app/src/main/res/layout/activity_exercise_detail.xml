@@ -22,7 +22,7 @@
             android:id="@+id/btnPrevExercise"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_mail"
+            android:src="@drawable/arrow_back"
             app:tint="#6B7280"
             android:background="#111827"
             android:contentDescription="Previous Exercise Button"/>
@@ -44,7 +44,7 @@
             android:id="@+id/btnNextExercise"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_mail"
+            android:src="@drawable/ic_arrow_forward"
             app:tint="#6B7280"
             android:background="#111827"
             android:contentDescription="Next Exercise Button"/>
@@ -76,7 +76,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_mail"
+                        android:src="@drawable/ic_fitness_center"
                         android:scaleType="centerCrop"
                         android:background="#09131C"
                         android:padding="50dp"
@@ -266,7 +266,7 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Target Muscles" android:textColor="@color/white" android:textStyle="bold" android:textSize="16sp" android:layout_marginBottom="14dp"/>
 
                     <RelativeLayout android:layout_width="match_parent" android:layout_height="180dp" android:background="#0C1420" android:layout_marginBottom="12dp">
-                        <ImageView android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/ic_mail" android:scaleType="center" app:tint="#1F2E3D"/>
+                        <ImageView android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/ic_fitness_center" android:scaleType="center" app:tint="#1F2E3D"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Highlighting: Biceps Brachii" android:textColor="#9CA3AF" android:textSize="11sp" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layout_marginBottom="10dp" android:textStyle="italic"/>
                     </RelativeLayout>
 

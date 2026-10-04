@@ -18,5 +18,36 @@ data class AuthResponse(
     @SerializedName("token") val token: String? = null,
     @SerializedName("roles") val roles: List<String> = emptyList(),
     @SerializedName("needsOnboarding") val needsOnboarding: Boolean? = null,
+    @SerializedName("data") val data: AuthUserData? = null,
     @SerializedName("user") val user: AuthUserData? = null
+)
+
+data class ForgotPasswordRequest(
+    @SerializedName("email") val email: String
+)
+
+data class VerifyOtpRequest(
+    @SerializedName("email") val email: String,
+    @SerializedName("otp") val otp: String
+)
+
+data class VerifyOtpResponse(
+    @SerializedName("success") val success: Boolean = false,
+    @SerializedName("message") val message: String = "",
+    @SerializedName("resetToken") val resetToken: String? = null
+)
+
+data class ResetPasswordRequest(
+    @SerializedName("email") val email: String,
+    @SerializedName("resetToken") val resetToken: String,
+    @SerializedName("newPassword") val newPassword: String
+)
+
+data class GenericAuthResponse(
+    @SerializedName("success") val success: Boolean = false,
+    @SerializedName("message") val message: String = ""
+)
+
+data class GoogleLoginRequest(
+    @SerializedName("idToken") val idToken: String
 )

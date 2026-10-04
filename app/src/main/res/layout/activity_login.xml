@@ -127,8 +127,12 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tvForgotPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
             android:text="Forgot Password?"
             android:textColor="#00D4FF"
             android:textSize="14sp"
@@ -151,18 +155,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/passRow">
 
-        <EditText
-            android:id="@+id/etPassword"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPassword"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:drawableStart="@drawable/ic_lock"
-            android:drawablePadding="12dp"
-            android:hint="••••••••"
-            android:textColorHint="#CFD5E0"
-            android:inputType="textPassword"
-            android:paddingHorizontal="16dp"
-            android:textColor="@android:color/white"/>
+            android:gravity="center_vertical"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="none"
+            app:endIconMode="password_toggle"
+            app:endIconTint="#8AA0B8">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/ic_lock"
+                android:drawablePadding="12dp"
+                android:hint="••••••••"
+                android:textColorHint="#CFD5E0"
+                android:inputType="textPassword"
+                android:paddingHorizontal="16dp"
+                android:textColor="@android:color/white"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.cardview.widget.CardView>
 

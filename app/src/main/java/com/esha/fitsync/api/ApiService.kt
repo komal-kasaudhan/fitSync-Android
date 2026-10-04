@@ -24,6 +24,26 @@ interface ApiService {
         @Body request: LoginRequest
     ): Call<AuthResponse>
 
+    @POST("api/auth/forgot-password")
+    suspend fun forgotPassword(
+        @Body request: com.esha.fitsync.models.ForgotPasswordRequest
+    ): Response<com.esha.fitsync.models.GenericAuthResponse>
+
+    @POST("api/auth/verify-otp")
+    suspend fun verifyOtp(
+        @Body request: com.esha.fitsync.models.VerifyOtpRequest
+    ): Response<com.esha.fitsync.models.VerifyOtpResponse>
+
+    @POST("api/auth/reset-password")
+    suspend fun resetPassword(
+        @Body request: com.esha.fitsync.models.ResetPasswordRequest
+    ): Response<com.esha.fitsync.models.GenericAuthResponse>
+
+    @POST("api/auth/google")
+    suspend fun loginWithGoogle(
+        @Body request: com.esha.fitsync.models.GoogleLoginRequest
+    ): Response<AuthResponse>
+
     @POST("api/onboarding")
     fun saveOnboarding(
         @Body request: OnboardingRequest

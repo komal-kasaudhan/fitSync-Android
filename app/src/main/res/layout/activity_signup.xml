@@ -177,19 +177,30 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvPassword">
 
-                <EditText
-                    android:id="@+id/etPassword"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPassword"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:drawableStart="@drawable/ic_lock"
-                    android:drawablePadding="12dp"
-                    android:hint="••••••••"
-                    android:inputType="textPassword"
-                    android:paddingHorizontal="16dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="#5A7185"
-                    android:textSize="15sp" />
+                    android:gravity="center_vertical"
+                    app:hintEnabled="false"
+                    app:boxBackgroundMode="none"
+                    app:endIconMode="password_toggle"
+                    app:endIconTint="#5A7185">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:drawableStart="@drawable/ic_lock"
+                        android:drawablePadding="12dp"
+                        android:hint="••••••••"
+                        android:inputType="textPassword"
+                        android:paddingHorizontal="16dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#5A7185"
+                        android:textSize="15sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
             <TextView
@@ -217,20 +228,30 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvConfirmPassword">
 
-                <EditText
-                    android:id="@+id/etconfirmPassword"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:drawableStart="@drawable/ic_lock"
-                    android:drawablePadding="12dp"
+                    android:gravity="center_vertical"
+                    app:hintEnabled="false"
+                    app:boxBackgroundMode="none"
+                    app:endIconMode="password_toggle"
+                    app:endIconTint="#5A7185">
 
-                    android:hint="........."
-                    android:inputType="textPassword"
-                    android:paddingHorizontal="16dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="#5A7185"
-                    android:textSize="15sp" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etconfirmPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:drawableStart="@drawable/ic_lock"
+                        android:drawablePadding="12dp"
+                        android:hint="........."
+                        android:inputType="textPassword"
+                        android:paddingHorizontal="16dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#5A7185"
+                        android:textSize="15sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
             <Button

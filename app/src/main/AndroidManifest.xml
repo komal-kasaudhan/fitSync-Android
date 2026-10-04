@@ -29,6 +29,9 @@
             android:name=".screens.ProfileActivity"
             android:exported="false" />
         <activity
+            android:name=".screens.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".screens.gym.GymDetailActivity"
             android:exported="false" />
         <activity

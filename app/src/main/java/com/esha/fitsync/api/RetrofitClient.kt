@@ -15,7 +15,10 @@ import java.util.concurrent.TimeUnit
 object RetrofitClient {
 
     val BASE_URL: String
-        get() = BuildConfig.BASE_URL.ifEmpty { "http://10.0.2.2:8000/" }
+        get() {
+            val url = BuildConfig.BASE_URL.ifEmpty { "http://10.0.2.2:8000/" }
+            return if (url.endsWith("/")) url else "$url/"
+        }
 
     private var appContext: Context? = null
 

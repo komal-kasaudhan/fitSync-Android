@@ -20,7 +20,9 @@ android {
     val rawBaseUrl = localProperties.getProperty("BASE_URL")
         ?: localProperties.getProperty("baseUrl")
         ?: "http://localhost:8000/"
-    val defaultBaseUrl = rawBaseUrl.trim().removeSurrounding("\"")
+    val defaultBaseUrl = rawBaseUrl.trim().removeSurrounding("\"").let {
+        if (it.endsWith("/")) it else "$it/"
+    }
 
     defaultConfig {
         applicationId = "com.esha.fitsync"
